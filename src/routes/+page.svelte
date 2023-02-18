@@ -5,8 +5,11 @@
 	const log = debugFactory('log')
 
 	import { page } from '$app/stores'
+	import { onMount } from 'svelte'
 
+	// Bindings:
 	let query = $page.url.searchParams.get('q') || ''
+	let textArea: HTMLTextAreaElement
 
 	type UrlTemplateOrGenerator = string | ((query: string) => string)
 
@@ -159,10 +162,18 @@
 		handleClickNaverImage(e)
 		handleClickGoogleImage(e)
 	}
+
+	const handleFocus = (e: Event) => {
+		textArea.select()
+	}
+
+	onMount(() => {
+		textArea.focus()
+	})
 </script>
 
 <main class="container">
-	<textarea rows="2" bind:value={query} />
+	<textarea rows="2" bind:value={query} bind:this={textArea} on:focus={handleFocus} />
 
 	<div>
 		<button on:click={handleClickAllTranslate}>All Translate</button>
