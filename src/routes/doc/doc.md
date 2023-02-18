@@ -18,3 +18,4 @@
 -   You don't need to close all the tabs one at a time:
     -   Right-click a tab, then "Close other tabs" or "Close tabs to the right"
     -   Or just close the browser window while another browser window is open.
+-   Source code at: https://github.com/Leftium/multi-search
