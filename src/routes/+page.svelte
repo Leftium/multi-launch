@@ -167,8 +167,23 @@
 		textArea.select()
 	}
 
+	const handleKeydown = (e: KeyboardEvent) => {
+		log('handleKeydown', e)
+
+		if (e.key === 'Enter') {
+			e.preventDefault()
+			handleClickAllTranslate(e)
+		}
+	}
+
 	onMount(() => {
 		textArea.focus()
+
+		window.addEventListener('keydown', handleKeydown)
+
+		return () => {
+			window.removeEventListener('keydown', handleKeydown)
+		}
 	})
 </script>
 
