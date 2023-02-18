@@ -46,13 +46,20 @@
 			'https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY'
 		)
 	)
+
+	const handleClickAllTranslate = (e: Event) => {
+		handleClickGoogleTranslate(e)
+		handleClickPapago(e)
+	}
 </script>
 
 <main class="container">
 	<textarea rows="2" bind:value={query} />
 
 	<div>
-		<button class="primary">All Translate</button>
+		<button class="primary" on:click={handleClickAllTranslate}
+			>All Translate</button
+		>
 		<button class="secondary" on:click={handleClickGoogleTranslate}
 			>Google</button
 		>
