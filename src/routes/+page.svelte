@@ -66,6 +66,20 @@
 		handleClickNaverShopping(e)
 		handleClickDanawa(e)
 	}
+
+	const handleClickGoogle = makeClickHandler('https://www.google.com/search?q=QUERY')
+	const handleClickNaver = makeClickHandler('https://search.naver.com/search.naver?query=QUERY')
+	const handleClickDaum = makeClickHandler('https://search.daum.net/search?q=QUERY')
+	const handleClickBing = makeClickHandler('https://www.bing.com/search?q=QUERY')
+	const handleClickYandex = makeClickHandler('https://yandex.com/search/?text=QUERY')
+
+	const handleClickAllSearch = (e: Event) => {
+		handleClickYandex(e)
+		handleClickBing(e)
+		handleClickDaum(e)
+		handleClickNaver(e)
+		handleClickGoogle(e)
+	}
 </script>
 
 <main class="container">
@@ -86,12 +100,12 @@
 	</div>
 
 	<div>
-		<button>All Search</button>
-		<button class="secondary">Google</button>
-		<button class="secondary">Naver</button>
-		<button class="secondary">Daum</button>
-		<button class="secondary">Bing</button>
-		<button class="secondary">Yandex</button>
+		<button on:click={handleClickAllSearch}>All Search</button>
+		<button class="secondary" on:click={handleClickGoogle}>Google</button>
+		<button class="secondary" on:click={handleClickNaver}>Naver</button>
+		<button class="secondary" on:click={handleClickDaum}>Daum</button>
+		<button class="secondary" on:click={handleClickBing}>Bing</button>
+		<button class="secondary" on:click={handleClickYandex}>Yandex</button>
 	</div>
 </main>
 
