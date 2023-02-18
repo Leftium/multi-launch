@@ -6,9 +6,18 @@
 
 	let query = 'QUERY'
 
-	const makeClickHandler = (urlTemplate: string) => {
+	type UrlTemplateOrGenerator = string | ((query: string) => string)
+
+	const makeClickHandler = (
+		urlTemplateOrGenerator: UrlTemplateOrGenerator
+	) => {
 		return (e: Event) => {
 			const queryTrimmed = query.trim()
+			const urlTemplate =
+				typeof urlTemplateOrGenerator === 'string'
+					? urlTemplateOrGenerator
+					: urlTemplateOrGenerator(queryTrimmed)
+
 			const url = urlTemplate.replace('QUERY', queryTrimmed)
 
 			log('handleClick', url, e)
@@ -16,12 +25,26 @@
 		}
 	}
 
+	// Makes function that returns different strings depending on if input contains Korean.
+	const ifKorean = (ifKorean: string, ifNotKorean: string) => {
+		const koreanRegex = /[\u3131-\uD79D]/giu // https://stackoverflow.com/a/38156301/117030
+		return (text: string) => {
+			return koreanRegex.test(text) ? ifKorean : ifNotKorean
+		}
+	}
+
 	const handleClickGoogleTranslate = makeClickHandler(
-		'https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate'
+		ifKorean(
+			'https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate',
+			'https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate'
+		)
 	)
 
 	const handleClickPapago = makeClickHandler(
-		'https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY'
+		ifKorean(
+			'https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY',
+			'https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY'
+		)
 	)
 </script>
 
