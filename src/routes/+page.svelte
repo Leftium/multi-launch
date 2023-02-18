@@ -19,7 +19,10 @@
 			const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
 
 			log('handleClick', url, e)
-			window.open(url, '_blank')
+
+			if (url !== '') {
+				window.open(url, '_blank')
+			}
 		}
 	}
 
@@ -80,6 +83,72 @@
 		handleClickNaver(e)
 		handleClickGoogle(e)
 	}
+
+	// Makes function that returns different strings depending on if input contains a URL.
+	const ifUrl = (ifUrl: string, ifNotUrl: string = '') => {
+		const urlRegex = /^http/iu
+		return (text: string) => {
+			return urlRegex.test(text) ? ifUrl : ifNotUrl
+		}
+	}
+
+	const handleClickGoogleImage = makeClickHandler(
+		ifUrl(
+			'https://lens.google.com/uploadbyurl?url=QUERY',
+			'https://www.google.com/search?tbm=isch&q=QUERY'
+		)
+	)
+
+	const handleClickYandexImage = makeClickHandler(
+		ifUrl(
+			'https://yandex.com/images/search?rpt=imageview&url=QUERY',
+			'https://yandex.com/images/search?text=QUERY'
+		)
+	)
+
+	const handleClickBingImage = makeClickHandler(
+		ifUrl(
+			'https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY',
+			'https://www.bing.com/images/search?q=QUERY'
+		)
+	)
+
+	const handleClickNaverImage = makeClickHandler(
+		ifUrl('', 'https://search.naver.com/search.naver?where=image&query=QUERY')
+	)
+
+	const handleClickDaumImage = makeClickHandler(
+		ifUrl('', 'https://search.daum.net/search?w=img&q=QUERY')
+	)
+
+	const handleClickUnsplash = makeClickHandler(ifUrl('', 'https://unsplash.com/s/photos/QUERY'))
+
+	const handleClickPixabay = makeClickHandler(
+		ifUrl('', 'https://pixabay.com/images/search/QUERY')
+	)
+
+	const handleClickPexels = makeClickHandler(ifUrl('', 'https://www.pexels.com/search/QUERY/'))
+
+	const handleClickStockUnlimited = makeClickHandler(
+		ifUrl('', 'https://www.stockunlimited.com/vector-image/?word=QUERY')
+	)
+
+	const handleClickYayImages = makeClickHandler(
+		ifUrl('', 'https://yayimages.com/search?type=-1&phrase=QUERY')
+	)
+
+	const handleClickAllImages = (e: Event) => {
+		handleClickYayImages(e)
+		handleClickStockUnlimited(e)
+		handleClickPexels(e)
+		handleClickPixabay(e)
+		handleClickUnsplash(e)
+		handleClickYandexImage(e)
+		handleClickBingImage(e)
+		handleClickDaumImage(e)
+		handleClickNaverImage(e)
+		handleClickGoogleImage(e)
+	}
 </script>
 
 <main class="container">
@@ -107,6 +176,20 @@
 		<button class="secondary" on:click={handleClickBing}>Bing</button>
 		<button class="secondary" on:click={handleClickYandex}>Yandex</button>
 	</div>
+
+	<div>
+		<button on:click={handleClickAllImages}>All Images</button>
+		<button class="secondary" on:click={handleClickGoogleImage}>Google</button>
+		<button class="secondary" on:click={handleClickNaverImage}>Naver</button>
+		<button class="secondary" on:click={handleClickDaumImage}>Daum</button>
+		<button class="secondary" on:click={handleClickBingImage}>Bing</button>
+		<button class="secondary" on:click={handleClickYandexImage}>Yandex</button>
+		<button class="secondary" on:click={handleClickUnsplash}>Unsplash</button>
+		<button class="secondary" on:click={handleClickPixabay}>Pixabay</button>
+		<button class="secondary" on:click={handleClickPexels}>Pexels</button>
+		<button class="secondary" on:click={handleClickStockUnlimited}>StockUnlimited</button>
+		<button class="secondary" on:click={handleClickYayImages}>YayImages</button>
+	</div>
 </main>
 
 <style>
@@ -118,7 +201,10 @@
 		width: 6.96rem;
 		margin-bottom: 0.2rem;
 
-		font-size: 0.85rem;
+		font-size: 0.9rem;
+
+		padding-left: 0.4rem;
+		padding-right: 0.4rem;
 
 		/* Undo pico css button styling */
 		display: inline;
