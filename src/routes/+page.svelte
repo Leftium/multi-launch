@@ -12,13 +12,13 @@
 		urlTemplateOrGenerator: UrlTemplateOrGenerator
 	) => {
 		return (e: Event) => {
-			const queryTrimmed = query.trim()
 			const urlTemplate =
 				typeof urlTemplateOrGenerator === 'string'
 					? urlTemplateOrGenerator
-					: urlTemplateOrGenerator(queryTrimmed)
+					: urlTemplateOrGenerator(query)
 
-			const url = urlTemplate.replace('QUERY', queryTrimmed)
+			const queryTrimmedEncoded = encodeURIComponent(query.trim())
+			const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
 
 			log('handleClick', url, e)
 			window.open(url, '_blank')
