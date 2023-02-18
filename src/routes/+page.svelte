@@ -1,6 +1,11 @@
 <script lang="ts">
 	import '@picocss/pico'
 
+	import debugFactory from 'debug'
+	const log = debugFactory('log')
+
+	log('Hello')
+
 	let query = 'QUERY'
 </script>
 
