@@ -203,6 +203,10 @@
 <svelte:body on:paste={handlePaste} />
 
 <main class="container">
+	<h1>
+		MultiSearch <small><a href="/doc">Help & Tips</a></small>
+	</h1>
+
 	<textarea rows="2" bind:value={query} bind:this={textArea} on:focus={handleFocus} />
 
 	<div>
@@ -246,6 +250,15 @@
 </main>
 
 <style>
+	h1 {
+		margin-bottom: 0;
+	}
+
+	small {
+		font-size: 42%;
+		font-weight: normal;
+	}
+
 	main > div {
 		margin-bottom: var(--spacing);
 	}
