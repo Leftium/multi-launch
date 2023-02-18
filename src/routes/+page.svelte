@@ -4,12 +4,25 @@
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
 
-	let query = ' QUERY '
+	let query = 'QUERY'
 
-	const handleClick = (e: Event) => {
-		const queryTrimmed = query.trim()
-		log('handleClick', queryTrimmed, e)
+	const makeClickHandler = (urlTemplate: string) => {
+		return (e: Event) => {
+			const queryTrimmed = query.trim()
+			const url = urlTemplate.replace('QUERY', queryTrimmed)
+
+			log('handleClick', url, e)
+			window.open(url, '_blank')
+		}
 	}
+
+	const handleClickGoogleTranslate = makeClickHandler(
+		'https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate'
+	)
+
+	const handleClickPapago = makeClickHandler(
+		'https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY'
+	)
 </script>
 
 <main class="container">
@@ -17,8 +30,10 @@
 
 	<div>
 		<button class="primary">All Translate</button>
-		<button class="secondary" on:click={handleClick}>Google</button>
-		<button class="secondary">Papago</button>
+		<button class="secondary" on:click={handleClickGoogleTranslate}
+			>Google</button
+		>
+		<button class="secondary" on:click={handleClickPapago}>Papago</button>
 	</div>
 
 	<div>
