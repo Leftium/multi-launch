@@ -244,7 +244,7 @@
 		<button class="secondary" on:click={handleClickUnsplash}>Unsplash</button>
 		<button class="secondary" on:click={handleClickPixabay}>Pixabay</button>
 		<button class="secondary" on:click={handleClickPexels}>Pexels</button>
-		<button class="secondary" on:click={handleClickStockUnlimited}>StockUnlimited</button>
+		<button class="secondary" on:click={handleClickStockUnlimited}>StockUnltd</button>
 		<button class="secondary" on:click={handleClickYayImages}>YayImages</button>
 	</div>
 </main>
