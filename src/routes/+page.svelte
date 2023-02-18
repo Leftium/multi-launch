@@ -51,6 +51,29 @@
 		handleClickGoogleTranslate(e)
 		handleClickPapago(e)
 	}
+
+	const handleClickDanawa = makeClickHandler(
+		'https://search.danawa.com/dsearch.php?k1=QUERY&module=goods&act=dispMain'
+	)
+
+	const handleClickNaverShopping = makeClickHandler(
+		'https://search.shopping.naver.com/search/all?query=QUERY&cat_id=&frm=NVSHATC'
+	)
+
+	const handleClickKakaoShopping = makeClickHandler(
+		'https://shoppinghow.kakao.com/search/QUERY'
+	)
+
+	const handleClickEnuri = makeClickHandler(
+		'http://www.enuri.com/search.jsp?keyword=QUERY'
+	)
+
+	const handleClickAllShopping = (e: Event) => {
+		handleClickEnuri(e)
+		handleClickKakaoShopping(e)
+		handleClickNaverShopping(e)
+		handleClickDanawa(e)
+	}
 </script>
 
 <main class="container">
@@ -67,11 +90,17 @@
 	</div>
 
 	<div>
-		<button class="primary">All Shopping</button>
-		<button class="secondary">Danawa</button>
-		<button class="secondary">Naver</button>
-		<button class="secondary">Kakao</button>
-		<button class="secondary">Enuri</button>
+		<button class="primary" on:click={handleClickAllShopping}
+			>All Shopping</button
+		>
+		<button class="secondary" on:click={handleClickDanawa}>Danawa</button>
+		<button class="secondary" on:click={handleClickNaverShopping}
+			>Naver</button
+		>
+		<button class="secondary" on:click={handleClickKakaoShopping}
+			>Kakao</button
+		>
+		<button class="secondary" on:click={handleClickEnuri}>Enuri</button>
 	</div>
 
 	<div>
