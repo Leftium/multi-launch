@@ -8,9 +8,7 @@
 
 	type UrlTemplateOrGenerator = string | ((query: string) => string)
 
-	const makeClickHandler = (
-		urlTemplateOrGenerator: UrlTemplateOrGenerator
-	) => {
+	const makeClickHandler = (urlTemplateOrGenerator: UrlTemplateOrGenerator) => {
 		return (e: Event) => {
 			const urlTemplate =
 				typeof urlTemplateOrGenerator === 'string'
@@ -52,21 +50,15 @@
 		handleClickPapago(e)
 	}
 
-	const handleClickDanawa = makeClickHandler(
-		'https://search.danawa.com/dsearch.php?k1=QUERY&module=goods&act=dispMain'
-	)
+	const handleClickDanawa = makeClickHandler('https://search.danawa.com/dsearch.php?k1=QUERY')
 
 	const handleClickNaverShopping = makeClickHandler(
-		'https://search.shopping.naver.com/search/all?query=QUERY&cat_id=&frm=NVSHATC'
+		'https://search.shopping.naver.com/search/all?query=QUERY'
 	)
 
-	const handleClickKakaoShopping = makeClickHandler(
-		'https://shoppinghow.kakao.com/search/QUERY'
-	)
+	const handleClickKakaoShopping = makeClickHandler('https://shoppinghow.kakao.com/search/QUERY')
 
-	const handleClickEnuri = makeClickHandler(
-		'http://www.enuri.com/search.jsp?keyword=QUERY'
-	)
+	const handleClickEnuri = makeClickHandler('http://www.enuri.com/search.jsp?keyword=QUERY')
 
 	const handleClickAllShopping = (e: Event) => {
 		handleClickEnuri(e)
@@ -80,31 +72,21 @@
 	<textarea rows="2" bind:value={query} />
 
 	<div>
-		<button class="primary" on:click={handleClickAllTranslate}
-			>All Translate</button
-		>
-		<button class="secondary" on:click={handleClickGoogleTranslate}
-			>Google</button
-		>
+		<button on:click={handleClickAllTranslate}>All Translate</button>
+		<button class="secondary" on:click={handleClickGoogleTranslate}>Google</button>
 		<button class="secondary" on:click={handleClickPapago}>Papago</button>
 	</div>
 
 	<div>
-		<button class="primary" on:click={handleClickAllShopping}
-			>All Shopping</button
-		>
+		<button on:click={handleClickAllShopping}>All Shopping</button>
 		<button class="secondary" on:click={handleClickDanawa}>Danawa</button>
-		<button class="secondary" on:click={handleClickNaverShopping}
-			>Naver</button
-		>
-		<button class="secondary" on:click={handleClickKakaoShopping}
-			>Kakao</button
-		>
+		<button class="secondary" on:click={handleClickNaverShopping}>Naver</button>
+		<button class="secondary" on:click={handleClickKakaoShopping}>Kakao</button>
 		<button class="secondary" on:click={handleClickEnuri}>Enuri</button>
 	</div>
 
 	<div>
-		<button class="primary">All Search</button>
+		<button>All Search</button>
 		<button class="secondary">Google</button>
 		<button class="secondary">Naver</button>
 		<button class="secondary">Daum</button>
@@ -118,21 +100,13 @@
 		margin-bottom: var(--spacing);
 	}
 
-	button.primary {
-		width: 8rem;
-	}
-
-	button.secondary {
-		width: 6rem;
-	}
-
-	/* Undo pico css button styling */
-	button {
-		width: auto;
-		display: inline;
-	}
-
-	button {
+	div button {
+		width: 6.96rem;
 		margin-bottom: 0.2rem;
+
+		font-size: 0.85rem;
+
+		/* Undo pico css button styling */
+		display: inline;
 	}
 </style>
