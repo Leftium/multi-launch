@@ -122,6 +122,10 @@
 		width: 8rem;
 	}
 
+	button.secondary {
+		width: 6rem;
+	}
+
 	/* Undo pico css button styling */
 	button {
 		width: auto;
@@ -129,6 +133,6 @@
 	}
 
 	button {
-		margin-bottom: 0.1rem;
+		margin-bottom: 0.2rem;
 	}
 </style>
