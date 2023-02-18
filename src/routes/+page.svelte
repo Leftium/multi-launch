@@ -63,7 +63,15 @@
 
 	const handleClickEnuri = makeClickHandler('http://www.enuri.com/search.jsp?keyword=QUERY')
 
+	const handleClickJoonggoNara = makeClickHandler('https://web.joongna.com/search/QUERY')
+
+	const handleClickJoonggoNaraCafe = makeClickHandler(
+		'http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchBy=0%26search.query=QUERY'
+	)
+
 	const handleClickAllShopping = (e: Event) => {
+		handleClickJoonggoNaraCafe(e)
+		handleClickJoonggoNara(e)
 		handleClickEnuri(e)
 		handleClickKakaoShopping(e)
 		handleClickNaverShopping(e)
@@ -166,6 +174,8 @@
 		<button class="secondary" on:click={handleClickNaverShopping}>Naver</button>
 		<button class="secondary" on:click={handleClickKakaoShopping}>Kakao</button>
 		<button class="secondary" on:click={handleClickEnuri}>Enuri</button>
+		<button class="secondary" on:click={handleClickJoonggoNara}>중고나라</button>
+		<button class="secondary" on:click={handleClickJoonggoNaraCafe}>중고나라 카페</button>
 	</div>
 
 	<div>
