@@ -269,8 +269,8 @@
 
 		font-size: 0.9rem;
 
-		padding-left: 0.4rem;
-		padding-right: 0.4rem;
+		padding-left: 0.3rem;
+		padding-right: 0.3rem;
 
 		/* Undo pico css button styling */
 		display: inline;
