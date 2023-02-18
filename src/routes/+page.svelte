@@ -176,6 +176,15 @@
 		}
 	}
 
+	const handlePaste = (e: ClipboardEvent) => {
+		let text = e.clipboardData?.getData('text')
+		log('handlePaste', text, e)
+		if (text) {
+			e.preventDefault()
+			textArea.value = text
+		}
+	}
+
 	onMount(() => {
 		textArea.focus()
 
@@ -186,6 +195,8 @@
 		}
 	})
 </script>
+
+<svelte:body on:paste={handlePaste} />
 
 <main class="container">
 	<textarea rows="2" bind:value={query} bind:this={textArea} on:focus={handleFocus} />
