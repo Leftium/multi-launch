@@ -181,7 +181,7 @@
 		log('handlePaste', text, e)
 		if (text) {
 			e.preventDefault()
-			textArea.value = text
+			query = text
 		}
 	}
 
