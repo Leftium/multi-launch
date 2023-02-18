@@ -4,7 +4,9 @@
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
 
-	let query = 'QUERY'
+	import { page } from '$app/stores'
+
+	let query = $page.url.searchParams.get('q') || ''
 
 	type UrlTemplateOrGenerator = string | ((query: string) => string)
 
