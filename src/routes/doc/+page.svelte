@@ -12,8 +12,13 @@
 </main>
 
 <style>
-	:global(h1, h2, h3, h4, h5) {
-		margin-top: 0 !important;
-		margin-bottom: 0 !important;
+	main :global(h1),
+	main :global(h2),
+	main :global(h3),
+	main :global(h4),
+	main :global(h5),
+	main :global(h6) {
+		margin-top: 0;
+		margin-bottom: 0;
 	}
 </style>
