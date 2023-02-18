@@ -196,6 +196,10 @@
 	})
 </script>
 
+<svelte:head>
+	<title>MultiSearch{query ? ` — ${query}` : ''}</title>
+</svelte:head>
+
 <svelte:body on:paste={handlePaste} />
 
 <main class="container">
