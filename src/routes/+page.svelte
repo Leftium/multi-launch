@@ -74,7 +74,12 @@
 		'http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchBy=0%26search.query=QUERY'
 	)
 
+	const handleClickHomeplus = makeClickHandler(
+		'https://front.homeplus.co.kr/search?keyword=QUERY'
+	)
+
 	const handleClickAllShopping = (e: Event) => {
+		handleClickHomeplus(e)
 		handleClickJoonggoNaraCafe(e)
 		handleClickJoonggoNara(e)
 		handleClickEnuri(e)
@@ -223,6 +228,7 @@
 		<button class="secondary" on:click={handleClickEnuri}>Enuri</button>
 		<button class="secondary" on:click={handleClickJoonggoNara}>중고나라</button>
 		<button class="secondary" on:click={handleClickJoonggoNaraCafe}>중고나라 카페</button>
+		<button class="secondary" on:click={handleClickHomeplus}>Homeplus</button>
 	</div>
 
 	<div>
