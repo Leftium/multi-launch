@@ -7,53 +7,26 @@
 	import { page } from '$app/stores'
 	import { onMount } from 'svelte'
 
+	import * as SE from '$lib/search-engines'
+
 	// Bindings:
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
 
-	type UrlTemplateOrGenerator = string | ((query: string) => string)
-
-	// This function is not bound to any local variables.
-	const _makeClickHandler = (_query: string, urlTemplateOrGenerator: UrlTemplateOrGenerator) => {
-		return (e: Event) => {
-			const urlTemplate =
-				typeof urlTemplateOrGenerator === 'string'
-					? urlTemplateOrGenerator
-					: urlTemplateOrGenerator(_query)
-
-			const queryTrimmedEncoded = encodeURIComponent(_query.trim())
-			const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
-
-			log('handleClick', url, e)
-
-			if (url !== '') {
-				window.open(url, '_blank')
-			}
-		}
-	}
-
 	// Generate click handlers bound to local `query`.
-	const makeClickHandler = (urlTemplateOrGenerator: UrlTemplateOrGenerator) => (e: Event) => {
-		_makeClickHandler(query, urlTemplateOrGenerator)(e)
-	}
-
-	// Makes function that returns different strings depending on if input contains Korean.
-	const ifKorean = (ifKorean: string, ifNotKorean: string) => {
-		const koreanRegex = /[\u3131-\uD79D]/giu // https://stackoverflow.com/a/38156301/117030
-		return (text: string) => {
-			return koreanRegex.test(text) ? ifKorean : ifNotKorean
-		}
+	const makeClickHandler = (urlTemplateOrGenerator: SE.UrlTemplateOrGenerator) => (e: Event) => {
+		SE.makeClickHandler(query, urlTemplateOrGenerator)(e)
 	}
 
 	const handleClickGoogleTranslate = makeClickHandler(
-		ifKorean(
+		SE.ifKorean(
 			'https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate',
 			'https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate'
 		)
 	)
 
 	const handleClickPapago = makeClickHandler(
-		ifKorean(
+		SE.ifKorean(
 			'https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY',
 			'https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY'
 		)
@@ -108,57 +81,51 @@
 		handleClickGoogle(e)
 	}
 
-	// Makes function that returns different strings depending on if input contains a URL.
-	const ifUrl = (ifUrl: string, ifNotUrl: string = '') => {
-		const urlRegex = /^http/iu
-		return (text: string) => {
-			return urlRegex.test(text) ? ifUrl : ifNotUrl
-		}
-	}
-
 	const handleClickGoogleImage = makeClickHandler(
-		ifUrl(
+		SE.ifUrl(
 			'https://lens.google.com/uploadbyurl?url=QUERY',
 			'https://www.google.com/search?tbm=isch&q=QUERY'
 		)
 	)
 
 	const handleClickYandexImage = makeClickHandler(
-		ifUrl(
+		SE.ifUrl(
 			'https://yandex.com/images/search?rpt=imageview&url=QUERY',
 			'https://yandex.com/images/search?text=QUERY'
 		)
 	)
 
 	const handleClickBingImage = makeClickHandler(
-		ifUrl(
+		SE.ifUrl(
 			'https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY',
 			'https://www.bing.com/images/search?q=QUERY'
 		)
 	)
 
 	const handleClickNaverImage = makeClickHandler(
-		ifUrl('', 'https://search.naver.com/search.naver?where=image&query=QUERY')
+		SE.ifUrl('', 'https://search.naver.com/search.naver?where=image&query=QUERY')
 	)
 
 	const handleClickDaumImage = makeClickHandler(
-		ifUrl('', 'https://search.daum.net/search?w=img&q=QUERY')
+		SE.ifUrl('', 'https://search.daum.net/search?w=img&q=QUERY')
 	)
 
-	const handleClickUnsplash = makeClickHandler(ifUrl('', 'https://unsplash.com/s/photos/QUERY'))
+	const handleClickUnsplash = makeClickHandler(
+		SE.ifUrl('', 'https://unsplash.com/s/photos/QUERY')
+	)
 
 	const handleClickPixabay = makeClickHandler(
-		ifUrl('', 'https://pixabay.com/images/search/QUERY')
+		SE.ifUrl('', 'https://pixabay.com/images/search/QUERY')
 	)
 
-	const handleClickPexels = makeClickHandler(ifUrl('', 'https://www.pexels.com/search/QUERY/'))
+	const handleClickPexels = makeClickHandler(SE.ifUrl('', 'https://www.pexels.com/search/QUERY/'))
 
 	const handleClickStockUnlimited = makeClickHandler(
-		ifUrl('', 'https://www.stockunlimited.com/vector-image/?word=QUERY')
+		SE.ifUrl('', 'https://www.stockunlimited.com/vector-image/?word=QUERY')
 	)
 
 	const handleClickYayImages = makeClickHandler(
-		ifUrl('', 'https://yayimages.com/search?type=-1&phrase=QUERY')
+		SE.ifUrl('', 'https://yayimages.com/search?type=-1&phrase=QUERY')
 	)
 
 	const handleClickAllImages = (e: Event) => {
