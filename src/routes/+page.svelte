@@ -13,14 +13,15 @@
 
 	type UrlTemplateOrGenerator = string | ((query: string) => string)
 
-	const makeClickHandler = (urlTemplateOrGenerator: UrlTemplateOrGenerator) => {
+	// This function is not bound to any local variables.
+	const _makeClickHandler = (_query: string, urlTemplateOrGenerator: UrlTemplateOrGenerator) => {
 		return (e: Event) => {
 			const urlTemplate =
 				typeof urlTemplateOrGenerator === 'string'
 					? urlTemplateOrGenerator
-					: urlTemplateOrGenerator(query)
+					: urlTemplateOrGenerator(_query)
 
-			const queryTrimmedEncoded = encodeURIComponent(query.trim())
+			const queryTrimmedEncoded = encodeURIComponent(_query.trim())
 			const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
 
 			log('handleClick', url, e)
@@ -29,6 +30,11 @@
 				window.open(url, '_blank')
 			}
 		}
+	}
+
+	// Generate click handlers bound to local `query`.
+	const makeClickHandler = (urlTemplateOrGenerator: UrlTemplateOrGenerator) => (e: Event) => {
+		_makeClickHandler(query, urlTemplateOrGenerator)(e)
 	}
 
 	// Makes function that returns different strings depending on if input contains Korean.
