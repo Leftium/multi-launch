@@ -21,49 +21,10 @@
 
 	const searchGroupConfigs = DEFAULT_CONFIG
 
-	type SearchEngine = {
-		name: string
-		clickHandler: (e: Event) => void
-	}
-
-	type SearchGroup = {
-		name: string
-		engines: SearchEngine[]
-		handleClickAll: (e: Event) => void
-	}
-
-	const makeSearchGroup = (groupName: string, configs: SE.SearchGroupConfig) => {
-		const engines: SearchEngine[] = []
-		for (const [name, config] of Object.entries(configs)) {
-			engines.push(makeSearchEngine(name, config))
-		}
-
-		const handleClickAll = (e: Event) => {
-			for (const searchEngine of engines) {
-				searchEngine.clickHandler(e)
-			}
-		}
-
-		return {
-			name: groupName,
-			engines,
-			handleClickAll,
-		}
-	}
-
-	const makeSearchEngine = (name: string, config: SE.SearchEngineConfig) => {
-		const clickHandler = makeClickHandler(SE.selectUrl(config))
-
-		return {
-			name,
-			clickHandler,
-		}
-	}
-
-	const searchGroups: SearchGroup[] = []
+	const searchGroups: SE.SearchGroup[] = []
 
 	for (const [name, config] of Object.entries(searchGroupConfigs)) {
-		searchGroups.push(makeSearchGroup(name, config.engines))
+		searchGroups.push(SE.makeSearchGroup(name, config.engines, makeClickHandler))
 	}
 
 	const handleFocus = (e: Event) => {

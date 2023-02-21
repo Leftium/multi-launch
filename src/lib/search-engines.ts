@@ -16,6 +16,17 @@ export type SearchEngineConfig = {
 	excludeFromAllSearch?: boolean
 }
 
+export type SearchEngine = {
+	name: string
+	clickHandler: (e: Event) => void
+}
+
+export type SearchGroup = {
+	name: string
+	engines: SearchEngine[]
+	handleClickAll: (e: Event) => void
+}
+
 // This function is not bound to any local variables.
 export const makeClickHandler = (_query: string, urlTemplateOrSelector: UrlTemplateOrSelector) => {
 	return (e: Event) => {
@@ -58,5 +69,44 @@ export const selectUrl = (config: SearchEngineConfig) => {
 			urlTemplate = config.url.lang_ko || urlTemplate
 		}
 		return urlTemplate
+	}
+}
+
+type EventHandler = (e: Event) => void
+type makeClickHandlerType = (urlTemplateOrSelector: UrlTemplateOrSelector) => EventHandler
+
+export const makeSearchEngine = (
+	name: string,
+	config: SearchEngineConfig,
+	makeClickHandler: makeClickHandlerType
+) => {
+	const clickHandler = makeClickHandler(selectUrl(config))
+
+	return {
+		name,
+		clickHandler,
+	}
+}
+
+export const makeSearchGroup = (
+	groupName: string,
+	configs: SearchGroupConfig,
+	makeClickHandler: makeClickHandlerType
+) => {
+	const engines: SearchEngine[] = []
+	for (const [name, config] of Object.entries(configs)) {
+		engines.push(makeSearchEngine(name, config, makeClickHandler))
+	}
+
+	const handleClickAll = (e: Event) => {
+		for (const searchEngine of engines) {
+			searchEngine.clickHandler(e)
+		}
+	}
+
+	return {
+		name: groupName,
+		engines,
+		handleClickAll,
 	}
 }
