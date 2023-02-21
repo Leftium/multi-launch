@@ -18,31 +18,38 @@ export type SearchEngineConfig = {
 
 export type SearchEngine = {
 	name: string
-	clickHandler: (e: Event) => void
+	getUrlTemplate: (query: string) => string
+	clickHandler: EventHandler
 }
 
 export type SearchGroup = {
 	name: string
 	engines: SearchEngine[]
-	handleClickAll: (e: Event) => void
+	handleClickAll: EventHandler
 }
 
 // This function is not bound to any local variables.
-export const makeClickHandler = (_query: string, urlTemplateOrSelector: UrlTemplateOrSelector) => {
-	return (e: Event) => {
-		const urlTemplate =
-			typeof urlTemplateOrSelector === 'string'
-				? urlTemplateOrSelector
-				: urlTemplateOrSelector(_query)
+export const makeEngineFunctions = (
+	query: string,
+	urlTemplateOrSelector: UrlTemplateOrSelector
+) => {
+	const getUrlTemplate = (query: string) =>
+		typeof urlTemplateOrSelector === 'string'
+			? urlTemplateOrSelector
+			: urlTemplateOrSelector(query)
+	return {
+		getUrlTemplate,
+		clickHandler: (e: Event) => {
+			const urlTemplate = getUrlTemplate(query)
+			const queryTrimmedEncoded = encodeURIComponent(query.trim())
+			const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
 
-		const queryTrimmedEncoded = encodeURIComponent(_query.trim())
-		const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
+			log('handleClick', url, e)
 
-		log('handleClick', url, e)
-
-		if (url !== '') {
-			window.open(url, '_blank')
-		}
+			if (url !== '') {
+				window.open(url, '_blank')
+			}
+		},
 	}
 }
 
@@ -73,17 +80,23 @@ export const selectUrl = (config: SearchEngineConfig) => {
 }
 
 type EventHandler = (e: Event) => void
-type makeClickHandlerType = (urlTemplateOrSelector: UrlTemplateOrSelector) => EventHandler
+type makeEngineFunctionsType = (urlTemplateOrSelector: UrlTemplateOrSelector) => {
+	getUrlTemplate: (query: string) => string
+	clickHandler: EventHandler
+}
 
 export const makeSearchEngine = (
 	name: string,
 	config: SearchEngineConfig,
-	makeClickHandler: makeClickHandlerType
+	makeEngineFunctions: makeEngineFunctionsType
 ) => {
-	const clickHandler = makeClickHandler(selectUrl(config))
+	const { clickHandler, getUrlTemplate } = makeEngineFunctions(selectUrl(config))
+
+	log(clickHandler)
 
 	return {
 		name,
+		getUrlTemplate,
 		clickHandler,
 	}
 }
@@ -91,11 +104,11 @@ export const makeSearchEngine = (
 export const makeSearchGroup = (
 	groupName: string,
 	configs: SearchGroupConfig,
-	makeClickHandler: makeClickHandlerType
+	makeEngineFunctions: makeEngineFunctionsType
 ) => {
 	const engines: SearchEngine[] = []
 	for (const [name, config] of Object.entries(configs)) {
-		engines.push(makeSearchEngine(name, config, makeClickHandler))
+		engines.push(makeSearchEngine(name, config, makeEngineFunctions))
 	}
 
 	const handleClickAll = (e: Event) => {

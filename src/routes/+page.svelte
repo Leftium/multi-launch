@@ -15,8 +15,13 @@
 	let textArea: HTMLTextAreaElement
 
 	// Generate click handlers bound to local `query`.
-	const makeClickHandler = (urlTemplateOrSelector: SE.UrlTemplateOrSelector) => (e: Event) => {
-		SE.makeClickHandler(query, urlTemplateOrSelector)(e)
+	const makeEngineFunctions = (urlTemplateOrSelector: SE.UrlTemplateOrSelector) => {
+		return {
+			getUrlTemplate: SE.makeEngineFunctions(query, urlTemplateOrSelector).getUrlTemplate,
+			clickHandler: (e: Event) => {
+				SE.makeEngineFunctions(query, urlTemplateOrSelector).clickHandler(e)
+			},
+		}
 	}
 
 	const searchGroupConfigs = DEFAULT_CONFIG
@@ -24,7 +29,7 @@
 	const searchGroups: SE.SearchGroup[] = []
 
 	for (const [name, config] of Object.entries(searchGroupConfigs)) {
-		searchGroups.push(SE.makeSearchGroup(name, config.engines, makeClickHandler))
+		searchGroups.push(SE.makeSearchGroup(name, config.engines, makeEngineFunctions))
 	}
 
 	const handleFocus = (e: Event) => {
@@ -77,7 +82,11 @@
 		<div>
 			<button on:click={searchGroup.handleClickAll}>All {searchGroup.name}</button
 			>{#each searchGroup.engines as engine}
-				<button class="secondary" on:click={engine.clickHandler}>{engine.name}</button>
+				<button
+					class="secondary"
+					on:click={engine.clickHandler}
+					disabled={engine.getUrlTemplate(query) === ''}>{engine.name}</button
+				>
 			{/each}
 		</div>
 	{/each}
