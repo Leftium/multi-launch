@@ -62,11 +62,11 @@ export const selectUrl = (config: SearchEngineConfig) => {
 		let urlTemplate = config.url.default
 
 		if (urlRegex.test(text)) {
-			urlTemplate = config.url.link || urlTemplate
+			urlTemplate = config.url.link ?? urlTemplate
 		}
 
 		if (koreanRegex.test(text)) {
-			urlTemplate = config.url.lang_ko || urlTemplate
+			urlTemplate = config.url.lang_ko ?? urlTemplate
 		}
 		return urlTemplate
 	}
