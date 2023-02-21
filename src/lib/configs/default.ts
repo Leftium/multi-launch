@@ -78,7 +78,7 @@ export const config = {
 			Unsplash: { url: { link: '', default: 'https://unsplash.com/s/photos/QUERY' } },
 			Pixabay: { url: { link: '', default: 'https://pixabay.com/images/search/QUERY' } },
 			Pexels: { url: { link: '', default: 'https://www.pexels.com/search/QUERY/' } },
-			StockUnltd: {
+			StockUnlimited: {
 				url: {
 					link: '',
 					default: 'https://www.stockunlimited.com/vector-image/?word=QUERY',

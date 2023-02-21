@@ -107,10 +107,11 @@
 	}
 
 	div button {
-		width: 6.96rem;
+		width: 6.94rem;
 		margin: 0.1rem;
 
 		font-size: 0.9rem;
+		white-space: nowrap;
 
 		padding-left: 0.3rem;
 		padding-right: 0.3rem;
