@@ -20,169 +20,142 @@
 
 	const searchGroupConfigs = {
 		Translate: {
-			Google: {
-				url: {
-					link: '',
-					lang_ko: 'https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate',
-					default: 'https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate',
+			engines: {
+				Google: {
+					url: {
+						link: '',
+						lang_ko:
+							'https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate',
+						default:
+							'https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate',
+					},
 				},
-			},
-
-			Papago: {
-				url: {
-					link: 'https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY',
-					lang_ko: 'https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY',
-					default: 'https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY',
+				Papago: {
+					url: {
+						link: 'https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY',
+						lang_ko: 'https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY',
+						default: 'https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY',
+					},
 				},
 			},
 		},
 
 		Shopping: {
-			Danawa: {
-				url: 'https://search.danawa.com/dsearch.php?k1=QUERY',
+			engines: {
+				Danawa: {
+					url: 'https://search.danawa.com/dsearch.php?k1=QUERY',
+				},
+				Naver: {
+					url: 'https://search.shopping.naver.com/search/all?query=QUERY',
+				},
+				Kakao: { url: 'https://shoppinghow.kakao.com/search/QUERY' },
+				Enuri: { url: 'http://www.enuri.com/search.jsp?keyword=QUERY' },
+				중고나라: { url: 'https://web.joongna.com/search/QUERY' },
+				'중고나라 카페': {
+					url: 'http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchBy=0%26search.query=QUERY',
+				},
+				Homeplus: { url: 'https://front.homeplus.co.kr/search?keyword=QUERY' },
 			},
-			Naver: {
-				url: 'https://search.shopping.naver.com/search/all?query=QUERY',
-			},
-			Kakao: { url: 'https://shoppinghow.kakao.com/search/QUERY' },
-			Enuri: { url: 'http://www.enuri.com/search.jsp?keyword=QUERY' },
-			중고나라: { url: 'https://web.joongna.com/search/QUERY' },
-			'중고나라 카페': {
-				url: 'http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchBy=0%26search.query=QUERY',
-			},
-			Homeplus: { url: 'https://front.homeplus.co.kr/search?keyword=QUERY' },
 		},
 
 		Search: {
-			Google: { url: 'https://www.google.com/search?q=QUERY' },
-			Naver: { url: 'https://search.naver.com/search.naver?query=QUERY' },
-			Daum: { url: 'https://search.daum.net/search?q=QUERY' },
-			Bing: { url: 'https://www.bing.com/search?q=QUERY' },
-			Yandex: { url: 'https://yandex.com/search/?text=QUERY' },
+			engines: {
+				Google: { url: 'https://www.google.com/search?q=QUERY' },
+				Naver: { url: 'https://search.naver.com/search.naver?query=QUERY' },
+				Daum: { url: 'https://search.daum.net/search?q=QUERY' },
+				Bing: { url: 'https://www.bing.com/search?q=QUERY' },
+				Yandex: { url: 'https://yandex.com/search/?text=QUERY' },
+			},
 		},
 
 		Images: {
-			Google: {
-				url: {
-					link: 'https://lens.google.com/uploadbyurl?url=QUERY',
-					default: 'https://www.google.com/search?tbm=isch&q=QUERY',
+			engines: {
+				Google: {
+					url: {
+						link: 'https://lens.google.com/uploadbyurl?url=QUERY',
+						default: 'https://www.google.com/search?tbm=isch&q=QUERY',
+					},
 				},
-			},
-			Naver: {
-				url: {
-					link: '',
-					default: 'https://search.naver.com/search.naver?where=image&query=QUERY',
+				Naver: {
+					url: {
+						link: '',
+						default: 'https://search.naver.com/search.naver?where=image&query=QUERY',
+					},
 				},
-			},
-			Daum: { url: { link: '', default: 'https://search.daum.net/search?w=img&q=QUERY' } },
-			Bing: {
-				url: {
-					link: 'https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY',
-					default: 'https://www.bing.com/images/search?q=QUERY',
+				Daum: {
+					url: { link: '', default: 'https://search.daum.net/search?w=img&q=QUERY' },
 				},
-			},
-			Yandex: {
-				url: {
-					link: 'https://yandex.com/images/search?rpt=imageview&url=QUERY',
-					default: 'https://yandex.com/images/search?text=QUERY',
+				Bing: {
+					url: {
+						link: 'https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY',
+						default: 'https://www.bing.com/images/search?q=QUERY',
+					},
 				},
-			},
-			Unsplash: { url: { link: '', default: 'https://unsplash.com/s/photos/QUERY' } },
-			Pixabay: { url: { link: '', default: 'https://pixabay.com/images/search/QUERY' } },
-			Pexels: { url: { link: '', default: 'https://www.pexels.com/search/QUERY/' } },
-			StockUnltd: {
-				url: {
-					link: '',
-					default: 'https://www.stockunlimited.com/vector-image/?word=QUERY',
+				Yandex: {
+					url: {
+						link: 'https://yandex.com/images/search?rpt=imageview&url=QUERY',
+						default: 'https://yandex.com/images/search?text=QUERY',
+					},
 				},
-			},
-			YayImages: {
-				url: { link: '', default: 'https://yayimages.com/search?type=-1&phrase=QUERY' },
+				Unsplash: { url: { link: '', default: 'https://unsplash.com/s/photos/QUERY' } },
+				Pixabay: { url: { link: '', default: 'https://pixabay.com/images/search/QUERY' } },
+				Pexels: { url: { link: '', default: 'https://www.pexels.com/search/QUERY/' } },
+				StockUnltd: {
+					url: {
+						link: '',
+						default: 'https://www.stockunlimited.com/vector-image/?word=QUERY',
+					},
+				},
+				YayImages: {
+					url: { link: '', default: 'https://yayimages.com/search?type=-1&phrase=QUERY' },
+				},
 			},
 		},
 	}
 
-	const handleClickGoogleTranslate = makeClickHandler(
-		SE.selectUrl(searchGroupConfigs.Translate.Google)
-	)
-
-	const handleClickPapago = makeClickHandler(SE.selectUrl(searchGroupConfigs.Translate.Papago))
-
-	const handleClickAllTranslate = (e: Event) => {
-		handleClickGoogleTranslate(e)
-		handleClickPapago(e)
+	type SearchEngine = {
+		name: string
+		clickHandler: (e: Event) => void
 	}
 
-	const handleClickDanawa = makeClickHandler(SE.selectUrl(searchGroupConfigs.Shopping.Danawa))
-
-	const handleClickNaverShopping = makeClickHandler(
-		SE.selectUrl(searchGroupConfigs.Shopping.Naver)
-	)
-
-	const handleClickKakaoShopping = makeClickHandler(
-		SE.selectUrl(searchGroupConfigs.Shopping.Kakao)
-	)
-
-	const handleClickEnuri = makeClickHandler(SE.selectUrl(searchGroupConfigs.Shopping.Enuri))
-
-	const handleClickJoonggoNara = makeClickHandler(
-		SE.selectUrl(searchGroupConfigs.Shopping.중고나라)
-	)
-
-	const handleClickJoonggoNaraCafe = makeClickHandler(
-		SE.selectUrl(searchGroupConfigs.Shopping['중고나라 카페'])
-	)
-
-	const handleClickHomeplus = makeClickHandler(SE.selectUrl(searchGroupConfigs.Shopping.Homeplus))
-
-	const handleClickAllShopping = (e: Event) => {
-		handleClickHomeplus(e)
-		handleClickJoonggoNaraCafe(e)
-		handleClickJoonggoNara(e)
-		handleClickEnuri(e)
-		handleClickKakaoShopping(e)
-		handleClickNaverShopping(e)
-		handleClickDanawa(e)
+	type SearchGroup = {
+		name: string
+		engines: SearchEngine[]
+		handleClickAll: (e: Event) => void
 	}
 
-	const handleClickGoogle = makeClickHandler(SE.selectUrl(searchGroupConfigs.Search.Google))
-	const handleClickNaver = makeClickHandler(SE.selectUrl(searchGroupConfigs.Search.Naver))
-	const handleClickDaum = makeClickHandler(SE.selectUrl(searchGroupConfigs.Search.Daum))
-	const handleClickBing = makeClickHandler(SE.selectUrl(searchGroupConfigs.Search.Bing))
-	const handleClickYandex = makeClickHandler(SE.selectUrl(searchGroupConfigs.Search.Yandex))
+	const makeSearchGroup = (groupName: string, configs: SE.SearchGroupConfig) => {
+		const engines: SearchEngine[] = []
+		for (const [name, config] of Object.entries(configs)) {
+			engines.push(makeSearchEngine(name, config))
+		}
 
-	const handleClickAllSearch = (e: Event) => {
-		handleClickYandex(e)
-		handleClickBing(e)
-		handleClickDaum(e)
-		handleClickNaver(e)
-		handleClickGoogle(e)
+		const handleClickAll = (e: Event) => {
+			for (const searchEngine of engines) {
+				searchEngine.clickHandler(e)
+			}
+		}
+
+		return {
+			name: groupName,
+			engines,
+			handleClickAll,
+		}
 	}
 
-	const handleClickGoogleImage = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.Google))
-	const handleClickYandexImage = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.Yandex))
-	const handleClickBingImage = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.Bing))
-	const handleClickNaverImage = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.Naver))
-	const handleClickDaumImage = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.Daum))
-	const handleClickUnsplash = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.Unsplash))
-	const handleClickPixabay = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.Pixabay))
-	const handleClickPexels = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.Pexels))
-	const handleClickStockUnlimited = makeClickHandler(
-		SE.selectUrl(searchGroupConfigs.Images.StockUnltd)
-	)
-	const handleClickYayImages = makeClickHandler(SE.selectUrl(searchGroupConfigs.Images.YayImages))
+	const makeSearchEngine = (name: string, config: SE.SearchEngineConfig) => {
+		const clickHandler = makeClickHandler(SE.selectUrl(config))
 
-	const handleClickAllImages = (e: Event) => {
-		handleClickYayImages(e)
-		handleClickStockUnlimited(e)
-		handleClickPexels(e)
-		handleClickPixabay(e)
-		handleClickUnsplash(e)
-		handleClickYandexImage(e)
-		handleClickBingImage(e)
-		handleClickDaumImage(e)
-		handleClickNaverImage(e)
-		handleClickGoogleImage(e)
+		return {
+			name,
+			clickHandler,
+		}
+	}
+
+	const searchGroups: SearchGroup[] = []
+
+	for (const [name, config] of Object.entries(searchGroupConfigs)) {
+		searchGroups.push(makeSearchGroup(name, config.engines))
 	}
 
 	const handleFocus = (e: Event) => {
@@ -194,7 +167,7 @@
 
 		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault()
-			handleClickAllTranslate(e)
+			// handleClickAllTranslate(e)
 		}
 	}
 
@@ -231,45 +204,14 @@
 
 	<textarea rows="2" bind:value={query} bind:this={textArea} on:focus={handleFocus} />
 
-	<div>
-		<button on:click={handleClickAllTranslate}>All Translate</button>
-		<button class="secondary" on:click={handleClickGoogleTranslate}>Google</button>
-		<button class="secondary" on:click={handleClickPapago}>Papago</button>
-	</div>
-
-	<div>
-		<button on:click={handleClickAllShopping}>All Shopping</button>
-		<button class="secondary" on:click={handleClickDanawa}>Danawa</button>
-		<button class="secondary" on:click={handleClickNaverShopping}>Naver</button>
-		<button class="secondary" on:click={handleClickKakaoShopping}>Kakao</button>
-		<button class="secondary" on:click={handleClickEnuri}>Enuri</button>
-		<button class="secondary" on:click={handleClickJoonggoNara}>중고나라</button>
-		<button class="secondary" on:click={handleClickJoonggoNaraCafe}>중고나라 카페</button>
-		<button class="secondary" on:click={handleClickHomeplus}>Homeplus</button>
-	</div>
-
-	<div>
-		<button on:click={handleClickAllSearch}>All Search</button>
-		<button class="secondary" on:click={handleClickGoogle}>Google</button>
-		<button class="secondary" on:click={handleClickNaver}>Naver</button>
-		<button class="secondary" on:click={handleClickDaum}>Daum</button>
-		<button class="secondary" on:click={handleClickBing}>Bing</button>
-		<button class="secondary" on:click={handleClickYandex}>Yandex</button>
-	</div>
-
-	<div>
-		<button on:click={handleClickAllImages}>All Images</button>
-		<button class="secondary" on:click={handleClickGoogleImage}>Google</button>
-		<button class="secondary" on:click={handleClickNaverImage}>Naver</button>
-		<button class="secondary" on:click={handleClickDaumImage}>Daum</button>
-		<button class="secondary" on:click={handleClickBingImage}>Bing</button>
-		<button class="secondary" on:click={handleClickYandexImage}>Yandex</button>
-		<button class="secondary" on:click={handleClickUnsplash}>Unsplash</button>
-		<button class="secondary" on:click={handleClickPixabay}>Pixabay</button>
-		<button class="secondary" on:click={handleClickPexels}>Pexels</button>
-		<button class="secondary" on:click={handleClickStockUnlimited}>StockUnltd</button>
-		<button class="secondary" on:click={handleClickYayImages}>YayImages</button>
-	</div>
+	{#each searchGroups as searchGroup}
+		<div>
+			<button on:click={searchGroup.handleClickAll}>All {searchGroup.name}</button
+			>{#each searchGroup.engines as engine}
+				<button class="secondary" on:click={engine.clickHandler}>{engine.name}</button>
+			{/each}
+		</div>
+	{/each}
 </main>
 
 <style>
@@ -288,7 +230,7 @@
 
 	div button {
 		width: 6.96rem;
-		margin-bottom: 0.2rem;
+		margin: 0.1rem;
 
 		font-size: 0.9rem;
 

@@ -9,7 +9,9 @@ type UrlConfig = {
 	default: string
 }
 
-type SearchEngineConfig = {
+export type SearchGroupConfig = Record<string, SearchEngineConfig>
+
+export type SearchEngineConfig = {
 	url: string | UrlConfig
 	excludeFromAllSearch?: boolean
 }
