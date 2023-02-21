@@ -167,7 +167,7 @@
 
 		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault()
-			// handleClickAllTranslate(e)
+			searchGroups[0].handleClickAll(e)
 		}
 	}
 
