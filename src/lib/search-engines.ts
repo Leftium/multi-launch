@@ -95,8 +95,9 @@ export const makeSearchGroup = (
 		engines.push(makeSearchEngine(name, config, makeEngineFunctions))
 	}
 
-	const handleClickAll = (e: Event) => {
-		for (const searchEngine of engines) {
+	const handleClickAll = (e: PointerEvent) => {
+		const enginesList = e.altKey ? [...engines].reverse() : engines
+		for (const searchEngine of enginesList) {
 			searchEngine.clickHandler(e)
 		}
 	}
