@@ -1,20 +1,15 @@
 import debugFactory from 'debug'
 const log = debugFactory('log')
 
-export type UrlTemplateOrSelector = string | ((query: string) => string)
+export type UrlTemplateSelector = (query: string) => string
 
-type UrlConfig = {
+export type SearchEngineConfig = {
 	link?: string
 	lang_ko?: string
 	default: string
 }
 
 export type SearchGroupConfig = Record<string, SearchEngineConfig>
-
-export type SearchEngineConfig = {
-	url: string | UrlConfig
-	excludeFromAllSearch?: boolean
-}
 
 export type SearchEngine = {
 	name: string
@@ -29,14 +24,8 @@ export type SearchGroup = {
 }
 
 // This function is not bound to any local variables.
-export const makeEngineFunctions = (
-	query: string,
-	urlTemplateOrSelector: UrlTemplateOrSelector
-) => {
-	const getUrlTemplate = (query: string) =>
-		typeof urlTemplateOrSelector === 'string'
-			? urlTemplateOrSelector
-			: urlTemplateOrSelector(query)
+export const makeEngineFunctions = (query: string, urlTemplateSelector: UrlTemplateSelector) => {
+	const getUrlTemplate = (query: string) => urlTemplateSelector(query)
 	return {
 		getUrlTemplate,
 		clickHandler: (e: Event) => {
@@ -61,26 +50,21 @@ export const selectUrl = (config: SearchEngineConfig) => {
 	const koreanRegex = /[\u3131-\uD79D]/giu // https://stackoverflow.com/a/38156301/117030
 
 	return (text: string) => {
-		// Simple URL.
-		if (typeof config.url === 'string') {
-			return config.url
-		}
-
-		let urlTemplate = config.url.default
+		let urlTemplate = config.default
 
 		if (urlRegex.test(text)) {
-			urlTemplate = config.url.link ?? urlTemplate
+			urlTemplate = config.link ?? urlTemplate
 		}
 
 		if (koreanRegex.test(text)) {
-			urlTemplate = config.url.lang_ko ?? urlTemplate
+			urlTemplate = config.lang_ko ?? urlTemplate
 		}
 		return urlTemplate
 	}
 }
 
 type EventHandler = (e: Event) => void
-type makeEngineFunctionsType = (urlTemplateOrSelector: UrlTemplateOrSelector) => {
+type makeEngineFunctionsType = (urlTemplateOrSelector: UrlTemplateSelector) => {
 	getUrlTemplate: (query: string) => string
 	clickHandler: EventHandler
 }

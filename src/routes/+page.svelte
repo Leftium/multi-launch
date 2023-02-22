@@ -8,14 +8,14 @@
 	import { onMount } from 'svelte'
 
 	import * as SE from '$lib/search-engines'
-	import DEFAULT_CONFIG from '$lib/configs/default.toml'
+	import DEFAULT_CONFIGS from '$lib/configs/default.toml'
 
 	// Bindings:
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
 
 	// Generate click handlers bound to local `query`.
-	const makeEngineFunctions = (urlTemplateOrSelector: SE.UrlTemplateOrSelector) => {
+	const makeEngineFunctions = (urlTemplateOrSelector: SE.UrlTemplateSelector) => {
 		return {
 			getUrlTemplate: SE.makeEngineFunctions(query, urlTemplateOrSelector).getUrlTemplate,
 			clickHandler: (e: Event) => {
@@ -24,12 +24,12 @@
 		}
 	}
 
-	const searchGroupConfigs = DEFAULT_CONFIG
+	const searchGroupConfigs = DEFAULT_CONFIGS as Record<string, SE.SearchGroupConfig>
 
 	const searchGroups: SE.SearchGroup[] = []
 
 	for (const [name, config] of Object.entries(searchGroupConfigs)) {
-		searchGroups.push(SE.makeSearchGroup(name, config.engines, makeEngineFunctions))
+		searchGroups.push(SE.makeSearchGroup(name, config, makeEngineFunctions))
 	}
 
 	const handleFocus = (e: Event) => {

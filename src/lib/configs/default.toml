@@ -1,65 +1,93 @@
-[Translate.engines.Google.url]
-link    = ''
-lang_ko = 'https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate'
-default = 'https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate'
+[Translate.Google]
+link = ""
+lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
+default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
 
-[Translate.engines.Papago.url]
-link    = 'https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY'
-lang_ko = 'https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY'
-default = 'https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY'
+[Translate.Papago]
+link = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
+lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
+default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
-[Shopping.engines]
-Danawa.url         = 'https://search.danawa.com/dsearch.php?k1=QUERY'
-Naver.url          = 'https://search.shopping.naver.com/search/all?query=QUERY'
-Kakao.url          = 'https://shoppinghow.kakao.com/search/QUERY'
-Enuri.url          = 'http://www.enuri.com/search.jsp?keyword=QUERY'
-'중고나라'.url      = 'https://web.joongna.com/search/QUERY'
-'중고나라 카페'.url = 'http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchBy=0%26search.query=QUERY'
-Homeplus.url       = 'https://front.homeplus.co.kr/search?keyword=QUERY'
 
-[Search.engines]
-Google.url = 'https://www.google.com/search?q=QUERY'
-Naver.url  = 'https://search.naver.com/search.naver?query=QUERY'
-Daum.url   = 'https://search.daum.net/search?q=QUERY'
-Bing.url   = 'https://www.bing.com/search?q=QUERY'
-Yandex.url = 'https://yandex.com/search/?text=QUERY'
 
-[Images.engines.Google.url]
-link    = 'https://lens.google.com/uploadbyurl?url=QUERY'
-default = 'https://www.google.com/search?tbm=isch&q=QUERY'
+[Shopping.Danawa]
+default = "https://search.danawa.com/dsearch.php?k1=QUERY"
 
-[Images.engines.Naver.url]
-link    = ''
-default = 'https://search.naver.com/search.naver?where=image&query=QUERY'
+[Shopping.Naver]
+default = "https://search.shopping.naver.com/search/all?query=QUERY"
 
-[Images.engines.Daum.url]
-link    = ''
-default = 'https://search.daum.net/search?w=img&q=QUERY'
+[Shopping.Kakao]
+default = "https://shoppinghow.kakao.com/search/QUERY"
 
-[Images.engines.Bing.url]
-link    = 'https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY'
-default = 'https://www.bing.com/images/search?q=QUERY'
+[Shopping.Enuri]
+default = "http://www.enuri.com/search.jsp?keyword=QUERY"
 
-[Images.engines.Yandex.url]
-link    = 'https://yandex.com/images/search?rpt=imageview&url=QUERY'
-default = 'https://yandex.com/images/search?text=QUERY'
+[Shopping."중고나라"]
+default = "https://web.joongna.com/search/QUERY"
 
-[Images.engines.Unsplash.url]
-link    = ''
-default = 'https://unsplash.com/s/photos/QUERY'
+[Shopping."중고나라 카페"]
+default = "http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchBy=0%26search.query=QUERY"
 
-[Images.engines.Pixabay.url]
-link    = ''
-default = 'https://pixabay.com/images/search/QUERY'
+[Shopping.Homeplus]
+default = "https://front.homeplus.co.kr/search?keyword=QUERY"
 
-[Images.engines.Pexels.url]
-link    = ''
-default = 'https://www.pexels.com/search/QUERY/'
 
-[Images.engines.StockUnlimited.url]
-link    = ''
-default = 'https://www.stockunlimited.com/vector-image/?word=QUERY'
 
-[Images.engines.YayImages.url]
-link    = ''
-default = 'https://yayimages.com/search?type=-1&phrase=QUERY'
+
+[Search.Google]
+default = "https://www.google.com/search?q=QUERY"
+
+[Search.Naver]
+default = "https://search.naver.com/search.naver?query=QUERY"
+
+[Search.Daum]
+default = "https://search.daum.net/search?q=QUERY"
+
+[Search.Bing]
+default = "https://www.bing.com/search?q=QUERY"
+
+[Search.Yandex]
+default = "https://yandex.com/search/?text=QUERY"
+
+
+
+
+[Images.Google]
+link = "https://lens.google.com/uploadbyurl?url=QUERY"
+default = "https://www.google.com/search?tbm=isch&q=QUERY"
+
+[Images.Naver]
+link = ""
+default = "https://search.naver.com/search.naver?where=image&query=QUERY"
+
+[Images.Daum]
+link = ""
+default = "https://search.daum.net/search?w=img&q=QUERY"
+
+[Images.Bing]
+link = "https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY"
+default = "https://www.bing.com/images/search?q=QUERY"
+
+[Images.Yandex]
+link = "https://yandex.com/images/search?rpt=imageview&url=QUERY"
+default = "https://yandex.com/images/search?text=QUERY"
+
+[Images.Unsplash]
+link = ""
+default = "https://unsplash.com/s/photos/QUERY"
+
+[Images.Pixabay]
+link = ""
+default = "https://pixabay.com/images/search/QUERY"
+
+[Images.Pexels]
+link = ""
+default = "https://www.pexels.com/search/QUERY/"
+
+[Images.StockUnlimited]
+link = ""
+default = "https://www.stockunlimited.com/vector-image/?word=QUERY"
+
+[Images.YayImages]
+link = ""
+default = "https://yayimages.com/search?type=-1&phrase=QUERY"
