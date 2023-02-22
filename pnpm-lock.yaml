@@ -14,11 +14,14 @@ specifiers:
   mdsvex: ^0.10.6
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.8.1
+  rollup: ^3.17.2
   svelte: ^3.54.0
   svelte-check: ^3.0.1
   tslib: ^2.4.1
   typescript: ^4.9.3
+  typescript-plugin-toml: ^0.2.0
   vite: ^4.0.0
+  vite-plugin-toml: ^0.5.0
 
 devDependencies:
   '@picocss/pico': 1.5.7
@@ -34,11 +37,14 @@ devDependencies:
   mdsvex: 0.10.6_svelte@3.55.1
   prettier: 2.8.4
   prettier-plugin-svelte: 2.9.0_jrsxveqmsx2uadbqiuq74wlc4u
+  rollup: 3.17.2
   svelte: 3.55.1
   svelte-check: 3.0.3_svelte@3.55.1
   tslib: 2.5.0
   typescript: 4.9.5
+  typescript-plugin-toml: 0.2.0
   vite: 4.1.2
+  vite-plugin-toml: 0.5.0_rollup@3.17.2
 
 packages:
 
@@ -320,6 +326,14 @@ packages:
 
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
+    dev: true
+
+  /@rollup/pluginutils/4.2.1:
+    resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      estree-walker: 2.0.2
+      picomatch: 2.3.1
     dev: true
 
   /@sveltejs/adapter-auto/2.0.0_@sveltejs+kit@1.7.2:
@@ -914,6 +928,10 @@ packages:
     engines: {node: '>=4.0'}
     dev: true
 
+  /estree-walker/2.0.2:
+    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
+    dev: true
+
   /esutils/2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
@@ -1457,8 +1475,8 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rollup/3.16.0:
-    resolution: {integrity: sha512-9wE1H5N1SJqnROpQanBGJ7lrIitwlUYGj4Va4eyf3+vNhoIHLPLag2/CUGIiq3V9lHOBJB6zTsGsPvc50oeihg==}
+  /rollup/3.17.2:
+    resolution: {integrity: sha512-qMNZdlQPCkWodrAZ3qnJtvCAl4vpQ8q77uEujVCCbC/6CLB7Lcmvjq7HyiOSnf4fxTT9XgsE36oLHJBH49xjqA==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -1683,6 +1701,17 @@ packages:
       is-number: 7.0.0
     dev: true
 
+  /toml-eslint-parser/0.4.0:
+    resolution: {integrity: sha512-lwMC8RPBoAksoMFpQnB4c3zz+o9JPv1sxsduVH9AHb2o4kxQl7mtP5YaYoS33+6IdVrzHAXxi4JgowJDERoynw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dependencies:
+      eslint-visitor-keys: 3.3.0
+    dev: true
+
+  /toml/3.0.0:
+    resolution: {integrity: sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==}
+    dev: true
+
   /totalist/3.0.0:
     resolution: {integrity: sha512-eM+pCBxXO/njtF7vdFsHuqb+ElbxqtI4r5EAvk6grfAFyJ6IvWlSkfZ5T9ozC6xWw3Fj1fGoSmrl0gUs46JVIw==}
     engines: {node: '>=6'}
@@ -1718,6 +1747,12 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /typescript-plugin-toml/0.2.0:
+    resolution: {integrity: sha512-K8P1NI8A/SAVqapEnujbhXF0hjf6Qu/SoWsIFaTLszpbaOhnr9r7jddg41T6gj9w02u+3OW4NkWAI6veRMpp3Q==}
+    dependencies:
+      toml: 3.0.0
+    dev: true
+
   /typescript/4.9.5:
     resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
     engines: {node: '>=4.2.0'}
@@ -1750,6 +1785,17 @@ packages:
       unist-util-stringify-position: 2.0.3
     dev: true
 
+  /vite-plugin-toml/0.5.0_rollup@3.17.2:
+    resolution: {integrity: sha512-68KbihVlcXzw7iUpQkuedjjrmHrEB3U6kfnW2dhFossK20wAt4nruNfI1Sn16DXnCmaA1McX+NNFlBW2ydwMnw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      rollup: ^2.77.0 || ^3.0.0
+    dependencies:
+      '@rollup/pluginutils': 4.2.1
+      rollup: 3.17.2
+      toml-eslint-parser: 0.4.0
+    dev: true
+
   /vite/4.1.2:
     resolution: {integrity: sha512-MWDb9Rfy3DI8omDQySbMK93nQqStwbsQWejXRY2EBzEWKmLAXWb1mkI9Yw2IJrc+oCvPCI1Os5xSSIBYY6DEAw==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -1778,7 +1824,7 @@ packages:
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
-      rollup: 3.16.0
+      rollup: 3.17.2
     optionalDependencies:
       fsevents: 2.3.2
     dev: true

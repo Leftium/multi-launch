@@ -8,7 +8,7 @@
 	import { onMount } from 'svelte'
 
 	import * as SE from '$lib/search-engines'
-	import { config as DEFAULT_CONFIG } from '$lib/configs/default'
+	import DEFAULT_CONFIG from '$lib/configs/default.toml'
 
 	// Bindings:
 	let query = $page.url.searchParams.get('q') || ''
