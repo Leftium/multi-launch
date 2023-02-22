@@ -10,6 +10,40 @@ default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
 
 
+
+
+[Svelte.Discord]
+default = "https://discord.com/channels/457912077277855764/1060332203571151019"
+
+[Svelte.Reddit]
+default = "https://www.reddit.com/r/sveltejs/new/"
+
+[Svelte.StackOverflow]
+default = "https://stackoverflow.com/questions/tagged/sveltekit?tab=Newest"
+
+
+
+
+[Links.Digg]
+default = "https://www.digg.com/"
+
+[Links."Ask HN"]
+default = "http://hw.leftium.com/#/ask"
+
+[Links."Show HN"]
+default = "http://hw.leftium.com/#/show"
+
+["Links II"."HckrWeb"]
+default = "https://hw.leftium.com/"
+
+["Links II".Engadget]
+default = "https://www.engadget.com/"
+
+["Links II".NewsBlur]
+default = "https://www.newsblur.com/"
+
+
+
 [Shopping.Danawa]
 default = "https://search.danawa.com/dsearch.php?k1=QUERY"
 
