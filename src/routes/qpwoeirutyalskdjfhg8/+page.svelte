@@ -77,14 +77,14 @@
 </script>
 
 <svelte:head>
-	<title>MultiSearch{query ? ` — ${query}` : ''}</title>
+	<title>MultiLaunch{query ? ` — ${query}` : ''}</title>
 </svelte:head>
 
 <svelte:body on:paste={handlePaste} />
 
 <main class="container">
 	<h1>
-		MultiSearch <small><a href="/doc">Help & Tips</a></small>
+		MultiLaunch <small><a href="/doc">Help & Tips</a></small>
 	</h1>
 
 	<textarea rows="2" bind:value={query} bind:this={textArea} on:focus={handleFocus} />

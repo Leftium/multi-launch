@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>Help & Tips — MultiSearch</title>
+	<title>Help & Tips — MultiLaunch</title>
 </svelte:head>
 
 <main class="container">
