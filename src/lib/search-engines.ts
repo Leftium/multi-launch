@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export type UrlTemplateSelector = (query: string) => string
 
 export type SearchEngineConfig = {
@@ -48,7 +50,9 @@ export const makeSearchGroup = (
 	configs: SearchGroupConfigs,
 	makeSearchEngine: (name: string, config: SearchEngineConfig) => SearchEngine
 ) => {
-	const engines = Object.entries(configs).map(([name, config]) => makeSearchEngine(name, config))
+	const engines = _.map(configs, (config: SearchEngineConfig, name: string) =>
+		makeSearchEngine(name, config)
+	)
 
 	const handleClickAll = (e: Event) => {
 		const enginesList = (e as MouseEvent).altKey ? [...engines].reverse() : engines

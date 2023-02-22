@@ -1,6 +1,8 @@
 <script lang="ts">
 	import '@picocss/pico'
 
+	import _ from 'lodash'
+
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
 
@@ -35,7 +37,7 @@
 
 	const searchGroupConfigs = DEFAULT_CONFIGS as Record<string, SE.SearchGroupConfigs>
 
-	const searchGroups = Object.entries(searchGroupConfigs).map(([name, configs]) =>
+	const searchGroups = _.map(searchGroupConfigs, (configs: SE.SearchGroupConfigs, name: string) =>
 		SE.makeSearchGroup(name, configs, makeSearchEngine)
 	)
 
