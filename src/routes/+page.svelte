@@ -14,22 +14,31 @@
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
 
-	// Generate click handlers bound to local `query`.
-	const makeEngineFunctions = (urlTemplateOrSelector: SE.UrlTemplateSelector) => {
+	const makeSearchEngine = (name: string, config: SE.SearchEngineConfig): SE.SearchEngine => {
+		const getUrlTemplate = SE.makeUrlTemplateSelector(config)
 		return {
-			getUrlTemplate: SE.makeEngineFunctions(query, urlTemplateOrSelector).getUrlTemplate,
+			name,
+			getUrlTemplate,
 			clickHandler: (e: Event) => {
-				SE.makeEngineFunctions(query, urlTemplateOrSelector).clickHandler(e)
+				const urlTemplate = getUrlTemplate(query)
+				const queryTrimmedEncoded = encodeURIComponent(query.trim())
+				const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
+
+				log('handleClick', url, e)
+
+				if (url !== '') {
+					window.open(url, '_blank')
+				}
 			},
 		}
 	}
 
-	const searchGroupConfigs = DEFAULT_CONFIGS as Record<string, SE.SearchGroupConfig>
+	const searchGroupConfigs = DEFAULT_CONFIGS as Record<string, SE.SearchGroupConfigs>
 
 	const searchGroups: SE.SearchGroup[] = []
 
-	for (const [name, config] of Object.entries(searchGroupConfigs)) {
-		searchGroups.push(SE.makeSearchGroup(name, config, makeEngineFunctions))
+	for (const [name, configs] of Object.entries(searchGroupConfigs)) {
+		searchGroups.push(SE.makeSearchGroup(name, configs, makeSearchEngine))
 	}
 
 	const handleFocus = (e: Event) => {

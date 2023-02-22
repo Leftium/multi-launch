@@ -1,5 +1,4 @@
 import debugFactory from 'debug'
-const log = debugFactory('log')
 
 export type UrlTemplateSelector = (query: string) => string
 
@@ -9,7 +8,7 @@ export type SearchEngineConfig = {
 	default: string
 }
 
-export type SearchGroupConfig = Record<string, SearchEngineConfig>
+export type SearchGroupConfigs = Record<string, SearchEngineConfig>
 
 export type SearchEngine = {
 	name: string
@@ -23,29 +22,10 @@ export type SearchGroup = {
 	handleClickAll: EventHandler
 }
 
-// This function is not bound to any local variables.
-export const makeEngineFunctions = (query: string, urlTemplateSelector: UrlTemplateSelector) => {
-	const getUrlTemplate = (query: string) => urlTemplateSelector(query)
-	return {
-		getUrlTemplate,
-		clickHandler: (e: Event) => {
-			const urlTemplate = getUrlTemplate(query)
-			const queryTrimmedEncoded = encodeURIComponent(query.trim())
-			const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
-
-			log('handleClick', url, e)
-
-			if (url !== '') {
-				window.open(url, '_blank')
-			}
-		},
-	}
-}
-
 // Makes function that returns a (string) url from config based on query contents.
 // inputs: query, config
 // output: urlTemplate
-export const selectUrl = (config: SearchEngineConfig) => {
+export const makeUrlTemplateSelector = (config: SearchEngineConfig) => {
 	const urlRegex = /^http/iu
 	const koreanRegex = /[\u3131-\uD79D]/giu // https://stackoverflow.com/a/38156301/117030
 
@@ -64,39 +44,19 @@ export const selectUrl = (config: SearchEngineConfig) => {
 }
 
 type EventHandler = (e: Event) => void
-type makeEngineFunctionsType = (urlTemplateOrSelector: UrlTemplateSelector) => {
-	getUrlTemplate: (query: string) => string
-	clickHandler: EventHandler
-}
-
-export const makeSearchEngine = (
-	name: string,
-	config: SearchEngineConfig,
-	makeEngineFunctions: makeEngineFunctionsType
-) => {
-	const { clickHandler, getUrlTemplate } = makeEngineFunctions(selectUrl(config))
-
-	log(clickHandler)
-
-	return {
-		name,
-		getUrlTemplate,
-		clickHandler,
-	}
-}
 
 export const makeSearchGroup = (
 	groupName: string,
-	configs: SearchGroupConfig,
-	makeEngineFunctions: makeEngineFunctionsType
+	configs: SearchGroupConfigs,
+	makeSearchEngine: (name: string, config: SearchEngineConfig) => SearchEngine
 ) => {
 	const engines: SearchEngine[] = []
 	for (const [name, config] of Object.entries(configs)) {
-		engines.push(makeSearchEngine(name, config, makeEngineFunctions))
+		engines.push(makeSearchEngine(name, config))
 	}
 
-	const handleClickAll = (e: PointerEvent) => {
-		const enginesList = e.altKey ? [...engines].reverse() : engines
+	const handleClickAll = (e: Event) => {
+		const enginesList = (e as MouseEvent).altKey ? [...engines].reverse() : engines
 		for (const searchEngine of enginesList) {
 			searchEngine.clickHandler(e)
 		}
