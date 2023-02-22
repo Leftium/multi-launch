@@ -1,5 +1,3 @@
-import debugFactory from 'debug'
-
 export type UrlTemplateSelector = (query: string) => string
 
 export type SearchEngineConfig = {
