@@ -35,11 +35,9 @@
 
 	const searchGroupConfigs = DEFAULT_CONFIGS as Record<string, SE.SearchGroupConfigs>
 
-	const searchGroups: SE.SearchGroup[] = []
-
-	for (const [name, configs] of Object.entries(searchGroupConfigs)) {
-		searchGroups.push(SE.makeSearchGroup(name, configs, makeSearchEngine))
-	}
+	const searchGroups = Object.entries(searchGroupConfigs).map(([name, configs]) =>
+		SE.makeSearchGroup(name, configs, makeSearchEngine)
+	)
 
 	const handleFocus = (e: Event) => {
 		textArea.select()

@@ -48,16 +48,11 @@ export const makeSearchGroup = (
 	configs: SearchGroupConfigs,
 	makeSearchEngine: (name: string, config: SearchEngineConfig) => SearchEngine
 ) => {
-	const engines: SearchEngine[] = []
-	for (const [name, config] of Object.entries(configs)) {
-		engines.push(makeSearchEngine(name, config))
-	}
+	const engines = Object.entries(configs).map(([name, config]) => makeSearchEngine(name, config))
 
 	const handleClickAll = (e: Event) => {
 		const enginesList = (e as MouseEvent).altKey ? [...engines].reverse() : engines
-		for (const searchEngine of enginesList) {
-			searchEngine.clickHandler(e)
-		}
+		enginesList.map((engine) => engine.clickHandler(e))
 	}
 
 	return {
