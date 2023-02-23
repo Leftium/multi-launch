@@ -82,10 +82,6 @@
 	}
 
 	onMount(() => {
-		if (textArea) {
-			textArea.focus()
-		}
-
 		window.addEventListener('keydown', handleKeydown)
 
 		return () => {
