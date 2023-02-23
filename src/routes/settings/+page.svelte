@@ -34,7 +34,7 @@ default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 	}
 
 	textarea {
-		max-height: 80vh;
+		max-height: 60vh;
 		white-space: pre;
 		overflow-wrap: normal;
 		overflow-x: scroll;
