@@ -2,7 +2,7 @@
 	import _ from 'lodash'
 
 	import toml from 'toml-js'
-	import { decompressFromEncodedURIComponent } from 'lz-string'
+	import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
 
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
@@ -19,7 +19,8 @@
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
 
-	let configToml = decompressFromEncodedURIComponent($page.url.searchParams.get('config') || '')
+	let configToml =
+		decompressFromEncodedURIComponent($page.url.searchParams.get('config') || '') || ''
 
 	let configJson
 	let configError: Error
@@ -109,8 +110,10 @@
 			>
 			<pre>{configToml}</pre>
 		</details>
-		<a role="button" class="full-width" href="/settings?config={encodeURIComponent(configToml)}"
-			>Edit Config</a
+		<a
+			role="button"
+			class="full-width"
+			href="/settings?config={compressToEncodedURIComponent(configToml)}">Edit Config</a
 		>
 	{:else}
 		{#if configToml}
