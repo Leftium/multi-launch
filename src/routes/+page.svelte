@@ -1,6 +1,8 @@
 <script lang="ts">
 	import _ from 'lodash'
 
+	import toml from 'toml-js'
+
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
 
@@ -13,6 +15,17 @@
 	// Bindings:
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
+
+	let configToml = decodeURIComponent($page.url.searchParams.get('config') || '')
+
+	let configJson
+	let configError: Error
+
+	try {
+		configJson = toml.parse(configToml)
+	} catch (error) {
+		configError = error as Error
+	}
 
 	const makeSearchEngine = (name: string, config: SE.SearchEngineConfig): SE.SearchEngine => {
 		const getUrlTemplate = SE.makeUrlTemplateSelector(config)
@@ -33,7 +46,10 @@
 		}
 	}
 
-	const searchGroupConfigs = DEFAULT_CONFIGS as Record<string, SE.SearchGroupConfigs>
+	const searchGroupConfigs = (configJson || DEFAULT_CONFIGS) as Record<
+		string,
+		SE.SearchGroupConfigs
+	>
 
 	const searchGroups = _.map(searchGroupConfigs, (configs: SE.SearchGroupConfigs, name: string) =>
 		SE.makeSearchGroup(name, configs, makeSearchEngine)
@@ -62,7 +78,9 @@
 	}
 
 	onMount(() => {
-		textArea.focus()
+		if (textArea) {
+			textArea.focus()
+		}
 
 		window.addEventListener('keydown', handleKeydown)
 
@@ -79,30 +97,70 @@
 <svelte:body on:paste={handlePaste} />
 
 <main class="container">
-	<textarea
-		placeholder="QUERY"
-		rows="2"
-		bind:value={query}
-		bind:this={textArea}
-		on:focus={handleFocus}
-	/>
+	{#if configError}
+		<details>
+			<!-- svelte-ignore a11y-no-redundant-roles -->
+			<summary role="button" class="error contrast"
+				>There was an error parsing the config!
+				{configError.name}: {configError.message}</summary
+			>
+			<pre>{configToml}</pre>
+		</details>
+		<a role="button" class="full-width" href="/settings?config={encodeURIComponent(configToml)}"
+			>Edit Config</a
+		>
+	{:else}
+		{#if configToml}
+			<details open>
+				<!-- svelte-ignore a11y-no-redundant-roles -->
+				<summary role="button" class="contrast">Previewing Config:</summary>
+				<pre>{configToml}</pre>
 
-	{#each searchGroups as searchGroup}
-		<div>
-			<button on:click={searchGroup.handleClickAll}>All {searchGroup.name}</button
-			>{#each searchGroup.engines as engine}
-				<button
-					class="secondary"
-					on:click={engine.clickHandler}
-					disabled={engine.getUrlTemplate(query) === ''}>{engine.name}</button
+				<button>Save (Replace Current Settings)</button>
+				<button class="secondary">Add to Settings</button>
+				<a
+					role="button"
+					class="full-width secondary"
+					href="/settings?config={encodeURIComponent(configToml)}">Edit Config</a
 				>
-			{/each}
-		</div>
-	{/each}
+				<button class="secondary">Copy to Clipboard</button>
+			</details>
+		{/if}
+
+		<textarea
+			placeholder="QUERY"
+			rows="2"
+			bind:value={query}
+			bind:this={textArea}
+			on:focus={handleFocus}
+		/>
+
+		{#each searchGroups as searchGroup}
+			<div>
+				<button on:click={searchGroup.handleClickAll}>All {searchGroup.name}</button
+				>{#each searchGroup.engines as engine}
+					<button
+						class="secondary"
+						on:click={engine.clickHandler}
+						disabled={engine.getUrlTemplate(query) === ''}>{engine.name}</button
+					>
+				{/each}
+			</div>
+		{/each}
+	{/if}
 </main>
 
 <style>
 	main > div {
+		margin-bottom: var(--spacing);
+	}
+
+	.error {
+		color: red;
+	}
+
+	.full-width {
+		width: 100%;
 		margin-bottom: var(--spacing);
 	}
 

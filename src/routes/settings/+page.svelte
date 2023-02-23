@@ -1,18 +1,32 @@
 <script lang="ts">
+	import { page } from '$app/stores'
+
+	let configToml = decodeURIComponent($page.url.searchParams.get('config') || '')
+
+	// Bindings:
 	let textArea: HTMLTextAreaElement
-	let text: string
+	let text =
+		configToml ||
+		`[Translate.Google]
+link = ""
+lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
+default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
+
+[Translate.Papago]
+link = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
+lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
+default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
+`
 </script>
 
 <main class="container">
-	<button>Preview</button>
+	<a role="button" href="/?config={encodeURIComponent(text)}">Preview</a>
 
-	<textarea rows="40" bind:value={text} bind:this={textArea} />
+	<textarea rows="40" bind:value={text} bind:this={textArea} spellcheck="false" />
 </main>
 
 <style>
-	main button {
-		/* Undo pico css button styling */
-		width: auto;
-		display: inline;
+	main a {
+		margin-bottom: var(--spacing);
 	}
 </style>

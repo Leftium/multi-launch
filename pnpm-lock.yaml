@@ -19,6 +19,7 @@ specifiers:
   rollup: ^3.17.2
   svelte: ^3.54.0
   svelte-check: ^3.0.1
+  toml-js: ^0.0.8
   tslib: ^2.4.1
   typescript: ^4.9.3
   typescript-plugin-toml: ^0.2.0
@@ -44,6 +45,7 @@ devDependencies:
   rollup: 3.17.2
   svelte: 3.55.1
   svelte-check: 3.0.3_svelte@3.55.1
+  toml-js: 0.0.8
   tslib: 2.5.0
   typescript: 4.9.5
   typescript-plugin-toml: 0.2.0
@@ -1718,6 +1720,10 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       eslint-visitor-keys: 3.3.0
+    dev: true
+
+  /toml-js/0.0.8:
+    resolution: {integrity: sha512-MQUXr5oq9fgOQIcucZuda1BtGUmQRt3Y2z1TY9JT3oUR6gs1qLkbsGfVdlr/gJ6JqrjJdPLO5wNXCgkmvzXNTQ==}
     dev: true
 
   /toml/3.0.0:
