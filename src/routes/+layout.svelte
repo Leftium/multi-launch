@@ -1,5 +1,17 @@
 <script lang="ts">
 	import '@picocss/pico'
+
+	import debugFactory from 'debug'
+	const log = debugFactory('log')
+
+	import { beforeNavigate } from '$app/navigation'
+	
+	import { didBeforeNavigate } from '$lib/stores'
+
+	beforeNavigate((navigation) => {
+		log('beforeNavigate', navigation)
+		didBeforeNavigate.set(true)
+	})
 </script>
 
 <nav class="container">

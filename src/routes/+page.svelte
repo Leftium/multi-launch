@@ -12,6 +12,8 @@
 	import * as SE from '$lib/search-engines'
 	import DEFAULT_CONFIGS from '$lib/configs/default.toml'
 
+	import { didBeforeNavigate } from '$lib/stores'
+
 	// Bindings:
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
@@ -98,7 +100,7 @@
 
 <main class="container">
 	{#if configError}
-		<details>
+		<details open={$didBeforeNavigate}>
 			<!-- svelte-ignore a11y-no-redundant-roles -->
 			<summary role="button" class="error contrast"
 				>There was an error parsing the config!
@@ -111,7 +113,7 @@
 		>
 	{:else}
 		{#if configToml}
-			<details open>
+			<details open={$didBeforeNavigate}>
 				<!-- svelte-ignore a11y-no-redundant-roles -->
 				<summary role="button" class="contrast">Previewing Config:</summary>
 				<pre>{configToml}</pre>
