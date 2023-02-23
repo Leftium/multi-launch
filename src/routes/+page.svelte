@@ -140,18 +140,14 @@
 			on:focus={handleFocus}
 		/>
 
-		{#each searchGroups as searchGroup}
-			<div>
+		{#each searchGroups as searchGroup}<div>
 				<button on:click={searchGroup.handleClickAll}>All {searchGroup.name}</button
-				>{#each searchGroup.engines as engine}
-					<button
+				>{#each searchGroup.engines as engine}<button
 						class="secondary"
 						on:click={engine.clickHandler}
 						disabled={engine.getUrlTemplate(query) === ''}>{engine.name}</button
-					>
-				{/each}
-			</div>
-		{/each}
+					>{/each}
+			</div>{/each}
 	{/if}
 </main>
 
