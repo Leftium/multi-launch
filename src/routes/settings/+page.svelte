@@ -2,9 +2,9 @@
 	import { page } from '$app/stores'
 
 	import lzString from 'lz-string'
-	const { compressToEncodedURIComponent } = lzString
+	const { compressToEncodedURIComponent, decompressFromEncodedURIComponent } = lzString
 
-	let configToml = decodeURIComponent($page.url.searchParams.get('config') || '')
+	let configToml = decompressFromEncodedURIComponent($page.url.searchParams.get('config') || '')
 
 	// Bindings:
 	let textArea: HTMLTextAreaElement

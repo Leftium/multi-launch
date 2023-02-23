@@ -1,7 +1,8 @@
 <script lang="ts">
 	import _ from 'lodash'
 
-	import toml from 'toml-js'
+	import TOML from '@ltd/j-toml'
+
 	import lzString from 'lz-string'
 	const { compressToEncodedURIComponent, decompressFromEncodedURIComponent } = lzString
 
@@ -27,7 +28,7 @@
 	let configError: Error
 
 	try {
-		configJson = toml.parse(configToml)
+		configJson = TOML.parse(configToml)
 	} catch (error) {
 		configError = error as Error
 	}

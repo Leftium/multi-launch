@@ -5,5 +5,3 @@ declare module '*.toml' {
 	const value: unknown
 	export default value
 }
-
-declare module 'toml-js'
