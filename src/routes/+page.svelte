@@ -82,7 +82,7 @@
 
 <main class="container">
 	<h1>
-		MultiLaunch <small><a href="/doc">Help & Tips</a></small>
+		MultiLaunch <small><a href="/settings">Settings</a> <a href="/doc">Help&Tips</a></small>
 	</h1>
 
 	<textarea
