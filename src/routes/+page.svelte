@@ -1,6 +1,4 @@
 <script lang="ts">
-	import '@picocss/pico'
-
 	import _ from 'lodash'
 
 	import debugFactory from 'debug'
@@ -81,10 +79,6 @@
 <svelte:body on:paste={handlePaste} />
 
 <main class="container">
-	<h1>
-		MultiLaunch <small><a href="/settings">Settings</a> <a href="/doc">Help&Tips</a></small>
-	</h1>
-
 	<textarea
 		placeholder="QUERY"
 		rows="2"
@@ -108,15 +102,6 @@
 </main>
 
 <style>
-	h1 {
-		margin-bottom: 0;
-	}
-
-	small {
-		font-size: 42%;
-		font-weight: normal;
-	}
-
 	main > div {
 		margin-bottom: var(--spacing);
 	}

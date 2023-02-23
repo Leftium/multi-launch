@@ -1,8 +1,7 @@
-# MultiLaunch
+MultiLaunch makes it convenient to use multiple search sites from the same text box. (With a focus
+on living in Korea.)
 
 [Return to app](/)
-
-MultiLaunch makes it convenient to use multiple search sites from the same text box. (With a focus on living in Korea.)
 
 ## How to Use
 
