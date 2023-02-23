@@ -32,4 +32,11 @@ default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 	main a {
 		margin-bottom: var(--spacing);
 	}
+
+	textarea {
+		max-height: 80vh;
+		white-space: pre;
+		overflow-wrap: normal;
+		overflow-x: scroll;
+	}
 </style>
