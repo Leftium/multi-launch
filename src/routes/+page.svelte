@@ -168,6 +168,10 @@
 		margin-bottom: var(--spacing);
 	}
 
+	details pre {
+		max-height: 40vh;
+	}
+
 	div button {
 		width: 6.94rem;
 		margin: 0.1rem;
