@@ -125,7 +125,8 @@
 				<a
 					role="button"
 					class="full-width secondary"
-					href="/settings?config={encodeURIComponent(configToml)}">Edit Config</a
+					href="/settings?config={compressToEncodedURIComponent(configToml)}"
+					>Edit Config</a
 				>
 				<button class="secondary">Copy to Clipboard</button>
 			</details>
