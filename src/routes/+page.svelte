@@ -46,7 +46,7 @@
 		}
 	}
 
-	const searchGroupConfigs = (configJson || DEFAULT_CONFIGS) as Record<
+	const searchGroupConfigs = ((configToml && configJson) || DEFAULT_CONFIGS) as Record<
 		string,
 		SE.SearchGroupConfigs
 	>
