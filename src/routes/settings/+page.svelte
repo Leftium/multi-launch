@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 
+	import { compressToEncodedURIComponent } from 'lz-string'
+
 	let configToml = decodeURIComponent($page.url.searchParams.get('config') || '')
 
 	// Bindings:
@@ -20,7 +22,7 @@ default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 </script>
 
 <main class="container">
-	<a role="button" href="/?config={encodeURIComponent(text)}">Preview</a>
+	<a role="button" href="/?config={compressToEncodedURIComponent(text)}">Preview</a>
 
 	<textarea rows="40" bind:value={text} bind:this={textArea} spellcheck="false" />
 </main>
