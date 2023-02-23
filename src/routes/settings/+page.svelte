@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 
-	import { compressToEncodedURIComponent } from 'lz-string'
+	import lzString from 'lz-string'
+	const { compressToEncodedURIComponent } = lzString
 
 	let configToml = decodeURIComponent($page.url.searchParams.get('config') || '')
 

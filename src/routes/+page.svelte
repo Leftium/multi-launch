@@ -2,7 +2,8 @@
 	import _ from 'lodash'
 
 	import toml from 'toml-js'
-	import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string'
+	import lzString from 'lz-string'
+	const { compressToEncodedURIComponent, decompressFromEncodedURIComponent } = lzString
 
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
