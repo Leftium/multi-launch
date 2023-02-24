@@ -47,5 +47,8 @@ default = ''
 		white-space: pre;
 		overflow-wrap: normal;
 		overflow-x: scroll;
+		font-family: 'Menlo', 'Consolas', 'Roboto Mono', 'Ubuntu Monospace', 'Noto Mono',
+			'Oxygen Mono', 'Liberation Mono', monospace, 'Apple Color Emoji', 'Segoe UI Emoji',
+			'Segoe UI Symbol', 'Noto Color Emoji';
 	}
 </style>
