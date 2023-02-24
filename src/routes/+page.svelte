@@ -13,7 +13,7 @@
 	import { onMount } from 'svelte'
 
 	import * as SE from '$lib/search-engines'
-	import DEFAULT_CONFIGS from '$lib/configs/default.toml'
+	import DEFAULT_PLANS from '$lib/configs/default.toml'
 
 	import { didBeforeNavigate } from '$lib/stores'
 
@@ -21,20 +21,19 @@
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
 
-	let configToml =
-		decompressFromEncodedURIComponent($page.url.searchParams.get('config') || '') || ''
+	let planToml = decompressFromEncodedURIComponent($page.url.searchParams.get('plan') || '') || ''
 
-	let configJson
-	let configError: Error
+	let planJson
+	let planError: Error
 
 	try {
-		configJson = TOML.parse(configToml)
+		planJson = TOML.parse(planToml)
 	} catch (error) {
-		configError = error as Error
+		planError = error as Error
 	}
 
-	const makeSearchEngine = (name: string, config: SE.SearchEngineConfig): SE.SearchEngine => {
-		const getUrlTemplate = SE.makeUrlTemplateSelector(config)
+	const makeSearchEngine = (name: string, plan: SE.SearchEnginePlan): SE.SearchEngine => {
+		const getUrlTemplate = SE.makeUrlTemplateSelector(plan)
 		return {
 			name,
 			getUrlTemplate,
@@ -52,13 +51,13 @@
 		}
 	}
 
-	const searchGroupConfigs = ((configToml && configJson) || DEFAULT_CONFIGS) as Record<
+	const searchGroupPlans = ((planToml && planJson) || DEFAULT_PLANS) as Record<
 		string,
-		SE.SearchGroupConfigs
+		SE.SearchGroupPlans
 	>
 
-	const searchGroups = _.map(searchGroupConfigs, (configs: SE.SearchGroupConfigs, name: string) =>
-		SE.makeSearchGroup(name, configs, makeSearchEngine)
+	const searchGroups = _.map(searchGroupPlans, (plans: SE.SearchGroupPlans, name: string) =>
+		SE.makeSearchGroup(name, plans, makeSearchEngine)
 	)
 
 	const handleFocus = (e: Event) => {
@@ -99,34 +98,33 @@
 <svelte:body on:paste={handlePaste} />
 
 <main class="container">
-	{#if configError}
+	{#if planError}
 		<details open={$didBeforeNavigate}>
 			<!-- svelte-ignore a11y-no-redundant-roles -->
 			<summary role="button" class="error contrast"
-				>There was an error parsing the config!
-				{configError.name}: {configError.message}</summary
+				>There was an error parsing the launch plan!
+				{planError.name}: {planError.message}</summary
 			>
-			<pre>{configToml}</pre>
+			<pre>{planToml}</pre>
 		</details>
 		<a
 			role="button"
 			class="full-width"
-			href="/settings?config={compressToEncodedURIComponent(configToml)}">Edit Config</a
+			href="/settings?plan={compressToEncodedURIComponent(planToml)}">Edit Plan</a
 		>
 	{:else}
-		{#if configToml}
+		{#if planToml}
 			<details open={$didBeforeNavigate}>
 				<!-- svelte-ignore a11y-no-redundant-roles -->
-				<summary role="button" class="contrast">Previewing Config:</summary>
-				<pre>{configToml}</pre>
+				<summary role="button" class="contrast">Previewing Launch Plans:</summary>
+				<pre>{planToml}</pre>
 
 				<button>Save (Replace Current Settings)</button>
 				<button class="secondary">Add to Settings</button>
 				<a
 					role="button"
 					class="full-width secondary"
-					href="/settings?config={compressToEncodedURIComponent(configToml)}"
-					>Edit Config</a
+					href="/settings?plan={compressToEncodedURIComponent(planToml)}">Edit Plan</a
 				>
 				<button class="secondary">Copy to Clipboard</button>
 			</details>

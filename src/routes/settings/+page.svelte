@@ -4,12 +4,12 @@
 	import lzString from 'lz-string'
 	const { compressToEncodedURIComponent, decompressFromEncodedURIComponent } = lzString
 
-	let configToml = decompressFromEncodedURIComponent($page.url.searchParams.get('config') || '')
+	let planToml = decompressFromEncodedURIComponent($page.url.searchParams.get('plan') || '')
 
 	// Bindings:
 	let textArea: HTMLTextAreaElement
 	let text =
-		configToml ||
+		planToml ||
 		`[Svelte.Discord]
 noquery = "https://discord.com/channels/457912077277855764/1060332203571151019"
 default = ""
@@ -32,7 +32,7 @@ default = ''
 </script>
 
 <main class="container">
-	<a role="button" href="/?config={compressToEncodedURIComponent(text)}">Preview</a>
+	<a role="button" href="/?plan={compressToEncodedURIComponent(text)}">Preview</a>
 
 	<textarea rows="40" bind:value={text} bind:this={textArea} spellcheck="false" />
 </main>
