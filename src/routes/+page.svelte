@@ -13,7 +13,7 @@
 	import { onMount } from 'svelte'
 
 	import * as SE from '$lib/search-engines'
-	import DEFAULT_PLANS from '$lib/configs/default.toml'
+	import DEFAULT_PLANS from '$lib/plans/default.toml'
 
 	import { didBeforeNavigate } from '$lib/stores'
 
