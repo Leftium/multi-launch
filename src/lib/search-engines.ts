@@ -3,6 +3,7 @@ import _ from 'lodash'
 export type UrlTemplateSelector = (query: string) => string
 
 export type SearchEngineConfig = {
+	noquery?: string
 	link?: string
 	lang_ko?: string
 	default: string
@@ -26,10 +27,12 @@ export type SearchGroup = {
 // inputs: query, config
 // output: urlTemplate
 export const makeUrlTemplateSelector = (config: SearchEngineConfig) => {
-	const urlRegex = /^http/iu
+	const urlRegex = /^https?:/iu
 	const koreanRegex = /[\u3131-\uD79D]/giu // https://stackoverflow.com/a/38156301/117030
 
 	return (text: string) => {
+		text = text.trim()
+
 		let urlTemplate = config.default
 
 		if (urlRegex.test(text)) {
@@ -38,6 +41,10 @@ export const makeUrlTemplateSelector = (config: SearchEngineConfig) => {
 
 		if (koreanRegex.test(text)) {
 			urlTemplate = config.lang_ko ?? urlTemplate
+		}
+
+		if (text === '') {
+			urlTemplate = config.noquery ?? urlTemplate
 		}
 		return urlTemplate
 	}

@@ -9,19 +9,15 @@ lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
 default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
 
-
-
-
 [Svelte.Discord]
 default = "https://discord.com/channels/457912077277855764/1060332203571151019"
 
 [Svelte.Reddit]
-default = "https://www.reddit.com/r/sveltejs/new/"
+noquery = "https://www.reddit.com/r/sveltejs/new/"
+default = "https://www.reddit.com/r/sveltejs/search/?q=QUERY"
 
 [Svelte.StackOverflow]
-default = "https://stackoverflow.com/questions/tagged/sveltekit?tab=Newest"
-
-
+default = "https://stackoverflow.com/search?q=%5Bsveltekit%5D+%5Bsvelte%5D+QUERY"
 
 
 [Links.Digg]
@@ -41,7 +37,6 @@ default = "https://www.engadget.com/"
 
 ["Links II".NewsBlur]
 default = "https://www.newsblur.com/"
-
 
 
 [Shopping.Danawa]
@@ -66,8 +61,6 @@ default = "http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//Artic
 default = "https://front.homeplus.co.kr/search?keyword=QUERY"
 
 
-
-
 [Search.Google]
 default = "https://www.google.com/search?q=QUERY"
 
@@ -82,8 +75,6 @@ default = "https://www.bing.com/search?q=QUERY"
 
 [Search.Yandex]
 default = "https://yandex.com/search/?text=QUERY"
-
-
 
 
 [Images.Google]

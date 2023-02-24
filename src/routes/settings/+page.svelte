@@ -10,15 +10,24 @@
 	let textArea: HTMLTextAreaElement
 	let text =
 		configToml ||
-		`[Translate.Google]
-link = ""
-lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
-default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
+		`[Svelte.Discord]
+noquery = "https://discord.com/channels/457912077277855764/1060332203571151019"
+default = ""
 
-[Translate.Papago]
-link = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
-lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
-default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
+[Svelte.Reddit]
+noquery = "https://www.reddit.com/r/sveltejs/new/"
+default = "https://www.reddit.com/r/sveltejs/search/?q=QUERY"
+
+[Svelte.StackOverflow]
+default = "https://stackoverflow.com/search?q=%5Bsveltekit%5D+%5Bsvelte%5D+QUERY"
+
+[Svelte."Kit Docs"]
+noquery = 'https://kit.svelte.dev/docs/introduction'
+default = ''
+
+[Svelte."Svelte Docs"]
+noquery = 'https://svelte.dev/docs'
+default = ''
 `
 </script>
 
