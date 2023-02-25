@@ -10,7 +10,8 @@ default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
 
 [Svelte.Discord]
-default = "https://discord.com/channels/457912077277855764/1060332203571151019"
+noquery = "https://discord.com/channels/457912077277855764/"
+default = ""
 
 [Svelte.Reddit]
 noquery = "https://www.reddit.com/r/sveltejs/new/"
@@ -18,6 +19,14 @@ default = "https://www.reddit.com/r/sveltejs/search/?q=QUERY"
 
 [Svelte.StackOverflow]
 default = "https://stackoverflow.com/search?q=%5Bsveltekit%5D+%5Bsvelte%5D+QUERY"
+
+[Svelte."Kit Docs"]
+noquery = 'https://kit.svelte.dev/docs/introduction'
+default = ''
+
+[Svelte."Svelte Docs"]
+noquery = 'https://svelte.dev/docs'
+default = ''
 
 
 [Links.Digg]
