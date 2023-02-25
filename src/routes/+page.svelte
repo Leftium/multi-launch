@@ -146,7 +146,7 @@
 		/>
 
 		{#each searchGroups as searchGroup}<div>
-				<button on:click={searchGroup.handleClickAll}>All {searchGroup.name}</button
+				<button on:click={searchGroup.handleClickAll}>@{searchGroup.name}</button
 				>{#each searchGroup.engines as engine}<button
 						class="secondary"
 						on:click={engine.clickHandler}
