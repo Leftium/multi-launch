@@ -29,22 +29,22 @@ ifquery = ''
 default = 'https://svelte.dev/docs'
 
 
-[Links.Digg]
+["News A".Digg]
 default = "https://www.digg.com/"
 
-[Links."Ask HN"]
+["News A"."Ask HN"]
 default = "http://hw.leftium.com/#/ask"
 
-[Links."Show HN"]
+["News A"."Show HN"]
 default = "http://hw.leftium.com/#/show"
 
-["Links II"."HckrWeb"]
+["News B"."HckrWeb"]
 default = "https://hw.leftium.com/"
 
-["Links II".Engadget]
+["News B".Engadget]
 default = "https://www.engadget.com/"
 
-["Links II".NewsBlur]
+["News B".NewsBlur]
 default = "https://www.newsblur.com/"
 
 
