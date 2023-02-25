@@ -15,6 +15,7 @@ export type SearchGroupPlans = Record<string, SearchEnginePlan>
 export type SearchEngine = {
 	name: string
 	target: string
+	lzPlan: string
 	getUrlTemplate: (query: string) => string
 	clickHandler: EventHandler
 }
@@ -22,7 +23,7 @@ export type SearchEngine = {
 export type SearchGroup = {
 	name: string
 	engines: SearchEngine[]
-	handleClickAll: EventHandler
+	handleClickAll: LaunchButtonClickHandler
 }
 
 // Makes function that returns a (string) url from plan based on query contents.
@@ -53,6 +54,7 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 }
 
 type EventHandler = (e: Event) => void
+type LaunchButtonClickHandler = (e: Event, isClickAll: boolean) => void
 
 export const makeSearchGroup = (
 	groupName: string,
@@ -65,7 +67,7 @@ export const makeSearchGroup = (
 
 	const handleClickAll = (e: Event) => {
 		const enginesList = (e as MouseEvent).altKey ? [...engines].reverse() : engines
-		enginesList.map((engine) => engine.clickHandler(e))
+		enginesList.map((engine) => (engine.clickHandler as LaunchButtonClickHandler)(e, true))
 	}
 
 	return {

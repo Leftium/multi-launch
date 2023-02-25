@@ -40,12 +40,19 @@
 		const getUrlTemplate = SE.makeUrlTemplateSelector(plan)
 		const target = plan.target || `${groupName}.${name}`
 
+		const lzPlan = compressToEncodedURIComponent(JSON.stringify(plan))
+
 		return {
 			name,
 			target,
+			lzPlan: lzPlan,
 			getUrlTemplate,
-			clickHandler: (e: Event) => {
-				const urlTemplate = getUrlTemplate(query)
+			clickHandler: (e: Event, isClickAll = false) => {
+				let urlTemplate = getUrlTemplate(query)
+				if (!isClickAll) {
+					urlTemplate ||= plan.default
+				}
+
 				const queryTrimmedEncoded = encodeURIComponent(query.trim())
 				const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
 
@@ -142,32 +149,41 @@
 			</details>
 		{/if}
 
-		<textarea
-			placeholder="QUERY"
-			rows="2"
-			bind:value={query}
-			bind:this={textArea}
-			on:focus={handleFocus}
-		/>
-
-		{#each searchGroups as searchGroup}<div>
-				<button on:click={searchGroup.handleClickAll}>@{searchGroup.name}</button
-				>{#each searchGroup.engines as engine}<button
-						class="secondary"
-						on:click={engine.clickHandler}
-						disabled={engine.getUrlTemplate(query) === ''}>{engine.name}</button
-					>{/each}
-			</div>{/each}
+		<form method="POST">
+			<textarea
+				placeholder="QUERY"
+				rows="2"
+				name="query"
+				bind:value={query}
+				bind:this={textArea}
+				on:focus={handleFocus}
+			/>
+			{#each searchGroups as searchGroup}<div>
+					<button on:click|preventDefault={searchGroup.handleClickAll}
+						>@{searchGroup.name}</button
+					>{#each searchGroup.engines as engine}<button
+							class="secondary"
+							name="lz-plan"
+							value={engine.lzPlan}
+							class:exclude-from-all={engine.getUrlTemplate(query) === ''}
+							on:click|preventDefault={engine.clickHandler}>{engine.name}</button
+						>{/each}
+				</div>{/each}
+		</form>
 	{/if}
 </main>
 
 <style>
-	main > div {
+	form > div {
 		margin-bottom: var(--spacing);
 	}
 
 	.error {
 		color: red;
+	}
+
+	.exclude-from-all {
+		opacity: 0.5;
 	}
 
 	.full-width {
