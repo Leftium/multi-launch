@@ -117,60 +117,58 @@
 <svelte:body on:paste={handlePaste} />
 
 <main class="container">
-	{#if planError}
-		<details open={$didBeforeNavigate}>
+	{#if planToml}
+		<details class="editor">
 			<!-- svelte-ignore a11y-no-redundant-roles -->
-			<summary role="button" class="error contrast"
-				>There was an error parsing the launch plan!
-				{planError.name}: {planError.message}</summary
-			>
+			<summary role="button" class="contrast">
+				<div>
+					<span class:error={planError}>
+						URL Launch Plan{#if planError}. {planError.name}: {planError.message}{/if}</span
+					>
+					<span>Edit</span>
+				</div>
+			</summary>
+			<div>
+				<button>Save as Current Plan</button>
+				<button class="secondary">Append to Current Plan</button>
+				<button class="secondary">Copy to Clipboard</button>
+			</div>
+			{#if planError}
+				<div class="error">
+					{planError.name}: {planError.message}
+				</div>
+			{/if}
 			<pre>{planToml}</pre>
 		</details>
+
 		<a
 			role="button"
-			class="full-width"
+			class="full-width secondary"
 			href="/settings?plan={compressToEncodedURIComponent(planToml)}">Edit Plan</a
 		>
-	{:else}
-		{#if planToml}
-			<details open={$didBeforeNavigate}>
-				<!-- svelte-ignore a11y-no-redundant-roles -->
-				<summary role="button" class="contrast">Previewing Launch Plans:</summary>
-				<pre>{planToml}</pre>
-
-				<button>Save (Replace Current Settings)</button>
-				<button class="secondary">Add to Settings</button>
-				<a
-					role="button"
-					class="full-width secondary"
-					href="/settings?plan={compressToEncodedURIComponent(planToml)}">Edit Plan</a
-				>
-				<button class="secondary">Copy to Clipboard</button>
-			</details>
-		{/if}
-
-		<form method="POST">
-			<textarea
-				placeholder="QUERY"
-				rows="2"
-				name="query"
-				bind:value={query}
-				bind:this={textArea}
-				on:focus={handleFocus}
-			/>
-			{#each searchGroups as searchGroup}<div>
-					<button on:click|preventDefault={searchGroup.handleClickAll}
-						>@{searchGroup.name}</button
-					>{#each searchGroup.engines as engine}<button
-							class="secondary"
-							name="lz-plan"
-							value={engine.lzPlan}
-							class:exclude-from-all={engine.getUrlTemplate(query) === ''}
-							on:click|preventDefault={engine.clickHandler}>{engine.name}</button
-						>{/each}
-				</div>{/each}
-		</form>
 	{/if}
+
+	<form method="POST">
+		<textarea
+			placeholder="QUERY"
+			rows="2"
+			name="query"
+			bind:value={query}
+			bind:this={textArea}
+			on:focus={handleFocus}
+		/>
+		{#each searchGroups as searchGroup}<div>
+				<button on:click|preventDefault={searchGroup.handleClickAll}
+					>@{searchGroup.name}</button
+				>{#each searchGroup.engines as engine}<button
+						class="secondary"
+						name="lz-plan"
+						value={engine.lzPlan}
+						class:exclude-from-all={engine.getUrlTemplate(query) === ''}
+						on:click|preventDefault={engine.clickHandler}>{engine.name}</button
+					>{/each}
+			</div>{/each}
+	</form>
 </main>
 
 <style>
@@ -207,5 +205,39 @@
 
 		/* Undo pico css button styling */
 		display: inline;
+	}
+
+	/* Custom styles for the editor */
+	.editor > summary {
+		margin-bottom: 0;
+	}
+
+	.editor > summary > div {
+		display: inline-flex;
+		justify-content: space-between;
+		width: calc(100% - 1.5rem);
+	}
+
+	.editor > summary > div > span:first-child {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.editor > div > button {
+		width: 100%;
+		margin: 0;
+		border-top: solid 1px var(--color);
+		border-radius: 0;
+	}
+
+	.editor > div button:first-child {
+		border-top-left-radius: var(--border-radius);
+		border-top-right-radius: var(--border-radius);
+	}
+	.editor > div button:last-child {
+		border-bottom: solid 1px var(--color);
+		border-bottom-left-radius: var(--border-radius);
+		border-bottom-right-radius: var(--border-radius);
 	}
 </style>
