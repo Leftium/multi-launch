@@ -263,7 +263,7 @@
 
 	.editor header button {
 		display: inline;
-		width: 33%;
+		width: calc(100% / 3);
 		margin: 0;
 		border-left: 1px solid var(--color);
 		border-radius: 0;
