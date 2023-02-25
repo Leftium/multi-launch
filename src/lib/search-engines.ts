@@ -3,6 +3,7 @@ import _ from 'lodash'
 export type UrlTemplateSelector = (query: string) => string
 
 export type SearchEnginePlan = {
+	target?: string
 	noquery?: string
 	link?: string
 	lang_ko?: string
@@ -13,6 +14,7 @@ export type SearchGroupPlans = Record<string, SearchEnginePlan>
 
 export type SearchEngine = {
 	name: string
+	target: string
 	getUrlTemplate: (query: string) => string
 	clickHandler: EventHandler
 }
@@ -55,10 +57,10 @@ type EventHandler = (e: Event) => void
 export const makeSearchGroup = (
 	groupName: string,
 	plans: SearchGroupPlans,
-	makeSearchEngine: (name: string, plan: SearchEnginePlan) => SearchEngine
+	makeSearchEngine: (groupName: string, name: string, plan: SearchEnginePlan) => SearchEngine
 ) => {
 	const engines = _.map(plans, (plan: SearchEnginePlan, name: string) =>
-		makeSearchEngine(name, plan)
+		makeSearchEngine(groupName, name, plan)
 	)
 
 	const handleClickAll = (e: Event) => {

@@ -32,10 +32,17 @@
 		planError = error as Error
 	}
 
-	const makeSearchEngine = (name: string, plan: SE.SearchEnginePlan): SE.SearchEngine => {
+	const makeSearchEngine = (
+		groupName: string,
+		name: string,
+		plan: SE.SearchEnginePlan
+	): SE.SearchEngine => {
 		const getUrlTemplate = SE.makeUrlTemplateSelector(plan)
+		const target = plan.target || `${groupName}.${name}`
+
 		return {
 			name,
+			target,
 			getUrlTemplate,
 			clickHandler: (e: Event) => {
 				const urlTemplate = getUrlTemplate(query)
@@ -45,7 +52,7 @@
 				log('handleClick', url, e)
 
 				if (url !== '') {
-					window.open(url, '_blank')
+					window.open(url, target)
 				}
 			},
 		}
