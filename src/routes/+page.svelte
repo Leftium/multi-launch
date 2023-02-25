@@ -78,6 +78,11 @@
 			e.preventDefault()
 			searchGroups[0].handleClickAll(e)
 		}
+
+		if (e.key === 'Escape') {
+			e.preventDefault()
+			query = ''
+		}
 	}
 
 	const handlePaste = (e: ClipboardEvent) => {
