@@ -1,10 +1,10 @@
 [Translate.Google]
-link = ""
+iflink = ""
 lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
 default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
 
 [Translate.Papago]
-link = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
+iflink = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
 lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
 default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
@@ -87,41 +87,41 @@ default = "https://yandex.com/search/?text=QUERY"
 
 
 [Images.Google]
-link = "https://lens.google.com/uploadbyurl?url=QUERY"
+iflink = "https://lens.google.com/uploadbyurl?url=QUERY"
 default = "https://www.google.com/search?tbm=isch&q=QUERY"
 
 [Images.Naver]
-link = ""
+iflink = ""
 default = "https://search.naver.com/search.naver?where=image&query=QUERY"
 
 [Images.Daum]
-link = ""
+iflink = ""
 default = "https://search.daum.net/search?w=img&q=QUERY"
 
 [Images.Bing]
-link = "https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY"
+iflink = "https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY"
 default = "https://www.bing.com/images/search?q=QUERY"
 
 [Images.Yandex]
-link = "https://yandex.com/images/search?rpt=imageview&url=QUERY"
+iflink = "https://yandex.com/images/search?rpt=imageview&url=QUERY"
 default = "https://yandex.com/images/search?text=QUERY"
 
 [Images.Unsplash]
-link = ""
+iflink = ""
 default = "https://unsplash.com/s/photos/QUERY"
 
 [Images.Pixabay]
-link = ""
+iflink = ""
 default = "https://pixabay.com/images/search/QUERY"
 
 [Images.Pexels]
-link = ""
+iflink = ""
 default = "https://www.pexels.com/search/QUERY/"
 
 [Images.StockUnlimited]
-link = ""
+iflink = ""
 default = "https://www.stockunlimited.com/vector-image/?word=QUERY"
 
 [Images.YayImages]
-link = ""
+iflink = ""
 default = "https://yayimages.com/search?type=-1&phrase=QUERY"

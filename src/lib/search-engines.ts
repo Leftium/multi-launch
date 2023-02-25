@@ -5,7 +5,7 @@ export type UrlTemplateSelector = (query: string) => string
 export type SearchEnginePlan = {
 	target?: string
 	ifquery?: string
-	link?: string
+	iflink?: string
 	lang_ko?: string
 	default: string
 }
@@ -43,7 +43,7 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 		}
 
 		if (urlRegex.test(text)) {
-			urlTemplate = plan.link ?? urlTemplate
+			urlTemplate = plan.iflink ?? urlTemplate
 		}
 
 		if (koreanRegex.test(text)) {
