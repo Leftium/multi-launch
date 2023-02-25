@@ -8,7 +8,7 @@ const { decompressFromEncodedURIComponent } = lzString
 import * as SE from '$lib/search-engines'
 
 export const actions = {
-	default: async ({ request }) => {
+	launch: async ({ request }) => {
 		const data = await request.formData()
 		const query = data.get('query') as string
 		const planText =
@@ -34,6 +34,7 @@ export const actions = {
 
 		throw redirect(303, url)
 	},
+	edit: async ({ request }) => {},
 } satisfies Actions
 
 export const load = (async () => {

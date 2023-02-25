@@ -118,37 +118,56 @@
 
 <main class="container">
 	{#if planToml}
-		<details class="editor">
-			<!-- svelte-ignore a11y-no-redundant-roles -->
-			<summary role="button" class="contrast">
-				<div>
-					<span class:error={planError}>
-						URL Launch Plan{#if planError}. {planError.name}: {planError.message}{/if}</span
-					>
-					<span>Edit</span>
-				</div>
-			</summary>
-			<div>
-				<button>Save as Current Plan</button>
-				<button class="secondary">Append to Current Plan</button>
-				<button class="secondary">Copy to Clipboard</button>
-			</div>
-			{#if planError}
-				<div class="error">
-					{planError.name}: {planError.message}
-				</div>
-			{/if}
-			<pre>{planToml}</pre>
-		</details>
+		<form method="POST" action="?/edit">
+			<details class="editor" open>
+				<!-- svelte-ignore a11y-no-redundant-roles -->
+				<summary role="button" class="contrast">
+					<div>
+						<span>
+							URL Launch Plan{#if planError}:
+								<span class="error">
+									{planError.name}!
+								</span>
+							{/if}
+						</span>
+						<span>Edit</span>
+					</div>
+				</summary>
 
-		<a
-			role="button"
-			class="full-width secondary"
-			href="/settings?plan={compressToEncodedURIComponent(planToml)}">Edit Plan</a
-		>
+				<article>
+					<header>
+						<div>
+							<button>Save</button><button class="secondary">Append</button><button
+								class="secondary">Copy</button
+							>
+						</div>
+					</header>
+					{#if planError}
+						<header class="error">
+							<div>
+								{planError.name}: {planError.message}
+							</div>
+						</header>
+					{/if}
+					<textarea rows="40">{planToml}</textarea>
+					<footer
+						style:margin-top="var(--spacing)"
+						style:padding="var(--spacing);"
+						style:margin-bottom="var(--spacing);"
+					>
+						<a
+							role="button"
+							class="full-width secondary"
+							href="/settings?plan={compressToEncodedURIComponent(planToml)}"
+							style:margin-bottom="0">Edit Plan</a
+						>
+					</footer>
+				</article>
+			</details>
+		</form>
 	{/if}
 
-	<form method="POST">
+	<form method="POST" action="?/launch">
 		<textarea
 			placeholder="QUERY"
 			rows="2"
@@ -189,8 +208,26 @@
 		margin-bottom: var(--spacing);
 	}
 
-	details pre {
+	details header {
+		margin-bottom: var(--spacing);
+	}
+
+	details header,
+	details footer {
+		margin-right: calc(var(--spacing) * -1);
+		margin-left: calc(var(--spacing) * -1);
+		padding: var(--spacing);
+	}
+
+	details > article {
+		margin-top: 0;
+		padding-right: var(--spacing);
+		padding-left: var(--spacing);
+	}
+
+	details textarea {
 		max-height: 40vh;
+		margin-bottom: 0;
 	}
 
 	div button {
@@ -224,20 +261,21 @@
 		text-overflow: ellipsis;
 	}
 
-	.editor > div > button {
-		width: 100%;
+	.editor header button {
+		display: inline;
+		width: 33%;
 		margin: 0;
-		border-top: solid 1px var(--color);
+		border-left: 1px solid var(--color);
 		border-radius: 0;
 	}
 
-	.editor > div button:first-child {
+	.editor header button:first-child {
+		border-left: none;
 		border-top-left-radius: var(--border-radius);
-		border-top-right-radius: var(--border-radius);
-	}
-	.editor > div button:last-child {
-		border-bottom: solid 1px var(--color);
 		border-bottom-left-radius: var(--border-radius);
+	}
+	.editor header button:last-child {
+		border-top-right-radius: var(--border-radius);
 		border-bottom-right-radius: var(--border-radius);
 	}
 </style>
