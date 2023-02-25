@@ -4,7 +4,7 @@ export type UrlTemplateSelector = (query: string) => string
 
 export type SearchEnginePlan = {
 	target?: string
-	noquery?: string
+	ifquery?: string
 	link?: string
 	lang_ko?: string
 	default: string
@@ -38,6 +38,10 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 
 		let urlTemplate = plan.default
 
+		if (text) {
+			urlTemplate = plan.ifquery ?? urlTemplate
+		}
+
 		if (urlRegex.test(text)) {
 			urlTemplate = plan.link ?? urlTemplate
 		}
@@ -46,9 +50,6 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 			urlTemplate = plan.lang_ko ?? urlTemplate
 		}
 
-		if (text === '') {
-			urlTemplate = plan.noquery ?? urlTemplate
-		}
 		return urlTemplate
 	}
 }

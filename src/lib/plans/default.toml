@@ -10,23 +10,23 @@ default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
 
 [Svelte.Discord]
-noquery = "https://discord.com/channels/457912077277855764/"
-default = ""
+ifquery = ""
+default = "https://discord.com/channels/457912077277855764/"
 
 [Svelte.Reddit]
-noquery = "https://www.reddit.com/r/sveltejs/new/"
-default = "https://www.reddit.com/r/sveltejs/search/?q=QUERY"
+ifquery = "https://www.reddit.com/r/sveltejs/search/?q=QUERY"
+default = "https://www.reddit.com/r/sveltejs/new/"
 
 [Svelte.StackOverflow]
 default = "https://stackoverflow.com/search?q=%5Bsveltekit%5D+%5Bsvelte%5D+QUERY"
 
 [Svelte."Kit Docs"]
-noquery = 'https://kit.svelte.dev/docs/introduction'
-default = ''
+ifquery = ''
+default = 'https://kit.svelte.dev/docs/introduction'
 
 [Svelte."Svelte Docs"]
-noquery = 'https://svelte.dev/docs'
-default = ''
+ifquery = ''
+default = 'https://svelte.dev/docs'
 
 
 [Links.Digg]
