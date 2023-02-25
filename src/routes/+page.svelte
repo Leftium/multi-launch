@@ -47,7 +47,9 @@
 			target,
 			lzPlan: lzPlan,
 			getUrlTemplate,
-			clickHandler: (e: Event, isClickAll = false) => {
+			clickHandler: (event: Event, isClickAll = false) => {
+				const e = event as MouseEvent
+
 				let urlTemplate = getUrlTemplate(query)
 				if (!isClickAll) {
 					urlTemplate ||= plan.default
@@ -56,10 +58,10 @@
 				const queryTrimmedEncoded = encodeURIComponent(query.trim())
 				const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
 
-				log('handleClick', url, e)
-
+				const targetTabName = isClickAll || e.shiftKey || e.ctrlKey ? target : '_self'
+				log('handleClick', targetTabName, e)
 				if (url !== '') {
-					window.open(url, target)
+					window.open(url, targetTabName)
 				}
 			},
 		}
