@@ -79,8 +79,6 @@
 	}
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		log('handleKeydown', e)
-
 		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault()
 			searchGroups[0].handleClickAll(e)
