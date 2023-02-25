@@ -11,7 +11,7 @@
 	let text =
 		planToml ||
 		`[Svelte.Discord]
-noquery = "https://discord.com/channels/457912077277855764/1060332203571151019"
+noquery = "https://discord.com/channels/457912077277855764/"
 default = ""
 
 [Svelte.Reddit]
