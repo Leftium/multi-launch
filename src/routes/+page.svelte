@@ -265,6 +265,12 @@
 		padding-left: var(--spacing);
 	}
 
+	main textarea {
+		font-family: 'Menlo', 'Consolas', 'Roboto Mono', 'Ubuntu Monospace', 'Noto Mono',
+			'Oxygen Mono', 'Liberation Mono', monospace, 'Apple Color Emoji', 'Segoe UI Emoji',
+			'Segoe UI Symbol', 'Noto Color Emoji';
+	}
+
 	details textarea,
 	.wrap-textarea {
 		max-height: 40vh;
