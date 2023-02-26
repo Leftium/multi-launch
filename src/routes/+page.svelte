@@ -174,7 +174,7 @@
 							</div>
 						</header>
 					{/if}
-					<textarea rows="40">{planToml}</textarea>
+					<textarea rows="40" spellcheck="false">{planToml}</textarea>
 					<footer
 						style:margin-top="var(--spacing)"
 						style:padding="var(--spacing);"
@@ -195,8 +195,9 @@
 	<form method="POST" action="?/launch">
 		<textarea
 			placeholder="QUERY"
-			rows="2"
 			name="query"
+			rows="2"
+			spellcheck="false"
 			bind:value={query}
 			bind:this={textArea}
 			on:focus={handleFocus}
