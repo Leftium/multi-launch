@@ -265,7 +265,7 @@
 		display: inline;
 		width: calc(100% / 3);
 		margin: 0;
-		border-left: 1px solid var(--color);
+		border-left: 1px solid var(--muted-border-color);
 		border-radius: 0;
 	}
 
@@ -275,6 +275,7 @@
 		border-bottom-left-radius: var(--border-radius);
 	}
 	.editor header button:last-child {
+		border-right: none;
 		border-top-right-radius: var(--border-radius);
 		border-bottom-right-radius: var(--border-radius);
 	}
