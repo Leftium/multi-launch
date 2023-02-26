@@ -108,7 +108,7 @@
 	}
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === 'Enter') {
+		if (e.altKey && e.key === 'Enter') {
 			e.preventDefault()
 			searchGroups[0].handleClickAll(e)
 		}
