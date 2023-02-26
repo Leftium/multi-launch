@@ -17,22 +17,6 @@
 
 	import { didBeforeNavigate } from '$lib/stores'
 
-	const TEXT_INPUT_TYPES = [
-		'text',
-		'password',
-		'number',
-		'email',
-		'tel',
-		'url',
-		'search',
-		'date',
-		'datetime',
-		'datetime-local',
-		'time',
-		'month',
-		'week',
-	]
-
 	// Bindings:
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
@@ -46,6 +30,33 @@
 		planJson = TOML.parse(planToml)
 	} catch (error) {
 		planError = error as Error
+	}
+
+	const isTextInputElement = (element: Element | null) => {
+		if (element === null) {
+			return false
+		}
+
+		const TEXT_INPUT_TYPES = [
+			'text',
+			'password',
+			'number',
+			'email',
+			'tel',
+			'url',
+			'search',
+			'date',
+			'datetime',
+			'datetime-local',
+			'time',
+			'month',
+			'week',
+		]
+		const htmlInputElement = element as HTMLInputElement
+		const tagName = htmlInputElement?.tagName?.toLowerCase()
+		const type = htmlInputElement?.type?.toLowerCase()
+
+		return tagName === 'textarea' || tagName === 'input' || TEXT_INPUT_TYPES.includes(type)
 	}
 
 	const makeSearchEngine = (
@@ -97,30 +108,28 @@
 	}
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === 'Enter' && !e.shiftKey) {
+		if (e.altKey && e.key === 'Enter') {
 			e.preventDefault()
 			searchGroups[0].handleClickAll(e)
 		}
 
-		if (e.key === 'Escape') {
+		if (e.shiftKey && ['Delete', 'Backspace'].includes(e.key)) {
 			e.preventDefault()
 			query = ''
 		}
 
-		if (textArea) {
-			const activeElement = document.activeElement as HTMLInputElement
-			const tagName = activeElement?.tagName?.toLowerCase()
-			const type = activeElement?.type?.toLowerCase()
-			if (tagName !== 'textarea' && tagName !== 'input' && !TEXT_INPUT_TYPES.includes(type)) {
-				textArea.focus()
-			}
+		if (
+			textArea &&
+			!(e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) &&
+			!isTextInputElement(document.activeElement)
+		) {
+			textArea.focus()
 		}
 	}
 
 	const handlePaste = (e: ClipboardEvent) => {
-		let text = e.clipboardData?.getData('text')
-		log('handlePaste', text, e)
-		if (text) {
+		const text = e.clipboardData?.getData('text')
+		if (text && !isTextInputElement(document.activeElement)) {
 			e.preventDefault()
 			query = text
 		}
@@ -174,7 +183,10 @@
 							</div>
 						</header>
 					{/if}
-					<textarea rows="40" spellcheck="false">{planToml}</textarea>
+					<div class="wrap-textarea">
+						<textarea rows="80" spellcheck="false">{planToml}</textarea>
+					</div>
+
 					<footer
 						style:margin-top="var(--spacing)"
 						style:padding="var(--spacing);"
@@ -193,15 +205,17 @@
 	{/if}
 
 	<form method="POST" action="?/launch">
-		<textarea
-			placeholder="QUERY"
-			name="query"
-			rows="2"
-			spellcheck="false"
-			bind:value={query}
-			bind:this={textArea}
-			on:focus={handleFocus}
-		/>
+		<div class="wrap-textarea">
+			<textarea
+				placeholder="QUERY"
+				name="query"
+				rows="1"
+				spellcheck="false"
+				bind:value={query}
+				bind:this={textArea}
+				on:focus={handleFocus}
+			/>
+		</div>
 		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
 					>@{searchGroup.name}</button
@@ -251,7 +265,8 @@
 		padding-left: var(--spacing);
 	}
 
-	details textarea {
+	details textarea,
+	.wrap-textarea {
 		max-height: 40vh;
 		margin-bottom: 0;
 	}
@@ -268,6 +283,26 @@
 
 		/* Undo pico css button styling */
 		display: inline;
+	}
+
+	textarea:focus,
+	.wrap-textarea:focus-within {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+		margin: 0;
+		border: 0;
+		border-radius: 0;
+
+		z-index: 10000;
+
+		max-height: 100vh;
+		background: var(--background-color);
+
+		transition: background 100ms linear 0s;
 	}
 
 	/* Custom styles for the editor */
