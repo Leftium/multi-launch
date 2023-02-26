@@ -17,6 +17,22 @@
 
 	import { didBeforeNavigate } from '$lib/stores'
 
+	const TEXT_INPUT_TYPES = [
+		'text',
+		'password',
+		'number',
+		'email',
+		'tel',
+		'url',
+		'search',
+		'date',
+		'datetime',
+		'datetime-local',
+		'time',
+		'month',
+		'week',
+	]
+
 	// Bindings:
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
@@ -89,6 +105,15 @@
 		if (e.key === 'Escape') {
 			e.preventDefault()
 			query = ''
+		}
+
+		if (textArea) {
+			const activeElement = document.activeElement as HTMLInputElement
+			const tagName = activeElement?.tagName?.toLowerCase()
+			const type = activeElement?.type?.toLowerCase()
+			if (tagName !== 'textarea' && tagName !== 'input' && !TEXT_INPUT_TYPES.includes(type)) {
+				textArea.focus()
+			}
 		}
 	}
 
