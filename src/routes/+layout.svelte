@@ -5,7 +5,7 @@
 	const log = debugFactory('log')
 
 	import { beforeNavigate } from '$app/navigation'
-	
+
 	import { didBeforeNavigate } from '$lib/stores'
 
 	beforeNavigate((navigation) => {
@@ -14,16 +14,22 @@
 	})
 </script>
 
-<nav class="container">
-	<h1>
-		<a class="brand" href="/">MultiLaunch</a>
-		<small><a href="/settings">Settings</a> <a href="/doc">Help&Tips</a></small>
-	</h1>
-</nav>
+<div>
+	<nav class="container">
+		<h1>
+			<a class="brand" href="/">MultiLaunch</a>
+			<small><a href="/settings">Settings</a> <a href="/doc">Help&Tips</a></small>
+		</h1>
+	</nav>
 
-<slot />
+	<slot />
+</div>
 
 <style>
+	div {
+		padding-left: calc(100vw - 100%);
+	}
+
 	.brand {
 		color: var(--primary-color);
 		text-decoration: none;
