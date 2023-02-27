@@ -218,13 +218,14 @@
 		</div>
 		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
-					>⚡ {searchGroup.name}
+					>🚀 {searchGroup.name}
 				</button>{#each searchGroup.engines as engine}<button
 						class="secondary"
 						name="lz-plan"
 						value={engine.lzPlan}
 						class:exclude-from-all={engine.getUrlTemplate(query) === ''}
-						on:click|preventDefault={engine.clickHandler}>🚀 {engine.name}</button
+						on:click|preventDefault={engine.clickHandler}
+						><span style:visibility={'hidden'}>🚀</span> {engine.name}</button
 					>{/each}
 			</div>{/each}
 	</form>
