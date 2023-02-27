@@ -4,6 +4,7 @@ export type UrlTemplateSelector = (query: string) => string
 
 export type SearchEnginePlan = {
 	target?: string
+	exclude?: boolean
 	ifquery?: string
 	iflink?: string
 	lang_ko?: string
@@ -15,6 +16,7 @@ export type SearchGroupPlans = Record<string, SearchEnginePlan>
 export type SearchEngine = {
 	name: string
 	target: string
+	exclude: boolean
 	lzPlan: string
 	getUrlTemplate: (query: string) => string
 	clickHandler: EventHandler

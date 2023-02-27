@@ -66,12 +66,14 @@
 	): SE.SearchEngine => {
 		const getUrlTemplate = SE.makeUrlTemplateSelector(plan)
 		const target = plan.target || `${groupName}.${name}`
+		const exclude = !!plan?.exclude
 
 		const lzPlan = compressToEncodedURIComponent(JSON.stringify(plan))
 
 		return {
 			name,
 			target,
+			exclude,
 			lzPlan: lzPlan,
 			getUrlTemplate,
 			clickHandler: (event: Event, isClickAll = false) => {
@@ -223,9 +225,10 @@
 						class="secondary"
 						name="lz-plan"
 						value={engine.lzPlan}
-						class:exclude-from-all={engine.getUrlTemplate(query) === ''}
+						class:exclude-from-all={engine.exclude || !engine.getUrlTemplate(query)}
 						on:click|preventDefault={engine.clickHandler}
-						><span style:visibility={'hidden'}>🚀</span> {engine.name}</button
+						><span style:visibility={engine.exclude ? '' : 'hidden'}>🚫</span>
+						{engine.name}</button
 					>{/each}
 			</div>{/each}
 	</form>

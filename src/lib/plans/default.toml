@@ -21,10 +21,12 @@ default = "https://www.reddit.com/r/sveltejs/new/"
 default = "https://stackoverflow.com/search?q=%5Bsveltekit%5D+%5Bsvelte%5D+QUERY"
 
 [Svelte."Kit Docs"]
+exclude = true
 ifquery = ''
 default = 'https://kit.svelte.dev/docs/introduction'
 
 [Svelte."Svelte Docs"]
+exclude = true
 ifquery = ''
 default = 'https://svelte.dev/docs'
 
