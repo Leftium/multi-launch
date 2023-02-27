@@ -217,14 +217,14 @@
 			/>
 		</div>
 		{#each searchGroups as searchGroup}<div>
-				<button on:click|preventDefault={searchGroup.handleClickAll}>
-					{searchGroup.name} 🚀
+				<button on:click|preventDefault={searchGroup.handleClickAll}
+					>⚡ {searchGroup.name}
 				</button>{#each searchGroup.engines as engine}<button
 						class="secondary"
 						name="lz-plan"
 						value={engine.lzPlan}
 						class:exclude-from-all={engine.getUrlTemplate(query) === ''}
-						on:click|preventDefault={engine.clickHandler}>{engine.name}</button
+						on:click|preventDefault={engine.clickHandler}>🚀 {engine.name}</button
 					>{/each}
 			</div>{/each}
 	</form>
@@ -278,17 +278,43 @@
 	}
 
 	div button {
-		width: 6.94rem;
-		margin: 0.1rem;
+		width: calc(100% / 2);
 
-		font-size: 0.9rem;
+		border-right: 1px solid var(--muted-border-color);
+		border-top: 1px solid var(--muted-border-color);
+		border-radius: 0;
+
+		margin: 0;
+
+		overflow: hidden;
+
+		text-align: left;
 		white-space: nowrap;
-
-		padding-left: 0.3rem;
-		padding-right: 0.3rem;
+		text-overflow: ellipsis;
 
 		/* Undo pico css button styling */
 		display: inline;
+	}
+
+	@media (min-width: 576px) {
+		div button {
+			width: calc(100% / 3);
+		}
+	}
+	@media (min-width: 768px) {
+		div button {
+			width: calc(100% / 4);
+		}
+	}
+	@media (min-width: 992px) {
+		div button {
+			width: calc(100% / 5);
+		}
+	}
+	@media (min-width: 1200px) {
+		div button {
+			width: calc(100% / 6);
+		}
 	}
 
 	textarea:focus,
