@@ -185,7 +185,7 @@
 							</div>
 						</header>
 					{/if}
-					<div class="wrap-textarea">
+					<div class="wrap-textarea fullscreen">
 						<textarea rows="80" spellcheck="false">{planToml}</textarea>
 					</div>
 
@@ -321,8 +321,8 @@
 		}
 	}
 
-	textarea:focus,
-	.wrap-textarea:focus-within {
+	.fullscreen textarea:focus,
+	.wrap-textarea:focus-within.fullscreen {
 		position: fixed;
 		top: 0;
 		bottom: 0;
