@@ -28,6 +28,7 @@
 <style>
 	div {
 		padding-left: calc(100vw - 100%);
+		overflow-x: hidden;
 	}
 
 	.brand {
