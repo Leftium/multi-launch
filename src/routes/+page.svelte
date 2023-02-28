@@ -351,6 +351,10 @@
 		}
 	}
 
+	div button:first-child {
+		width: 100%;
+	}
+
 	.fullscreen textarea:focus,
 	.wrap-textarea:focus-within.fullscreen {
 		position: fixed;
