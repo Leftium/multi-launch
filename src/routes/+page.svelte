@@ -218,7 +218,8 @@
 		</div>
 		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
-					><span class="button-text">🚀 {searchGroup.name}</span></button
+					><span class="button-text"><span class="icon">🚀</span> {searchGroup.name}</span
+					></button
 				>{#each searchGroup.engines as engine}<button
 						class="secondary"
 						name="lz-plan"
@@ -228,7 +229,7 @@
 						on:click|preventDefault={engine.clickHandler}
 						><span class="button-text"
 							><span style:visibility={engine.exclude ? '' : 'hidden'}
-								>🚫
+								><span class="icon">🚫</span>
 							</span>{engine.name}</span
 						></button
 					>{/each}
@@ -323,6 +324,10 @@
 		text-align: left;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+
+	.button-text .icon {
+		filter: grayscale(100%);
 	}
 
 	@media (min-width: 576px) {
