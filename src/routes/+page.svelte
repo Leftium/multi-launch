@@ -218,7 +218,7 @@
 		</div>
 		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
-					><span class="button-text"><span class="icon">🚀</span> {searchGroup.name}</span
+					><span class="button-text"><span class="icon">⚡</span> {searchGroup.name}</span
 					></button
 				>{#each searchGroup.engines as engine}<button
 						class="secondary"
