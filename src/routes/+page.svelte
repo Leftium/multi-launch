@@ -217,8 +217,8 @@
 		</div>
 		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
-					><span class="button-text">🚀 {searchGroup.name}</span>
-				</button>{#each searchGroup.engines as engine}<button
+					><span class="button-text">🚀 {searchGroup.name}</span></button
+				>{#each searchGroup.engines as engine}<button
 						class="secondary"
 						name="lz-plan"
 						value={engine.lzPlan}
@@ -226,8 +226,9 @@
 						data-tooltip={decodeURI(engine.getUrlTemplate(query, true))}
 						on:click|preventDefault={engine.clickHandler}
 						><span class="button-text"
-							><span style:visibility={engine.exclude ? '' : 'hidden'}>🚫</span
-							>{engine.name}</span
+							><span style:visibility={engine.exclude ? '' : 'hidden'}
+								>🚫
+							</span>{engine.name}</span
 						></button
 					>{/each}
 			</div>{/each}
