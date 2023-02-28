@@ -208,6 +208,7 @@
 			<textarea
 				placeholder="QUERY"
 				name="query"
+				class="query"
 				rows="1"
 				spellcheck="false"
 				bind:value={query}
@@ -283,6 +284,11 @@
 	.wrap-textarea {
 		max-height: 40vh;
 		margin-bottom: 0;
+	}
+
+	textarea.query {
+		border-radius: 5rem;
+		resize: none;
 	}
 
 	div button {
