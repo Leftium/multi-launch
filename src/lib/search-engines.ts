@@ -18,7 +18,7 @@ export type SearchEngine = {
 	target: string
 	exclude: boolean
 	lzPlan: string
-	getUrlTemplate: (query: string) => string
+	getUrlTemplate: (query: string, avoidEmptyUrl?: boolean) => string
 	clickHandler: EventHandler
 }
 
@@ -35,7 +35,7 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 	const urlRegex = /^https?:/iu
 	const koreanRegex = /[\u3131-\uD79D]/giu // https://stackoverflow.com/a/38156301/117030
 
-	return (text: string) => {
+	return (text: string, avoidEmptyUrl = false) => {
 		text = text.trim()
 
 		let urlTemplate = plan.default
@@ -50,6 +50,10 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 
 		if (koreanRegex.test(text)) {
 			urlTemplate = plan.lang_ko ?? urlTemplate
+		}
+
+		if (urlTemplate === '' && avoidEmptyUrl) {
+			urlTemplate = plan.default
 		}
 
 		return urlTemplate

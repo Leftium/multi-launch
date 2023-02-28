@@ -79,10 +79,7 @@
 			clickHandler: (event: Event, isClickAll = false) => {
 				const e = event as MouseEvent
 
-				let urlTemplate = getUrlTemplate(query)
-				if (!isClickAll) {
-					urlTemplate ||= plan.default
-				}
+				let urlTemplate = getUrlTemplate(query, isClickAll)
 
 				const queryTrimmedEncoded = encodeURIComponent(query.trim())
 				const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
@@ -226,9 +223,12 @@
 						name="lz-plan"
 						value={engine.lzPlan}
 						class:exclude-from-all={engine.exclude || !engine.getUrlTemplate(query)}
+						data-tooltip={decodeURI(engine.getUrlTemplate(query, true))}
 						on:click|preventDefault={engine.clickHandler}
-						><span style:visibility={engine.exclude ? '' : 'hidden'}>🚫</span>
-						{engine.name}</button
+						><span class="button-text"
+							><span style:visibility={engine.exclude ? '' : 'hidden'}>🚫</span
+							>{engine.name}</span
+						></button
 					>{/each}
 			</div>{/each}
 	</form>
@@ -244,7 +244,10 @@
 	}
 
 	.exclude-from-all {
-		opacity: 0.5;
+		/* TODO: Don't hardcode color */
+		background-color: hsl(205 15% 41% / 0.5);
+		border-bottom-color: hsl(205 15% 41% / 0.5);
+		border-left-color: hsl(205 15% 41% / 0.5);
 	}
 
 	.full-width {
@@ -290,14 +293,19 @@
 
 		margin: 0;
 
-		overflow: hidden;
+		/* Undo pico css button styling */
+		display: inline;
+	}
+
+	div button .button-text {
+		display: inline-block;
+		width: 100%;
+
+		overflow-x: clip;
 
 		text-align: left;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-
-		/* Undo pico css button styling */
-		display: inline;
 	}
 
 	@media (min-width: 576px) {
