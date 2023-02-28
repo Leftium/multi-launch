@@ -147,7 +147,7 @@
 	<title>MultiLaunch{query ? ` — ${query}` : ''}</title>
 </svelte:head>
 
-<svelte:body on:paste={handlePaste} data-theme="dark" />
+<svelte:body on:paste={handlePaste} />
 
 <main class="container">
 	{#if planToml}
