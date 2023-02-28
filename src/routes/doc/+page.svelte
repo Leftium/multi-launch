@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '@picocss/pico'
 	import Doc from './doc.md'
 </script>
 

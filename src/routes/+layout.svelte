@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '@picocss/pico'
+	import '../app.scss'
 
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
