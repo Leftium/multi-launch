@@ -217,7 +217,7 @@
 		</div>
 		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
-					>🚀 {searchGroup.name}
+					><span class="button-text">🚀 {searchGroup.name}</span>
 				</button>{#each searchGroup.engines as engine}<button
 						class="secondary"
 						name="lz-plan"
