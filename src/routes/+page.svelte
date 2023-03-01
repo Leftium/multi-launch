@@ -226,8 +226,9 @@
 						class="secondary"
 						name="lz-plan"
 						value={engine.lzPlan}
-						class:exclude-from-all={engine.exclude || !engine.getUrlTemplate(query)}
-						data-tooltip={decodeURI(engine.getUrlTemplate(query, true))}
+						class:exclude-from-all={engine.exclude ||
+							!engine.getUrlTemplate(query, true)}
+						data-tooltip={decodeURI(engine.getUrlTemplate(query))}
 						on:click|preventDefault={engine.clickHandler}
 						><span class="button-text"
 							><span style:visibility={engine.exclude ? '' : 'hidden'}

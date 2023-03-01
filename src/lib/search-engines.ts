@@ -35,7 +35,7 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 	const urlRegex = /^https?:/iu
 	const koreanRegex = /[\u3131-\uD79D]/giu // https://stackoverflow.com/a/38156301/117030
 
-	return (text: string, avoidEmptyUrl = false) => {
+	return (text: string, isClickAll = false) => {
 		text = text.trim()
 
 		let urlTemplate = plan.default
@@ -52,7 +52,7 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 			urlTemplate = plan.lang_ko ?? urlTemplate
 		}
 
-		if (urlTemplate === '' && avoidEmptyUrl) {
+		if (urlTemplate === '' && !isClickAll) {
 			urlTemplate = plan.default
 		}
 
