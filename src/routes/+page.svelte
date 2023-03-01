@@ -330,29 +330,32 @@
 		filter: grayscale(100%);
 	}
 
+	div button:first-child {
+		width: 100%;
+	}
+
 	@media (min-width: 576px) {
 		div button {
 			width: calc(100% / 3);
 		}
 	}
 	@media (min-width: 768px) {
+		div button:first-child,
 		div button {
 			width: calc(100% / 4);
 		}
 	}
 	@media (min-width: 992px) {
+		div button:first-child,
 		div button {
 			width: calc(100% / 5);
 		}
 	}
 	@media (min-width: 1200px) {
+		div button:first-child,
 		div button {
 			width: calc(100% / 6);
 		}
-	}
-
-	div button:first-child {
-		width: 100%;
 	}
 
 	.fullscreen textarea:focus,
