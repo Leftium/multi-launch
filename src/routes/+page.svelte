@@ -86,8 +86,10 @@
 
 				const targetTabName = isClickAll || e.shiftKey || e.ctrlKey ? target : '_self'
 				log('handleClick', targetTabName, e)
-				if (url !== '') {
-					window.open(url, targetTabName)
+				if (!exclude || !isClickAll) {
+					if (url !== '') {
+						window.open(url, targetTabName)
+					}
 				}
 			},
 		}
