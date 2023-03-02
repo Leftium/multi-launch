@@ -246,7 +246,7 @@
 						value={engine.lzPlan}
 						class:exclude-from-all={engine.exclude ||
 							!engine.getUrlTemplate(query, true)}
-						data-tooltip={decodeURI(engine.getUrlTemplate(query))}
+						data-tooltip={`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`}
 						on:click|preventDefault={engine.clickHandler}
 						><span class="button-text"
 							><span style:visibility={engine.exclude ? '' : 'hidden'}
@@ -377,6 +377,11 @@
 		div button {
 			width: calc(100% / 6);
 		}
+	}
+
+	[data-tooltip]::before {
+		text-align: left;
+		white-space: pre;
 	}
 
 	.wrap-textarea:focus-within.fullscreen {
