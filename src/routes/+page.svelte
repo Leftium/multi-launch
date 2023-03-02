@@ -121,6 +121,7 @@
 
 		if (
 			textArea &&
+			e.key !== 'Tab' &&
 			!(e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) &&
 			!isTextInputElement(document.activeElement)
 		) {
