@@ -109,6 +109,7 @@
 	}
 
 	const handleKeydown = (e: KeyboardEvent) => {
+		const parentElement = (e.target as HTMLTextAreaElement).parentElement
 		if ((e.altKey || e.ctrlKey) && e.key === 'Enter') {
 			e.preventDefault()
 			searchGroups[0].handleClickAll(e)
@@ -117,6 +118,7 @@
 		if (e.shiftKey && ['Delete', 'Backspace'].includes(e.key)) {
 			e.preventDefault()
 			query = ''
+			parentElement?.classList.remove('fullscreen')
 		}
 
 		if (
