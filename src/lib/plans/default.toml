@@ -63,12 +63,15 @@ default = "https://shoppinghow.kakao.com/search/QUERY"
 default = "http://www.enuri.com/search.jsp?keyword=QUERY"
 
 [Shopping."중고나라"]
+exclude = true
 default = "https://web.joongna.com/search/QUERY"
 
 [Shopping."중고나라 카페"]
+exclude = true
 default = "http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchBy=0%26search.query=QUERY"
 
 [Shopping.Homeplus]
+exclude = true
 default = "https://front.homeplus.co.kr/search?keyword=QUERY"
 
 
