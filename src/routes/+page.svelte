@@ -128,6 +128,18 @@
 		}
 	}
 
+	const handleTextareaKeydown = (e: KeyboardEvent) => {
+		const parentElement = (e.target as HTMLTextAreaElement).parentElement
+		if (e.key === 'Enter') {
+			if (e.shiftKey) {
+				e.preventDefault()
+				parentElement?.classList.toggle('fullscreen')
+			} else if ((e.target as HTMLTextAreaElement).classList.contains('query')) {
+				parentElement?.classList.add('fullscreen')
+			}
+		}
+	}
+
 	const handlePaste = (e: ClipboardEvent) => {
 		const text = e.clipboardData?.getData('text')
 		if (text && !isTextInputElement(document.activeElement)) {
@@ -185,7 +197,9 @@
 						</header>
 					{/if}
 					<div class="wrap-textarea fullscreen">
-						<textarea rows="80" spellcheck="false">{planToml}</textarea>
+						<textarea rows="80" spellcheck="false" on:keydown={handleTextareaKeydown}
+							>{planToml}</textarea
+						>
 					</div>
 
 					<footer
@@ -216,6 +230,7 @@
 				bind:value={query}
 				bind:this={textArea}
 				on:focus={handleFocus}
+				on:keydown={handleTextareaKeydown}
 			/>
 		</div>
 		{#each searchGroups as searchGroup}<div>
@@ -361,6 +376,13 @@
 		}
 	}
 
+	.wrap-textarea:focus-within.fullscreen {
+		transition: background 200ms linear 0s;
+	}
+	main textarea {
+		transition: none;
+	}
+
 	.fullscreen textarea:focus,
 	.wrap-textarea:focus-within.fullscreen {
 		position: fixed;
@@ -372,13 +394,10 @@
 		margin: 0;
 		border: 0;
 		border-radius: 0;
-
 		z-index: 10000;
 
 		max-height: 100vh;
 		background: var(--background-color);
-
-		transition: background 100ms linear 0s;
 	}
 
 	/* Custom styles for the editor */
