@@ -141,6 +141,10 @@
 				parentElement?.classList.add('fullscreen')
 			}
 		}
+
+		if (e.key === 'Backspace' && (e.target as HTMLTextAreaElement).selectionEnd === 0) {
+			parentElement?.classList.remove('fullscreen')
+		}
 	}
 
 	const handlePaste = (e: ClipboardEvent) => {
