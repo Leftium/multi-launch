@@ -165,6 +165,10 @@
 	}
 
 	onMount(() => {
+		if ('virtualKeyboard' in navigator) {
+			navigator.virtualKeyboard.overlaysContent = true
+		}
+
 		window.addEventListener('keydown', handleKeydown)
 
 		return () => {
@@ -413,6 +417,8 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
+
+		margin-bottom: calc(20px + env(keyboard-inset-height));
 
 		overflow: hidden;
 
