@@ -85,7 +85,7 @@
 
 				let urlTemplate = getUrlTemplate(query, isClickAll)
 
-				const queryTrimmedEncoded = encodeURIComponent(query.trim())
+				const queryTrimmedEncoded = encodeURIComponent(query?.trim())
 				const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
 
 				const targetTabName = isClickAll || e.shiftKey || e.ctrlKey ? target : '_self'
@@ -254,9 +254,8 @@
 			/>
 			<div>
 				<span class="wordcount" hidden use:needsJs>
-					<span>Chars:</span><span>{query.trim().length}</span> <span>Words:</span><span
-						>{query.split(/\S+/).length - 1}</span
-					>
+					<span>Chars:</span><span>{query?.trim().length}</span>
+					<span>Words:</span><span>{query?.split(/\S+/).length - 1}</span>
 				</span>
 			</div>
 		</div>
@@ -417,8 +416,6 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-
-		margin-bottom: calc(20px + env(keyboard-inset-height));
 
 		overflow: hidden;
 
