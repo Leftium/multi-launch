@@ -26,6 +26,10 @@
 	let planJson
 	let planError: Error
 
+	const needsJs = (node: HTMLElement) => {
+		node.hidden = false
+	}
+
 	try {
 		planJson = TOML.parse(planToml)
 	} catch (error) {
@@ -145,6 +149,11 @@
 		if (e.key === 'Backspace' && (e.target as HTMLTextAreaElement).selectionEnd === 0) {
 			parentElement?.classList.remove('fullscreen')
 		}
+
+		if (e.key === 'Escape') {
+			e.stopPropagation()
+			textArea.blur()
+		}
 	}
 
 	const handlePaste = (e: ClipboardEvent) => {
@@ -239,6 +248,13 @@
 				on:focus={handleFocus}
 				on:keydown={handleTextareaKeydown}
 			/>
+			<div>
+				<span class="wordcount" hidden use:needsJs>
+					<span>Chars:</span><span>{query.trim().length}</span> <span>Words:</span><span
+						>{query.split(/\S+/).length - 1}</span
+					>
+				</span>
+			</div>
 		</div>
 		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
@@ -389,24 +405,49 @@
 	}
 
 	.wrap-textarea:focus-within.fullscreen {
-		transition: background 200ms linear 0s;
-	}
-	main textarea {
-		transition: none;
-	}
+		display: flex;
+		flex-direction: column;
 
-	.fullscreen textarea:focus,
-	.wrap-textarea:focus-within.fullscreen {
 		position: fixed;
 		top: 0;
 		bottom: 0;
 		left: 0;
 		right: 0;
 
+		overflow: hidden;
+
+		transition: background 200ms linear 0s;
+	}
+	main textarea {
+		flex-grow: 1;
+
+		white-space: pre;
+		overflow-wrap: normal;
+		overflow: scroll;
+
+		transition: none;
+	}
+
+	.wordcount {
+		display: none;
+	}
+
+	:global(:focus-within.fullscreen) .wordcount {
+		display: block;
+	}
+
+	:global(body:has(.fullscreen textarea:focus)) {
+		overflow-y: hidden;
+	}
+
+	.fullscreen textarea:focus,
+	.wrap-textarea:focus-within.fullscreen {
 		margin: 0;
 		border: 0;
 		border-radius: 0;
 		z-index: 10000;
+
+		overflow: auto;
 
 		max-height: 100vh;
 		background: var(--background-color);

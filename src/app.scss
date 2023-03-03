@@ -10,3 +10,14 @@ $primary-700: #ff7000;
 html {
     background-color: #e6e4e5;
 }
+
+
+html {
+    scrollbar-width: none;
+}
+
+@supports selector(body:has(textarea:focus)) {
+    html {
+        scrollbar-width: initial;
+    }
+}
