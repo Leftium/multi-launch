@@ -9,6 +9,7 @@ import * as SE from '$lib/search-engines'
 
 export const actions = {
 	launch: async ({ request }) => {
+		// TODO: Add support for group buttons.
 		const data = await request.formData()
 		const query = data.get('query') as string
 		const planText =
