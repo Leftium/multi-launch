@@ -31,6 +31,7 @@
 	div {
 		padding-left: calc(100vw - 100%);
 		overflow-x: hidden;
+		height: 100%;
 	}
 
 	.brand {

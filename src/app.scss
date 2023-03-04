@@ -21,3 +21,7 @@ html {
         scrollbar-width: initial;
     }
 }
+
+html, body, body > div:first-child {
+    height:100%;
+}

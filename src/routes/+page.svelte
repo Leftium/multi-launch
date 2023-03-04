@@ -21,6 +21,8 @@
 	let query = $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
 
+	let wrapTextarea: HTMLElement
+
 	let planToml = decompressFromEncodedURIComponent($page.url.searchParams.get('plan') || '') || ''
 
 	let planJson
@@ -165,9 +167,17 @@
 	}
 
 	onMount(() => {
-		if ('virtualKeyboard' in navigator) {
-			navigator.virtualKeyboard.overlaysContent = true
+		let height = window.visualViewport.height
+		const viewport = window.visualViewport
+
+		function resizeHandler() {
+			if (!/iPhone|iPad|iPod/.test(window.navigator.userAgent)) {
+				height = viewport.height
+			}
+			wrapTextarea.style.bottom = `${height - viewport.height}px`
 		}
+
+		window.visualViewport.addEventListener('resize', resizeHandler)
 
 		window.addEventListener('keydown', handleKeydown)
 
@@ -240,7 +250,7 @@
 	{/if}
 
 	<form method="POST" action="?/launch">
-		<div class="wrap-textarea">
+		<div class="wrap-textarea" bind:this={wrapTextarea}>
 			<textarea
 				placeholder="QUERY"
 				name="query"
