@@ -1,0 +1,134 @@
+title = 'Default Launch Plan'
+
+[Translate.Google]
+iflink = ""
+lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
+default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
+
+[Translate.Papago]
+iflink = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
+lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
+default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
+
+
+[Svelte.Discord]
+ifquery = ""
+default = "https://discord.com/channels/457912077277855764/"
+
+[Svelte.Reddit]
+ifquery = "https://www.reddit.com/r/sveltejs/search/?q=QUERY"
+default = "https://www.reddit.com/r/sveltejs/new/"
+
+[Svelte.StackOverflow]
+default = "https://stackoverflow.com/search?q=%5Bsveltekit%5D+%5Bsvelte%5D+QUERY"
+
+[Svelte."Kit Docs"]
+exclude = true
+ifquery = ''
+default = 'https://kit.svelte.dev/docs/introduction'
+
+[Svelte."Svelte Docs"]
+exclude = true
+ifquery = ''
+default = 'https://svelte.dev/docs'
+
+
+["News A".Digg]
+default = "https://www.digg.com/"
+
+["News A"."Ask HN"]
+default = "http://hw.leftium.com/#/ask"
+
+["News A"."Show HN"]
+default = "http://hw.leftium.com/#/show"
+
+["News B"."HckrWeb"]
+default = "https://hw.leftium.com/"
+
+["News B".Engadget]
+default = "https://www.engadget.com/"
+
+["News B".NewsBlur]
+default = "https://www.newsblur.com/"
+
+
+[Shopping.Danawa]
+default = "https://search.danawa.com/dsearch.php?k1=QUERY"
+
+[Shopping.Naver]
+default = "https://search.shopping.naver.com/search/all?query=QUERY"
+
+[Shopping.Kakao]
+default = "https://shoppinghow.kakao.com/search/QUERY"
+
+[Shopping.Enuri]
+default = "http://www.enuri.com/search.jsp?keyword=QUERY"
+
+[Shopping.Homeplus]
+exclude = true
+default = "https://front.homeplus.co.kr/search?keyword=QUERY"
+
+[Shopping."중고나라"]
+exclude = true
+default = "https://web.joongna.com/search/QUERY"
+
+[Shopping."중고나라 카페"]
+exclude = true
+default = "http://cafe.naver.com/joonggonara?iframe_url=/joonggonara.cafe//ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchBy=0%26search.query=QUERY"
+
+
+[Search.Google]
+default = "https://www.google.com/search?q=QUERY"
+
+[Search.Naver]
+default = "https://search.naver.com/search.naver?query=QUERY"
+
+[Search.Daum]
+default = "https://search.daum.net/search?q=QUERY"
+
+[Search.Bing]
+default = "https://www.bing.com/search?q=QUERY"
+
+[Search.Yandex]
+default = "https://yandex.com/search/?text=QUERY"
+
+
+[Images.Google]
+iflink = "https://lens.google.com/uploadbyurl?url=QUERY"
+default = "https://www.google.com/search?tbm=isch&q=QUERY"
+
+[Images.Naver]
+iflink = ""
+default = "https://search.naver.com/search.naver?where=image&query=QUERY"
+
+[Images.Daum]
+iflink = ""
+default = "https://search.daum.net/search?w=img&q=QUERY"
+
+[Images.Bing]
+iflink = "https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:QUERY"
+default = "https://www.bing.com/images/search?q=QUERY"
+
+[Images.Yandex]
+iflink = "https://yandex.com/images/search?rpt=imageview&url=QUERY"
+default = "https://yandex.com/images/search?text=QUERY"
+
+[Images.Unsplash]
+iflink = ""
+default = "https://unsplash.com/s/photos/QUERY"
+
+[Images.Pixabay]
+iflink = ""
+default = "https://pixabay.com/images/search/QUERY"
+
+[Images.Pexels]
+iflink = ""
+default = "https://www.pexels.com/search/QUERY/"
+
+[Images.StockUnlimited]
+iflink = ""
+default = "https://www.stockunlimited.com/vector-image/?word=QUERY"
+
+[Images.YayImages]
+iflink = ""
+default = "https://yayimages.com/search?type=-1&phrase=QUERY"
