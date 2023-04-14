@@ -1,5 +1,3 @@
-import type { PageServerLoad, Actions } from './$types'
-
 import { redirect } from '@sveltejs/kit'
 
 import lzString from 'lz-string'
@@ -36,8 +34,8 @@ export const actions = {
 		throw redirect(303, url)
 	},
 	edit: async ({ request }) => {},
-} satisfies Actions
+}
 
 export const load = (async () => {
 	return {}
-}) satisfies PageServerLoad
+})
