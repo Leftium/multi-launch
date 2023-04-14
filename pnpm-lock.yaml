@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ltd/j-toml': ^1.38.0
   '@picocss/pico': ^1.5.9
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.5.0
@@ -21,6 +22,7 @@ specifiers:
   vite: ^4.2.0
 
 devDependencies:
+  '@ltd/j-toml': 1.38.0
   '@picocss/pico': 1.5.9
   '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.15.5
   '@sveltejs/kit': 1.15.5_svelte@3.58.0+vite@4.2.1
@@ -315,6 +317,10 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
+
+  /@ltd/j-toml/1.38.0:
+    resolution: {integrity: sha512-lYtBcmvHustHQtg4X7TXUu1Xa/tbLC3p2wLvgQI+fWVySguVZJF60Snxijw5EiohumxZbR10kWYFFebh1zotiw==}
     dev: true
 
   /@nodelib/fs.scandir/2.1.5:
