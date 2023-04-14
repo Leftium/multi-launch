@@ -4,8 +4,10 @@ specifiers:
   '@picocss/pico': ^1.5.9
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.5.0
+  '@types/debug': ^4.1.7
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
+  debug: ^4.3.4
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
@@ -22,8 +24,10 @@ devDependencies:
   '@picocss/pico': 1.5.9
   '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.15.5
   '@sveltejs/kit': 1.15.5_svelte@3.58.0+vite@4.2.1
+  '@types/debug': 4.1.7
   '@typescript-eslint/eslint-plugin': 5.58.0_gjoxkwycl3ml7yxlw3iuo7gyna
   '@typescript-eslint/parser': 5.58.0_voubu7prgxjfsfbgx5d4sqnwiy
+  debug: 4.3.4
   eslint: 8.38.0
   eslint-config-prettier: 8.8.0_eslint@8.38.0
   eslint-plugin-svelte3: 4.0.0_a4ckjr7darsrglbip3svgxgxc4
@@ -402,8 +406,18 @@ packages:
     resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
     dev: true
 
+  /@types/debug/4.1.7:
+    resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
+    dependencies:
+      '@types/ms': 0.7.31
+    dev: true
+
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
+
+  /@types/ms/0.7.31:
+    resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
   /@types/pug/2.0.6:

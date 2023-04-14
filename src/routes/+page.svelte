@@ -1,5 +1,9 @@
 <script lang="ts">
 	import '../app.scss'
+
+	import debugFactory from 'debug'
+	const log = debugFactory('log')
+	log('Hello')
 </script>
 
 <main class="container">
