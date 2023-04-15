@@ -124,22 +124,14 @@
 		color: red;
 	}
 
-	details {
-		border-bottom: none;
-	}
-
 	details header {
 		margin-bottom: var(--pico-spacing);
-	}
-
-	details header {
 		margin-right: calc(var(--pico-spacing) * -1);
 		margin-left: calc(var(--pico-spacing) * -1);
 		padding: var(--pico-spacing);
 	}
 
 	details > article {
-		margin-top: 0;
 		padding-right: var(--pico-spacing);
 		padding-left: var(--pico-spacing);
 	}
@@ -167,7 +159,6 @@
 
 	.editor header button {
 		width: calc(100% / 4);
-		margin: 0;
 		border-left: 1px solid var(--pico-muted-border-color);
 	}
 </style>
