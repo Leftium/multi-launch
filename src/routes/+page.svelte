@@ -152,11 +152,21 @@
 			</article>
 		</details>
 	</form>
+
+	<form method="POST" action="?/launch" class="launcher">
+		<div role="search" class="wrap-textarea">
+			<textarea placeholder="QUERY" name="query" class="query" rows="1" spellcheck="false" />
+		</div>
+	</form>
 </main>
 
 <style>
-	.error {
-		color: red;
+	div[role='search'] {
+		width: 100%;
+	}
+
+	.launcher textarea {
+		resize: none;
 	}
 
 	details header {
