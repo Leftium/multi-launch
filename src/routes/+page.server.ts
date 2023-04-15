@@ -3,6 +3,7 @@ import debugFactory from 'debug'
 const log = debugFactory('/+page.server')
 
 import lzString from 'lz-string'
+import TOML from '@ltd/j-toml'
 
 import samplePlanToml from '$lib/plans/sample.toml?raw'
 
@@ -34,6 +35,14 @@ export const actions = {
 		try {
 			if (operation === 'save') {
 				log('do save')
+
+				try {
+					TOML.parse(planToml)
+				} catch (error) {
+					errorMessage = (error as Error).message
+					return fail(400, { errorMessage, planToml })
+				}
+
 				cookies.set('planTomlLz', planTomlLz, {
 					path: '/',
 					httpOnly: false,
