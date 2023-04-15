@@ -33,11 +33,14 @@
 	} catch (error) {
 		errorMessages.push((error as Error).message)
 	}
+
+	let open =
+		successMessages.length || errorMessages.length || form?.fromEditOperation ? true : false
 </script>
 
 <main class="container">
 	<form method="POST" action="?/edit">
-		<details class="editor" open>
+		<details class="editor" {open}>
 			<!-- svelte-ignore a11y-no-redundant-roles -->
 			<summary role="button" class="contrast">
 				<div>

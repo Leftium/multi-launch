@@ -52,6 +52,6 @@ export const actions = {
 			return fail(400, { errorMessage, planToml })
 		}
 
-		return { successMessage }
+		return { successMessage, fromEditOperation: true }
 	},
 }
