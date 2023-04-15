@@ -8,7 +8,7 @@
 <div>
 	<nav class="container">
 		<h1>
-			<a class="brand" href="/"
+			<a class="brand" href="/" data-sveltekit-reload
 				><span class="icon">🚀</span><span class="title-text">MultiLaunch</span></a
 			>
 			<small><a href="/settings">Settings</a> <a href="/doc">Help&Tips</a></small>
