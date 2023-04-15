@@ -4,13 +4,13 @@ const log = debugFactory('/+page.server')
 
 import lzString from 'lz-string'
 
-import defaultPlanToml from '$lib/plans/default.toml?raw'
+import samplePlanToml from '$lib/plans/sample.toml?raw'
 
 const SECONDS_PER_DAY = 24 * 60 * 60
 
 export const load = async ({ cookies, url }) => {
 	const planTomlLz = url.searchParams.get('p') || cookies.get('planTomlLz') || ''
-	const planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || defaultPlanToml
+	const planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || samplePlanToml
 
 	const shareLink = `${url.origin}?p=${planTomlLz}`
 
