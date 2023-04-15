@@ -85,7 +85,7 @@
 
 			<article>
 				<header>
-					<div>
+					<div role="group">
 						<button name="operation" value="save">Save</button><button
 							class="secondary"
 							name="operation"
@@ -129,19 +129,19 @@
 	}
 
 	details header {
-		margin-bottom: var(--spacing);
+		margin-bottom: var(--pico-spacing);
 	}
 
 	details header {
-		margin-right: calc(var(--spacing) * -1);
-		margin-left: calc(var(--spacing) * -1);
-		padding: var(--spacing);
+		margin-right: calc(var(--pico-spacing) * -1);
+		margin-left: calc(var(--pico-spacing) * -1);
+		padding: var(--pico-spacing);
 	}
 
 	details > article {
 		margin-top: 0;
-		padding-right: var(--spacing);
-		padding-left: var(--spacing);
+		padding-right: var(--pico-spacing);
+		padding-left: var(--pico-spacing);
 	}
 
 	/* Custom styles for the editor */
@@ -161,22 +161,13 @@
 		text-overflow: ellipsis;
 	}
 
-	.editor header button {
-		display: inline;
-		width: calc(100% / 4);
-		margin: 0;
-		border-left: 1px solid var(--muted-border-color);
-		border-radius: 0;
+	.editor header div {
+		width: 100%;
 	}
 
-	.editor header button:first-child {
-		border-left: none;
-		border-top-left-radius: var(--border-radius);
-		border-bottom-left-radius: var(--border-radius);
-	}
-	.editor header button:last-child {
-		border-right: none;
-		border-top-right-radius: var(--border-radius);
-		border-bottom-right-radius: var(--border-radius);
+	.editor header button {
+		width: calc(100% / 4);
+		margin: 0;
+		border-left: 1px solid var(--pico-muted-border-color);
 	}
 </style>

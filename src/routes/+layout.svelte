@@ -26,7 +26,7 @@
 	}
 
 	.brand {
-		color: var(--primary-color);
+		color: var(--pico-primary);
 		text-decoration: none;
 	}
 
