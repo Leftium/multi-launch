@@ -3,12 +3,16 @@ import debugFactory from 'debug'
 const log = debugFactory('/+page.server')
 
 import lzString from 'lz-string'
-const { compressToEncodedURIComponent } = lzString
+
+import defaultPlanToml from '$lib/plans/default.toml?raw'
 
 const SECONDS_PER_DAY = 24 * 60 * 60
 
-export const load = async () => {
-	return {}
+export const load = async ({ cookies }) => {
+	const planTomlLz = cookies.get('planTomlLz') || ''
+	const planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || defaultPlanToml
+
+	return { planToml }
 }
 
 export const actions = {
@@ -18,7 +22,7 @@ export const actions = {
 		const operation = formData.get('operation')
 		const planToml = formData.get('planToml') as string
 
-		const planTomlLz = compressToEncodedURIComponent(planToml)
+		const planTomlLz = lzString.compressToEncodedURIComponent(planToml)
 
 		let successMessage = ''
 		let errorMessage = ''

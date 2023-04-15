@@ -6,16 +6,29 @@
 
 	import TOML from '@ltd/j-toml'
 
-	import defaultPlanToml from '$lib/plans/default.toml?raw'
-	import type { ActionData } from './$types'
+	import type { ActionData, PageData } from './$types'
 
 	// Data props:
+	export let data: PageData
 	export let form: ActionData
 
-	const defaultPlanJson = TOML.parse(defaultPlanToml)
+	let successMessages: string[] = []
+	let errorMessages: string[] = []
 
-	let planToml = defaultPlanToml
-	let planTitle = defaultPlanJson.title
+	let planToml = data.planToml
+	let planJson
+	let planTitle = 'Untitled'
+
+	if (form?.errorMessage) {
+		errorMessages.push(form.errorMessage)
+	}
+
+	try {
+		planJson = TOML.parse(planToml)
+		planTitle = planJson.title as string
+	} catch (error) {
+		errorMessages.push((error as Error).message)
+	}
 </script>
 
 <main class="container">
@@ -39,11 +52,11 @@
 						><button class="secondary" name="operation" value="copy">Copy</button
 						><button class="secondary" name="operation" value="share">Share</button>
 					</div>
-					{#if form?.successMessage}
-						<blockquote>{@html form?.successMessage}</blockquote>
+					{#if successMessages.length}
+						<blockquote>{@html successMessage[0]}</blockquote>
 					{/if}
-					{#if form?.errorMessage}
-						<blockquote class="error">{form?.errorMessage}</blockquote>
+					{#if errorMessages.length}
+						<blockquote class="error">{errorMessages[0]}</blockquote>
 					{/if}
 				</header>
 				<div class="wrap-textarea fullscreen">
