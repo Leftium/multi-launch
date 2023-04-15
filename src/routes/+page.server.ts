@@ -12,9 +12,7 @@ export const load = async ({ cookies, url }) => {
 	const planTomlLz = url.searchParams.get('p') || cookies.get('planTomlLz') || ''
 	const planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || samplePlanToml
 
-	const shareLink = `${url.origin}?p=${planTomlLz}`
-
-	return { planToml, shareLink }
+	return { planToml }
 }
 
 export const actions = {

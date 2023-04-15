@@ -5,6 +5,7 @@
 	const log = debugFactory('log')
 
 	import TOML from '@ltd/j-toml'
+	import lzString from 'lz-string'
 
 	import type { ActionData, PageData } from './$types'
 
@@ -43,8 +44,12 @@
 		if (!failedToCopy) {
 			e.preventDefault()
 			try {
-				await navigator.clipboard.writeText(data.shareLink)
-				const successMessage = `<a href="${data.shareLink}" data-sveltekit-reload>Sharing link</a> copied to clipboard.`
+				const origin = document.location.origin
+				const planTomlLz = lzString.compressToEncodedURIComponent(planToml)
+				const shareLink = `${origin}?p=${planTomlLz}`
+
+				await navigator.clipboard.writeText(shareLink)
+				const successMessage = `<a href="${shareLink}" data-sveltekit-reload>Sharing link</a> copied to clipboard.`
 				successMessages = [...successMessages, successMessage]
 			} catch (error) {
 				console.error('Failed to copy: ', error)
