@@ -37,7 +37,7 @@
 					</div>
 				</header>
 				<div class="wrap-textarea fullscreen">
-					<textarea rows="20" spellcheck="false">{planToml}</textarea>
+					<textarea name="planToml" rows="20" spellcheck="false">{planToml}</textarea>
 				</div>
 			</article>
 		</details>
