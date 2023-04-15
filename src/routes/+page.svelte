@@ -55,7 +55,7 @@
 						<button name="operation" value="save">Save</button><button
 							class="secondary"
 							name="operation"
-							value="insert">Insert</button
+							value="add">Add (Preview)</button
 						><button class="secondary" name="operation" value="copy">Copy</button
 						><button class="secondary" name="operation" value="share">Share</button>
 					</div>

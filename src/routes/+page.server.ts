@@ -47,6 +47,21 @@ export const actions = {
 				successMessage = `Share this launch plan with this <a href="${shareLink}" data-sveltekit-reload>link</a>. (Right click, "Copy link address")`
 				return fail(400, { successMessage, planToml })
 			}
+			if (operation === 'add') {
+				const cookiePlanTomlLz = cookies.get('planTomlLz') as string
+				const cookiePlanToml =
+					lzString.decompressFromEncodedURIComponent(cookiePlanTomlLz) || ''
+
+				const noTitlePlanToml = planToml.replace(/title\s*=\s*/, '# $&')
+
+				const combinedPlanToml =
+					cookiePlanToml && noTitlePlanToml
+						? `${cookiePlanToml}\n\n${noTitlePlanToml}`
+						: planToml
+
+				successMessage = `Added to browser cookie plan. (Not saved, yet.)`
+				return fail(400, { successMessage, planToml: combinedPlanToml })
+			}
 		} catch (error) {
 			errorMessage = (error as Error).message
 			return fail(400, { errorMessage, planToml })
