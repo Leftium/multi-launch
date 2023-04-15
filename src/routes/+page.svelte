@@ -3,7 +3,6 @@
 
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
-	log('Hello')
 
 	import TOML from '@ltd/j-toml'
 
@@ -11,35 +10,38 @@
 
 	const defaultPlanJson = TOML.parse(defaultPlanToml)
 
-	log(defaultPlanJson)
-
 	let planToml = defaultPlanToml
 	let planTitle = defaultPlanJson.title
 </script>
 
 <main class="container">
-	<details class="editor" open>
-		<!-- svelte-ignore a11y-no-redundant-roles -->
-		<summary role="button" class="contrast">
-			<div>
-				<span>{planTitle}</span>
-				<span>Edit</span>
-			</div>
-		</summary>
-
-		<article>
-			<header>
+	<form method="POST" action="?/edit">
+		<details class="editor" open>
+			<!-- svelte-ignore a11y-no-redundant-roles -->
+			<summary role="button" class="contrast">
 				<div>
-					<button>Save</button><button class="secondary">Insert</button><button
-						class="secondary">Copy</button
-					><button class="secondary">Share</button>
+					<span>{planTitle}</span>
+					<span>Edit</span>
 				</div>
-			</header>
-			<div class="wrap-textarea fullscreen">
-				<textarea rows="20" spellcheck="false">{planToml}</textarea>
-			</div>
-		</article>
-	</details>
+			</summary>
+
+			<article>
+				<header>
+					<div>
+						<button name="operation" value="save">Save</button><button
+							class="secondary"
+							name="operation"
+							value="insert">Insert</button
+						><button class="secondary" name="operation" value="copy">Copy</button
+						><button class="secondary" name="operation" value="share">Share</button>
+					</div>
+				</header>
+				<div class="wrap-textarea fullscreen">
+					<textarea rows="20" spellcheck="false">{planToml}</textarea>
+				</div>
+			</article>
+		</details>
+	</form>
 </main>
 
 <style>
