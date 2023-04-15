@@ -88,6 +88,7 @@
 	}
 
 	const handleTextareaInput = async (e: Event) => {
+		successMessages = []
 		errorMessages = []
 
 		try {
