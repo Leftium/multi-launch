@@ -7,6 +7,10 @@
 	import TOML from '@ltd/j-toml'
 
 	import defaultPlanToml from '$lib/plans/default.toml?raw'
+	import type { ActionData } from './$types'
+
+	// Data props:
+	export let form: ActionData
 
 	const defaultPlanJson = TOML.parse(defaultPlanToml)
 
@@ -35,6 +39,12 @@
 						><button class="secondary" name="operation" value="copy">Copy</button
 						><button class="secondary" name="operation" value="share">Share</button>
 					</div>
+					{#if form?.successMessage}
+						<blockquote>{@html form?.successMessage}</blockquote>
+					{/if}
+					{#if form?.errorMessage}
+						<blockquote class="error">{form?.errorMessage}</blockquote>
+					{/if}
 				</header>
 				<div class="wrap-textarea fullscreen">
 					<textarea name="planToml" rows="20" spellcheck="false">{planToml}</textarea>
@@ -45,6 +55,10 @@
 </main>
 
 <style>
+	.error {
+		color: red;
+	}
+
 	details {
 		border-bottom: none;
 	}

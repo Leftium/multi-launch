@@ -1,3 +1,4 @@
+import { fail } from '@sveltejs/kit'
 import debugFactory from 'debug'
 const log = debugFactory('/+page.server')
 
@@ -19,19 +20,28 @@ export const actions = {
 
 		const planTomlLz = compressToEncodedURIComponent(planToml)
 
+		let successMessage = ''
+		let errorMessage = ''
+
 		log(planToml.length, planTomlLz.length, planTomlLz.length / planToml.length)
 
 		log({ operation })
 
-		if (operation === 'save') {
-			log('do save')
-			cookies.set('planTomlLz', planTomlLz, {
-				path: '/',
-				httpOnly: false,
-				maxAge: 400 * SECONDS_PER_DAY,
-			})
+		try {
+			if (operation === 'save') {
+				log('do save')
+				cookies.set('planTomlLz', planTomlLz, {
+					path: '/',
+					httpOnly: false,
+					maxAge: 400 * SECONDS_PER_DAY,
+				})
+				successMessage = 'Plan successfully saved to browser cookie.'
+			}
+		} catch (error) {
+			errorMessage = (error as Error).message
+			return fail(400, { errorMessage })
 		}
 
-		return {}
+		return { successMessage }
 	},
 }
