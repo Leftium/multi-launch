@@ -19,6 +19,8 @@
 	let planJson
 	let planTitle = 'Untitled'
 
+	let failedToCopy = false
+
 	if (form?.errorMessage) {
 		errorMessages.push(form.errorMessage)
 	}
@@ -36,6 +38,21 @@
 
 	let open =
 		successMessages.length || errorMessages.length || form?.fromEditOperation ? true : false
+
+	const handleClickShare = async (e: Event) => {
+		if (!failedToCopy) {
+			e.preventDefault()
+			try {
+				await navigator.clipboard.writeText(data.shareLink)
+				const successMessage = `<a href="${data.shareLink}" data-sveltekit-reload>Sharing link</a> copied to clipboard.`
+				successMessages = [...successMessages, successMessage]
+			} catch (error) {
+				console.error('Failed to copy: ', error)
+				failedToCopy = true
+				;(e.target as HTMLButtonElement).click()
+			}
+		}
+	}
 </script>
 
 <main class="container">
@@ -57,7 +74,12 @@
 							name="operation"
 							value="add">Add (Preview)</button
 						><button class="secondary" name="operation" value="copy">Copy</button
-						><button class="secondary" name="operation" value="share">Share</button>
+						><button
+							class="secondary"
+							name="operation"
+							value="share"
+							on:click={handleClickShare}>Share</button
+						>
 					</div>
 					{#if successMessages.length}
 						<blockquote>{@html successMessages[0]}</blockquote>
