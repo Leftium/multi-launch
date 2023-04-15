@@ -8,15 +8,15 @@ import defaultPlanToml from '$lib/plans/default.toml?raw'
 
 const SECONDS_PER_DAY = 24 * 60 * 60
 
-export const load = async ({ cookies }) => {
-	const planTomlLz = cookies.get('planTomlLz') || ''
+export const load = async ({ cookies, url }) => {
+	const planTomlLz = url.searchParams.get('p') || cookies.get('planTomlLz') || ''
 	const planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || defaultPlanToml
 
 	return { planToml }
 }
 
 export const actions = {
-	edit: async ({ request, cookies }) => {
+	edit: async ({ request, cookies, url }) => {
 		const formData = await request.formData()
 
 		const operation = formData.get('operation')
@@ -42,14 +42,14 @@ export const actions = {
 				successMessage = 'Plan successfully saved to browser cookie.'
 			}
 			if (operation === 'share') {
-				const origin = new URL(request.url).origin
-				const shareLink = `${origin}?p=${planTomlLz}`
+				const shareLink = `${url.origin}?p=${planTomlLz}`
 
-				successMessage = `Share this launch plan with this <a href="${shareLink}">link</a>. (Right click, "Copy link address")`
+				successMessage = `Share this launch plan with this <a href="${shareLink}" data-sveltekit-reload>link</a>. (Right click, "Copy link address")`
+				return fail(400, { successMessage, planToml })
 			}
 		} catch (error) {
 			errorMessage = (error as Error).message
-			return fail(400, { errorMessage })
+			return fail(400, { errorMessage, planToml })
 		}
 
 		return { successMessage }

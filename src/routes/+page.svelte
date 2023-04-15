@@ -15,7 +15,7 @@
 	let successMessages: string[] = []
 	let errorMessages: string[] = []
 
-	let planToml = data.planToml
+	let planToml = form?.planToml || data.planToml
 	let planJson
 	let planTitle = 'Untitled'
 
