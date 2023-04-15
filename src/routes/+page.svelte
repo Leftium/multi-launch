@@ -86,6 +86,18 @@
 			failedToCopy = true
 		}
 	}
+
+	const handleTextareaInput = async (e: Event) => {
+		errorMessages = []
+
+		try {
+			const planJson = TOML.parse(planToml)
+			planTitle = planJson.title as string
+		} catch (error) {
+			const errorMessage = (error as Error).message
+			errorMessages = [...errorMessages, errorMessage]
+		}
+	}
 </script>
 
 <main class="container">
@@ -128,7 +140,13 @@
 					{/if}
 				</header>
 				<div class="wrap-textarea fullscreen">
-					<textarea name="planToml" rows="20" spellcheck="false" bind:value={planToml} />
+					<textarea
+						name="planToml"
+						rows="20"
+						spellcheck="false"
+						bind:value={planToml}
+						on:input={handleTextareaInput}
+					/>
 				</div>
 			</article>
 		</details>
