@@ -30,9 +30,9 @@
 		<article>
 			<header>
 				<div>
-					<button>Save</button><button class="secondary">Append</button><button
-						class="secondary">Share</button
-					>
+					<button>Save</button><button class="secondary">Insert</button><button
+						class="secondary">Copy</button
+					><button class="secondary">Share</button>
 				</div>
 			</header>
 			<div class="wrap-textarea fullscreen">
@@ -82,7 +82,7 @@
 
 	.editor header button {
 		display: inline;
-		width: calc(100% / 3);
+		width: calc(100% / 4);
 		margin: 0;
 		border-left: 1px solid var(--muted-border-color);
 		border-radius: 0;
