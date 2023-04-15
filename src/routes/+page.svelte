@@ -41,6 +41,14 @@
 		successMessages.length || errorMessages.length || form?.fromEditOperation ? true : false
 
 	const handleClickShare = async (e: Event) => {
+		try {
+			TOML.parse(planToml)
+		} catch (error) {
+			const errorMessage = (error as Error).message
+			errorMessages = [...errorMessages, errorMessage]
+			return
+		}
+
 		if (!failedToCopy) {
 			e.preventDefault()
 			try {
@@ -60,6 +68,14 @@
 	}
 
 	const handleClickCopy = async (e: Event) => {
+		try {
+			TOML.parse(planToml)
+		} catch (error) {
+			const errorMessage = (error as Error).message
+			errorMessages = [...errorMessages, errorMessage]
+			return
+		}
+
 		e.preventDefault()
 		try {
 			await navigator.clipboard.writeText(planToml)

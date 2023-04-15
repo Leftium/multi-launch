@@ -33,15 +33,15 @@ export const actions = {
 		log({ operation })
 
 		try {
+			TOML.parse(planToml)
+		} catch (error) {
+			errorMessage = (error as Error).message
+			return fail(400, { errorMessage, planToml })
+		}
+
+		try {
 			if (operation === 'save') {
 				log('do save')
-
-				try {
-					TOML.parse(planToml)
-				} catch (error) {
-					errorMessage = (error as Error).message
-					return fail(400, { errorMessage, planToml })
-				}
 
 				cookies.set('planTomlLz', planTomlLz, {
 					path: '/',
