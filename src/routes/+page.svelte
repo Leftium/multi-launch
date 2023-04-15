@@ -23,6 +23,10 @@
 		errorMessages.push(form.errorMessage)
 	}
 
+	if (form?.successMessage) {
+		successMessages.push(form.successMessage)
+	}
+
 	try {
 		planJson = TOML.parse(planToml)
 		planTitle = planJson.title as string
@@ -53,7 +57,7 @@
 						><button class="secondary" name="operation" value="share">Share</button>
 					</div>
 					{#if successMessages.length}
-						<blockquote>{@html successMessage[0]}</blockquote>
+						<blockquote>{@html successMessages[0]}</blockquote>
 					{/if}
 					{#if errorMessages.length}
 						<blockquote class="error">{errorMessages[0]}</blockquote>

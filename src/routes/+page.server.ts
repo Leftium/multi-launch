@@ -41,6 +41,12 @@ export const actions = {
 				})
 				successMessage = 'Plan successfully saved to browser cookie.'
 			}
+			if (operation === 'share') {
+				const origin = new URL(request.url).origin
+				const shareLink = `${origin}?p=${planTomlLz}`
+
+				successMessage = `Share this launch plan with this <a href="${shareLink}">link</a>. (Right click, "Copy link address")`
+			}
 		} catch (error) {
 			errorMessage = (error as Error).message
 			return fail(400, { errorMessage })
