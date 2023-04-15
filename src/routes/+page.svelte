@@ -53,6 +53,18 @@
 			}
 		}
 	}
+
+	const handleClickCopy = async (e: Event) => {
+		e.preventDefault()
+		try {
+			await navigator.clipboard.writeText(planToml)
+			const successMessage = `Plan TOML copied to clipboard.`
+			successMessages = [...successMessages, successMessage]
+		} catch (error) {
+			console.error('Failed to copy: ', error)
+			failedToCopy = true
+		}
+	}
 </script>
 
 <main class="container">
@@ -73,7 +85,11 @@
 							class="secondary"
 							name="operation"
 							value="add">Add (Preview)</button
-						><button class="secondary" name="operation" value="copy">Copy</button
+						><button
+							class="secondary"
+							name="operation"
+							value="copy"
+							on:click={handleClickCopy}>Copy</button
 						><button
 							class="secondary"
 							name="operation"
@@ -82,14 +98,16 @@
 						>
 					</div>
 					{#if successMessages.length}
-						<blockquote>{@html successMessages[0]}</blockquote>
+						{#each successMessages.slice(-1) as successMessage}
+							<blockquote>{@html successMessage}</blockquote>
+						{/each}
 					{/if}
 					{#if errorMessages.length}
 						<blockquote class="error">{errorMessages[0]}</blockquote>
 					{/if}
 				</header>
 				<div class="wrap-textarea fullscreen">
-					<textarea name="planToml" rows="20" spellcheck="false">{planToml}</textarea>
+					<textarea name="planToml" rows="20" spellcheck="false" bind:value={planToml} />
 				</div>
 			</article>
 		</details>
