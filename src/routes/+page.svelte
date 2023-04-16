@@ -283,11 +283,9 @@
 	details textarea,
 	.wrap-textarea {
 		max-height: 40vh;
-		margin-bottom: 0;
 	}
 
 	textarea.query {
-		border-radius: 5rem;
 		resize: none;
 
 		overflow: hidden;
@@ -344,13 +342,13 @@
 			width: calc(100% / 4);
 		}
 	}
-	@media (min-width: 992px) {
+	@media (min-width: 1024px) {
 		div button:first-child,
 		div button {
 			width: calc(100% / 5);
 		}
 	}
-	@media (min-width: 1200px) {
+	@media (min-width: 1280px) {
 		div button:first-child,
 		div button {
 			width: calc(100% / 6);
