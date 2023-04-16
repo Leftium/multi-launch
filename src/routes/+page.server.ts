@@ -1,9 +1,11 @@
-import { fail } from '@sveltejs/kit'
+import { fail, redirect } from '@sveltejs/kit'
 import debugFactory from 'debug'
 const log = debugFactory('/+page.server')
 
 import lzString from 'lz-string'
 import TOML from '@ltd/j-toml'
+
+import * as SE from '$lib/search-engines'
 
 import samplePlanToml from '$lib/plans/sample.toml?raw'
 
@@ -17,6 +19,33 @@ export const load = async ({ cookies, url }) => {
 }
 
 export const actions = {
+	launch: async ({ request }) => {
+		// TODO: Add support for group buttons.
+		const data = await request.formData()
+		const query = data.get('query') as string
+		const planText =
+			lzString.decompressFromEncodedURIComponent((data.get('lz-plan') as string) || '') || ''
+
+		let planJson
+		let planError: Error
+
+		try {
+			planJson = JSON.parse(planText)
+		} catch (error) {
+			planError = error as Error
+		}
+
+		const queryTrimmedEncoded = encodeURIComponent(query.trim())
+		const urlTemplateSelector = SE.makeUrlTemplateSelector(planJson)
+		const urlTemplate = urlTemplateSelector(query) || planJson.default
+		let url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
+
+		if (!url) {
+			url = `/?q=${queryTrimmedEncoded}`
+		}
+
+		throw redirect(303, url)
+	},
 	edit: async ({ request, cookies, url }) => {
 		const formData = await request.formData()
 
