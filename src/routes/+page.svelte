@@ -27,7 +27,7 @@
 	let planJson: any
 	let planTitle = 'Untitled'
 
-	let searchGroups
+	let searchGroups: SE.SearchGroup[] = []
 
 	let failedToCopy = false
 
@@ -37,13 +37,6 @@
 
 	if (form?.successMessage) {
 		successMessages.push(form.successMessage)
-	}
-
-	try {
-		planJson = TOML.parse(planToml)
-		planTitle = planJson.title as string
-	} catch (error) {
-		errorMessages.push((error as Error).message)
 	}
 
 	let open =
@@ -93,6 +86,14 @@
 		)
 
 		return searchGroups
+	}
+
+	try {
+		planJson = TOML.parse(planToml)
+		planTitle = planJson.title as string
+		searchGroups = makeSearchGroups(planJson)
+	} catch (error) {
+		errorMessages.push((error as Error).message)
 	}
 
 	const handleClickShare = async (e: Event) => {
@@ -149,9 +150,11 @@
 		try {
 			const planJson = TOML.parse(planToml)
 			planTitle = planJson.title as string
+			searchGroups = makeSearchGroups(planJson)
 		} catch (error) {
 			const errorMessage = (error as Error).message
 			errorMessages = [...errorMessages, errorMessage]
+			searchGroups = []
 		}
 	}
 </script>
@@ -220,7 +223,7 @@
 			/>
 		</div>
 
-		{#each makeSearchGroups(planJson) as searchGroup}<div>
+		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
 					><span class="button-text"><span class="icon">⚡</span> {searchGroup.name}</span
 					></button
