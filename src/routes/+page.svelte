@@ -236,6 +236,14 @@
 		}
 	}
 
+	const handlePaste = (e: ClipboardEvent) => {
+		const text = e.clipboardData?.getData('text')
+		if (text && !isTextInputElement(document.activeElement)) {
+			e.preventDefault()
+			query = text
+		}
+	}
+
 	onMount(() => {
 		let height = window.visualViewport?.height || 0
 		const viewport = window.visualViewport
@@ -256,6 +264,8 @@
 		}
 	})
 </script>
+
+<svelte:body on:paste={handlePaste} />
 
 <main class="container">
 	<form method="POST" action="?/edit">
