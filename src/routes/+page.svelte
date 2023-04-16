@@ -13,13 +13,14 @@
 
 	import * as SE from '$lib/search-engines'
 	import { onMount } from 'svelte'
+	import { page } from '$app/stores'
 
 	// Data props:
 	export let data: PageData
 	export let form: ActionData
 
 	// Bindings
-	let query = form?.query || ''
+	let query = form?.query || $page.url.searchParams.get('q') || ''
 	let textArea: HTMLTextAreaElement
 
 	let wrapTextarea: HTMLElement
