@@ -197,6 +197,9 @@
 					{#if errorMessages.length}
 						<blockquote class="error">{errorMessages[0]}</blockquote>
 					{/if}
+					{#if !errorMessages.length && !successMessages.length}
+						<blockquote style="visibility: hidden">Placeholder</blockquote>
+					{/if}
 				</header>
 				<div class="wrap-textarea">
 					<textarea
