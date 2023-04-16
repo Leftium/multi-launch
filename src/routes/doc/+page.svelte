@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Doc from './doc.md'
+	import Markdown from './markdown.md'
 </script>
 
 <svelte:head>
@@ -7,7 +7,7 @@
 </svelte:head>
 
 <main class="container">
-	<Doc />
+	<Markdown />
 </main>
 
 <style>

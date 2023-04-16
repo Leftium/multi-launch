@@ -1,6 +1,6 @@
-import { defineMDSveXConfig as defineConfig } from 'mdsvex'
+import { defineMDSveXConfig } from 'mdsvex'
 
-const config = defineConfig({
+const config = defineMDSveXConfig({
 	extensions: ['.svelte.md', '.md', '.svx'],
 
 	smartypants: {

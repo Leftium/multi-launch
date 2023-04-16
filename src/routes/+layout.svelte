@@ -3,21 +3,12 @@
 
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
-
-	import { beforeNavigate } from '$app/navigation'
-
-	import { didBeforeNavigate } from '$lib/stores'
-
-	beforeNavigate((navigation) => {
-		log('beforeNavigate', navigation)
-		didBeforeNavigate.set(true)
-	})
 </script>
 
 <div>
 	<nav class="container">
 		<h1>
-			<a class="brand" href="/"
+			<a class="brand" href="/" data-sveltekit-reload
 				><span class="icon">🚀</span><span class="title-text">MultiLaunch</span></a
 			>
 			<small><a href="/settings">Settings</a> <a href="/doc">Help&Tips</a></small>
@@ -35,7 +26,7 @@
 	}
 
 	.brand {
-		color: var(--primary-color);
+		color: var(--pico-primary);
 		text-decoration: none;
 	}
 

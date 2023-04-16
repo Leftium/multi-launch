@@ -1,16 +1,4 @@
-
-/*
-$primary-500: #b22b00;
-$primary-600: #ff3e00;
-$primary-700: #ff7000;
-*/
-
-@import '@picocss/pico/scss/pico';
-
-html {
-    background-color: #e6e4e5;
-}
-
+@use '@picocss/pico/scss/pico';
 
 html {
     scrollbar-width: none;
@@ -22,6 +10,8 @@ html {
     }
 }
 
-html, body, body > div:first-child {
-    height:100%;
+html,
+body,
+body>div:first-child {
+    height: 100%;
 }

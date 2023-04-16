@@ -1,3 +1,5 @@
+title = 'Default Launch Plan'
+
 [Translate.Google]
 iflink = ""
 lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
