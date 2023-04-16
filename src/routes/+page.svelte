@@ -19,7 +19,7 @@
 	export let form: ActionData
 
 	// Bindings
-	let query = ''
+	let query = form?.query || ''
 	let textArea: HTMLTextAreaElement
 
 	let wrapTextarea: HTMLElement
@@ -82,13 +82,18 @@
 		const target = plan.target || `${groupName}.${name}`
 		const exclude = !!plan?.exclude
 
-		const lzPlan = lzString.compressToEncodedURIComponent(JSON.stringify(plan))
-
-		return {
+		const engine = {
 			name,
 			target,
 			exclude,
-			lzPlan: lzPlan,
+			plan,
+		}
+
+		const lzEngines = lzString.compressToEncodedURIComponent(JSON.stringify([engine]))
+
+		return {
+			...engine,
+			lzEngines,
 			getUrlTemplate,
 			clickHandler: (event: Event, isClickAll = false) => {
 				const e = event as MouseEvent
@@ -351,8 +356,8 @@
 					></button
 				>{#each searchGroup.engines as engine}<button
 						class="secondary"
-						name="lz-plan"
-						value={engine.lzPlan}
+						name="lz-engines"
+						value={engine.lzEngines}
 						class:exclude-from-all={engine.exclude ||
 							!engine.getUrlTemplate(query, true)}
 						data-tooltip={`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`}
@@ -361,6 +366,8 @@
 					>{/each}
 			</div>{/each}
 	</form>
+
+	<pre hidden>{JSON.stringify(form?.urls, null, 4)}</pre>
 
 	<pre hidden>{JSON.stringify(planJson, null, 4)}</pre>
 

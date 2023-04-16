@@ -1,4 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit'
+
 import debugFactory from 'debug'
 const log = debugFactory('/+page.server')
 
@@ -8,8 +9,23 @@ import TOML from '@ltd/j-toml'
 import * as SE from '$lib/search-engines'
 
 import samplePlanToml from '$lib/plans/sample.toml?raw'
+import _ from 'lodash'
 
 const SECONDS_PER_DAY = 24 * 60 * 60
+
+const computeUrl = (engine: SE.SearchEngine, query: string) => {
+	const planJson = engine.plan
+	const queryTrimmedEncoded = encodeURIComponent(query.trim())
+	const urlTemplateSelector = SE.makeUrlTemplateSelector(planJson)
+	const urlTemplate = urlTemplateSelector(query) || planJson.default
+	let url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
+
+	if (!url) {
+		url = `/?q=${queryTrimmedEncoded}`
+	}
+
+	return url
+}
 
 export const load = async ({ cookies, url }) => {
 	const planTomlLz = url.searchParams.get('p') || cookies.get('planTomlLz') || ''
@@ -20,31 +36,32 @@ export const load = async ({ cookies, url }) => {
 
 export const actions = {
 	launch: async ({ request }) => {
-		// TODO: Add support for group buttons.
 		const data = await request.formData()
 		const query = data.get('query') as string
-		const planText =
-			lzString.decompressFromEncodedURIComponent((data.get('lz-plan') as string) || '') || ''
 
-		let planJson
-		let planError: Error
+		let enginesJson
+		let engineError: Error
+
+		const enginesText =
+			lzString.decompressFromEncodedURIComponent((data.get('lz-engines') as string) || '') ||
+			''
 
 		try {
-			planJson = JSON.parse(planText)
+			enginesJson = JSON.parse(enginesText)
 		} catch (error) {
-			planError = error as Error
+			engineError = error as Error
 		}
 
-		const queryTrimmedEncoded = encodeURIComponent(query.trim())
-		const urlTemplateSelector = SE.makeUrlTemplateSelector(planJson)
-		const urlTemplate = urlTemplateSelector(query) || planJson.default
-		let url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
+		const urls = _.map(enginesJson, (engine) => ({
+			name: engine.name,
+			url: computeUrl(engine, query),
+		}))
 
-		if (!url) {
-			url = `/?q=${queryTrimmedEncoded}`
+		if (urls.length) {
+			throw redirect(303, urls[0].url)
+		} else {
+			return fail(200, { query })
 		}
-
-		throw redirect(303, url)
 	},
 	edit: async ({ request, cookies, url }) => {
 		const formData = await request.formData()
@@ -65,7 +82,7 @@ export const actions = {
 			TOML.parse(planToml)
 		} catch (error) {
 			errorMessage = (error as Error).message
-			return fail(400, { errorMessage, planToml })
+			return fail(200, { errorMessage, planToml })
 		}
 
 		try {
@@ -83,7 +100,7 @@ export const actions = {
 				const shareLink = `${url.origin}?p=${planTomlLz}`
 
 				successMessage = `Share this launch plan with this <a href="${shareLink}" data-sveltekit-reload>link</a>. (Right click, "Copy link address")`
-				return fail(400, { successMessage, planToml })
+				return fail(200, { successMessage, planToml })
 			}
 			if (operation === 'add') {
 				const cookiePlanTomlLz = cookies.get('planTomlLz') as string
@@ -98,11 +115,11 @@ export const actions = {
 						: planToml
 
 				successMessage = `Added to browser cookie plan. (Not saved, yet.)`
-				return fail(400, { successMessage, planToml: combinedPlanToml })
+				return fail(200, { successMessage, planToml: combinedPlanToml })
 			}
 		} catch (error) {
 			errorMessage = (error as Error).message
-			return fail(400, { errorMessage, planToml })
+			return fail(200, { errorMessage, planToml })
 		}
 
 		return { successMessage, fromEditOperation: true }
