@@ -198,6 +198,11 @@
 	}
 
 	const handleKeydown = (e: KeyboardEvent) => {
+		if (e.key === 'Enter' && e.ctrlKey && e.shiftKey && e.altKey) {
+			e.preventDefault()
+			textArea.parentElement?.classList.toggle('fullscreen')
+		}
+
 		if (
 			textArea &&
 			e.key !== 'Tab' &&
@@ -210,7 +215,11 @@
 
 	const handleTextareaKeydown = (e: KeyboardEvent) => {
 		// Emulate clicking first category button
-		if (e.key === 'Enter') {
+		if (
+			e.key === 'Enter' &&
+			!(e.ctrlKey && e.shiftKey && e.altKey) &&
+			!textArea.parentElement?.classList.contains('fullscreen')
+		) {
 			e.preventDefault()
 			searchGroups[0].handleClickAll(e, true)
 		}
