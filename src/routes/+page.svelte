@@ -363,13 +363,13 @@
 	@media (min-width: 1024px) {
 		div button:first-child,
 		div button {
-			width: calc(100% / 5);
+			width: calc(100% / 6);
 		}
 	}
 	@media (min-width: 1280px) {
 		div button:first-child,
 		div button {
-			width: calc(100% / 6);
+			width: calc(100% / 7);
 		}
 	}
 
