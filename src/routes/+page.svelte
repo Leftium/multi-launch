@@ -207,6 +207,7 @@
 			e.preventDefault()
 			query = ''
 			textArea.parentElement?.classList.remove('fullscreen')
+			textArea.focus()
 		}
 
 		if (
