@@ -11,7 +11,7 @@
 			<a class="brand" href="/" data-sveltekit-reload
 				><span class="icon">🚀</span><span class="title-text">MultiLaunch</span></a
 			>
-			<small><a href="/settings">Settings</a> <a href="/doc">Help&Tips</a></small>
+			<small><a href="/doc">Help&Tips</a></small>
 		</h1>
 	</nav>
 
