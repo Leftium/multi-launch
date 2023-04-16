@@ -203,6 +203,12 @@
 			textArea.parentElement?.classList.toggle('fullscreen')
 		}
 
+		if (e.shiftKey && ['Delete', 'Backspace'].includes(e.key)) {
+			e.preventDefault()
+			query = ''
+			textArea.parentElement?.classList.remove('fullscreen')
+		}
+
 		if (
 			textArea &&
 			e.key !== 'Tab' &&
