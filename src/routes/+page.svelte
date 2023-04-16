@@ -18,7 +18,7 @@
 	export let form: ActionData
 
 	// Bindings
-	let query: string
+	let query = ''
 
 	let successMessages: string[] = []
 	let errorMessages: string[] = []
@@ -219,20 +219,200 @@
 				bind:value={query}
 			/>
 		</div>
+
+		{#each makeSearchGroups(planJson) as searchGroup}<div>
+				<button on:click|preventDefault={searchGroup.handleClickAll}
+					><span class="button-text"><span class="icon">⚡</span> {searchGroup.name}</span
+					></button
+				>{#each searchGroup.engines as engine}<button
+						class="secondary"
+						name="lz-plan"
+						value={engine.lzPlan}
+						class:exclude-from-all={engine.exclude ||
+							!engine.getUrlTemplate(query, true)}
+						data-tooltip={`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`}
+						on:click|preventDefault={engine.clickHandler}
+						><span class="button-text"
+							><span style:visibility={engine.exclude ? '' : 'hidden'}
+								><span class="icon">🚫</span>
+							</span>{engine.name}</span
+						></button
+					>{/each}
+			</div>{/each}
 	</form>
 
-	<pre>{JSON.stringify(planJson, null, 4)}</pre>
+	<pre hidden>{JSON.stringify(planJson, null, 4)}</pre>
 
-	<pre>{JSON.stringify(makeSearchGroups(planJson), null, 4)}</pre>
+	<pre hidden>{JSON.stringify(makeSearchGroups(planJson), null, 4)}</pre>
 </main>
 
 <style>
-	div[role='search'] {
+	form > div {
+		margin-bottom: var(--pico-spacing);
+	}
+
+	.exclude-from-all {
+		/* TODO: Don't hardcode color */
+		background-color: hsl(205 15% 41% / 0.5);
+		border-bottom-color: hsl(205 15% 41% / 0.5);
+		border-left-color: hsl(205 15% 41% / 0.5);
+	}
+
+	details header {
+		margin-bottom: var(--pico-spacing);
+	}
+
+	details header {
+		margin-right: calc(var(--pico-spacing) * -1);
+		margin-left: calc(var(--pico-spacing) * -1);
+		padding: var(--pico-spacing);
+	}
+
+	details > article {
+		margin-top: 0;
+		padding-right: var(--pico-spacing);
+		padding-left: var(--pico-spacing);
+	}
+
+	main textarea {
+		font-family: 'Menlo', 'Consolas', 'Roboto Mono', 'Ubuntu Monospace', 'Noto Mono',
+			'Oxygen Mono', 'Liberation Mono', monospace, 'Apple Color Emoji', 'Segoe UI Emoji',
+			'Segoe UI Symbol', 'Noto Color Emoji';
+	}
+
+	details textarea,
+	.wrap-textarea {
+		max-height: 40vh;
+		margin-bottom: 0;
+	}
+
+	textarea.query {
+		border-radius: 5rem;
+		resize: none;
+
+		overflow: hidden;
+
+		padding-inline-start: calc(var(--pico-form-element-spacing-horizontal) + 1.75rem);
+
+		background-color: white;
+		background-image: var(--pico-icon-search);
+		background-position: center left 1.125rem;
+		background-size: 1rem auto;
+		background-repeat: no-repeat;
+	}
+
+	div button {
+		width: calc(100% / 2);
+
+		border-right: 1px solid var(--pico-muted-border-color);
+		border-top: 1px solid var(--pico-muted-border-color);
+		border-radius: 0;
+
+		margin: 0;
+
+		/* Undo pico css button styling */
+		display: inline;
+	}
+
+	div button .button-text {
+		display: inline-block;
+		width: 100%;
+
+		overflow-x: clip;
+
+		text-align: left;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.button-text .icon {
+		filter: grayscale(100%);
+	}
+
+	div button:first-child {
 		width: 100%;
 	}
 
-	.launcher textarea {
-		resize: none;
+	@media (min-width: 576px) {
+		div button {
+			width: calc(100% / 3);
+		}
+	}
+	@media (min-width: 768px) {
+		div button:first-child,
+		div button {
+			width: calc(100% / 4);
+		}
+	}
+	@media (min-width: 992px) {
+		div button:first-child,
+		div button {
+			width: calc(100% / 5);
+		}
+	}
+	@media (min-width: 1200px) {
+		div button:first-child,
+		div button {
+			width: calc(100% / 6);
+		}
+	}
+
+	[data-tooltip]::before {
+		text-align: left;
+		white-space: pre;
+	}
+
+	.wrap-textarea:focus-within.fullscreen {
+		display: flex;
+		flex-direction: column;
+
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+		overflow: hidden;
+
+		transition: background 200ms linear 0s;
+	}
+	main textarea {
+		flex-grow: 1;
+
+		white-space: pre;
+		overflow-wrap: normal;
+		overflow: scroll;
+
+		transition: none;
+	}
+
+	.wordcount {
+		display: none;
+	}
+
+	:global(:focus-within.fullscreen) .wordcount {
+		display: block;
+	}
+
+	:global(body:has(.fullscreen textarea:focus)) {
+		overflow-y: hidden;
+	}
+
+	.fullscreen textarea:focus,
+	.wrap-textarea:focus-within.fullscreen {
+		margin: 0;
+		border: 0;
+		border-radius: 0;
+		z-index: 10000;
+
+		overflow: auto;
+
+		max-height: 100vh;
+		background: var(--background-color);
+	}
+
+	div[role='search'] {
+		width: 100%;
 	}
 
 	details header {
