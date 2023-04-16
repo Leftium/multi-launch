@@ -203,11 +203,6 @@
 	}
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === 'Enter' && e.ctrlKey && e.shiftKey && e.altKey) {
-			e.preventDefault()
-			textArea.parentElement?.classList.toggle('fullscreen')
-		}
-
 		if (e.shiftKey && ['Delete', 'Backspace'].includes(e.key)) {
 			e.preventDefault()
 			query = ''
@@ -225,14 +220,15 @@
 	}
 
 	const handleTextareaKeydown = (e: KeyboardEvent) => {
-		// Emulate clicking first category button
-		if (
-			e.key === 'Enter' &&
-			!(e.ctrlKey && e.shiftKey && e.altKey) &&
-			!textArea.parentElement?.classList.contains('fullscreen')
-		) {
-			e.preventDefault()
-			searchGroups[0].handleClickAll(e, true)
+		if (e.key === 'Enter') {
+			if (e.ctrlKey && e.shiftKey && e.altKey) {
+				e.preventDefault()
+				textArea.parentElement?.classList.toggle('fullscreen')
+			} else if (!textArea.parentElement?.classList.contains('fullscreen')) {
+				// Emulate clicking first category button
+				searchGroups[0].handleClickAll(e, true)
+				e.preventDefault()
+			}
 		}
 
 		if (e.key === 'Escape') {
