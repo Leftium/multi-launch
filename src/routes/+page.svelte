@@ -12,6 +12,7 @@
 	import type { ActionData, PageData } from './$types'
 
 	import * as SE from '$lib/search-engines'
+	import { onMount } from 'svelte'
 
 	// Data props:
 	export let data: PageData
@@ -19,6 +20,9 @@
 
 	// Bindings
 	let query = ''
+	let textArea: HTMLTextAreaElement
+
+	let wrapTextarea: HTMLElement
 
 	let successMessages: string[] = []
 	let errorMessages: string[] = []
@@ -41,6 +45,33 @@
 
 	let open =
 		successMessages.length || errorMessages.length || form?.fromEditOperation ? true : false
+
+	const isTextInputElement = (element: Element | null) => {
+		if (element === null) {
+			return false
+		}
+
+		const TEXT_INPUT_TYPES = [
+			'text',
+			'password',
+			'number',
+			'email',
+			'tel',
+			'url',
+			'search',
+			'date',
+			'datetime',
+			'datetime-local',
+			'time',
+			'month',
+			'week',
+		]
+		const htmlInputElement = element as HTMLInputElement
+		const tagName = htmlInputElement?.tagName?.toLowerCase()
+		const type = htmlInputElement?.type?.toLowerCase()
+
+		return tagName === 'textarea' || tagName === 'input' || TEXT_INPUT_TYPES.includes(type)
+	}
 
 	const makeSearchEngine = (
 		groupName: string,
@@ -147,6 +178,10 @@
 		}
 	}
 
+	const handleFocus = (e: Event) => {
+		textArea.select()
+	}
+
 	const handleTextareaInput = async (e: Event) => {
 		successMessages = []
 		errorMessages = []
@@ -161,6 +196,51 @@
 			searchGroups = []
 		}
 	}
+
+	const handleKeydown = (e: KeyboardEvent) => {
+		if (
+			textArea &&
+			e.key !== 'Tab' &&
+			!(e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) &&
+			!isTextInputElement(document.activeElement)
+		) {
+			e.preventDefault()
+			textArea.focus()
+		}
+	}
+
+	const handleTextareaKeydown = (e: KeyboardEvent) => {
+		// Emulate clicking first category button
+		if (e.key === 'Enter') {
+			e.preventDefault()
+			searchGroups[0].handleClickAll(e, true)
+		}
+
+		if (e.key === 'Escape') {
+			e.stopPropagation()
+			textArea.blur()
+		}
+	}
+
+	onMount(() => {
+		let height = window.visualViewport?.height || 0
+		const viewport = window.visualViewport
+
+		function resizeHandler() {
+			if (!/iPhone|iPad|iPod/.test(window.navigator.userAgent)) {
+				height = viewport?.height || 0
+			}
+			wrapTextarea.style.bottom = `${height - (viewport?.height || 0)}px`
+		}
+
+		window.visualViewport?.addEventListener('resize', resizeHandler)
+
+		window.addEventListener('keydown', handleKeydown)
+
+		return () => {
+			window.removeEventListener('keydown', handleKeydown)
+		}
+	})
 </script>
 
 <main class="container">
@@ -228,6 +308,9 @@
 				rows="1"
 				spellcheck="false"
 				bind:value={query}
+				bind:this={textArea}
+				on:keydown={handleTextareaKeydown}
+				on:focus={handleFocus}
 			/>
 			<div>
 				<span class="wordcount" hidden use:unhideIfJavascript>
