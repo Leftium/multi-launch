@@ -518,6 +518,10 @@
 		background: var(--pico-background-color);
 	}
 
+	:global(.fullscreen) textarea:focus {
+		padding-inline-start: 1em;
+	}
+
 	details header {
 		margin-bottom: var(--pico-spacing);
 		margin-right: calc(var(--pico-spacing) * -1);
