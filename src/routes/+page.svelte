@@ -1,6 +1,8 @@
 <script lang="ts">
 	import '../app.scss'
 
+	import _ from 'lodash'
+
 	import debugFactory from 'debug'
 	const log = debugFactory('log')
 
@@ -9,16 +11,23 @@
 
 	import type { ActionData, PageData } from './$types'
 
+	import * as SE from '$lib/search-engines'
+
 	// Data props:
 	export let data: PageData
 	export let form: ActionData
+
+	// Bindings
+	let query: string
 
 	let successMessages: string[] = []
 	let errorMessages: string[] = []
 
 	let planToml = form?.planToml || data.planToml
-	let planJson
+	let planJson: any
 	let planTitle = 'Untitled'
+
+	let searchGroups
 
 	let failedToCopy = false
 
@@ -39,6 +48,52 @@
 
 	let open =
 		successMessages.length || errorMessages.length || form?.fromEditOperation ? true : false
+
+	const makeSearchEngine = (
+		groupName: string,
+		name: string,
+		plan: SE.SearchEnginePlan
+	): SE.SearchEngine => {
+		const getUrlTemplate = SE.makeUrlTemplateSelector(plan)
+		const target = plan.target || `${groupName}.${name}`
+		const exclude = !!plan?.exclude
+
+		const lzPlan = lzString.compressToEncodedURIComponent(JSON.stringify(plan))
+
+		return {
+			name,
+			target,
+			exclude,
+			lzPlan: lzPlan,
+			getUrlTemplate,
+			clickHandler: (event: Event, isClickAll = false) => {
+				const e = event as MouseEvent
+
+				let urlTemplate = getUrlTemplate(query, isClickAll)
+
+				const queryTrimmedEncoded = encodeURIComponent(query?.trim())
+				const url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
+
+				const targetTabName = isClickAll || e.shiftKey || e.ctrlKey ? target : '_self'
+				log('handleClick', targetTabName, e)
+				if (!exclude || !isClickAll) {
+					if (url !== '') {
+						window.open(url, targetTabName)
+					}
+				}
+			},
+		}
+	}
+
+	const makeSearchGroups = (planJson: any) => {
+		const { title, ...searchGroupPlans } = planJson as Record<string, SE.SearchGroupPlans>
+
+		const searchGroups = _.map(searchGroupPlans, (plans: SE.SearchGroupPlans, name: string) =>
+			SE.makeSearchGroup(name, plans, makeSearchEngine)
+		)
+
+		return searchGroups
+	}
 
 	const handleClickShare = async (e: Event) => {
 		try {
@@ -155,9 +210,20 @@
 
 	<form method="POST" action="?/launch" class="launcher">
 		<div role="search" class="wrap-textarea">
-			<textarea placeholder="QUERY" name="query" class="query" rows="1" spellcheck="false" />
+			<textarea
+				placeholder="QUERY"
+				name="query"
+				class="query"
+				rows="1"
+				spellcheck="false"
+				bind:value={query}
+			/>
 		</div>
 	</form>
+
+	<pre>{JSON.stringify(planJson, null, 4)}</pre>
+
+	<pre>{JSON.stringify(makeSearchGroups(planJson), null, 4)}</pre>
 </main>
 
 <style>
