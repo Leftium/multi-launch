@@ -204,7 +204,7 @@
 				<div class="wrap-textarea">
 					<textarea
 						name="planToml"
-						rows="20"
+						rows="8"
 						spellcheck="false"
 						bind:value={planToml}
 						on:input={handleTextareaInput}
