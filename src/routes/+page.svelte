@@ -96,6 +96,10 @@
 		errorMessages.push((error as Error).message)
 	}
 
+	const unhideIfJavascript = (node: HTMLElement) => {
+		node.hidden = false
+	}
+
 	const handleClickShare = async (e: Event) => {
 		try {
 			TOML.parse(planToml)
@@ -215,7 +219,7 @@
 	</form>
 
 	<form method="POST" action="?/launch" class="launcher">
-		<div role="search" class="wrap-textarea">
+		<div class="wrap-textarea">
 			<textarea
 				placeholder="QUERY"
 				name="query"
@@ -224,6 +228,12 @@
 				spellcheck="false"
 				bind:value={query}
 			/>
+			<div>
+				<span class="wordcount" hidden use:unhideIfJavascript>
+					<span>Chars:</span><span>{query?.trim().length}</span>
+					<span>Words:</span><span>{query?.split(/\S+/).length - 1}</span>
+				</span>
+			</div>
 		</div>
 
 		{#each searchGroups as searchGroup}<div>
@@ -290,12 +300,8 @@
 			'Segoe UI Symbol', 'Noto Color Emoji';
 	}
 
-	details textarea,
-	.wrap-textarea {
-		max-height: 40vh;
-	}
-
 	textarea.query {
+		border-radius: 5rem;
 		resize: none;
 
 		overflow: hidden;
@@ -370,7 +376,7 @@
 		white-space: pre;
 	}
 
-	.wrap-textarea:focus-within.fullscreen {
+	main :global(.wrap-textarea:focus-within.fullscreen) {
 		display: flex;
 		flex-direction: column;
 
@@ -406,8 +412,8 @@
 		overflow-y: hidden;
 	}
 
-	.fullscreen textarea:focus,
-	.wrap-textarea:focus-within.fullscreen {
+	:global(.fullscreen) textarea:focus,
+	:global(.wrap-textarea:focus-within.fullscreen) {
 		margin: 0;
 		border: 0;
 		border-radius: 0;
@@ -417,10 +423,6 @@
 
 		max-height: 100vh;
 		background: var(--pico-background-color);
-	}
-
-	div[role='search'] {
-		width: 100%;
 	}
 
 	details header {
