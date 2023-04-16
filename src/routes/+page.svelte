@@ -204,7 +204,6 @@
 			!(e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) &&
 			!isTextInputElement(document.activeElement)
 		) {
-			e.preventDefault()
 			textArea.focus()
 		}
 	}
