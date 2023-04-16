@@ -177,20 +177,21 @@
 			<article>
 				<header>
 					<div role="group">
-						<button name="operation" value="save">Save</button><button
-							class="secondary"
-							name="operation"
-							value="add">Add (Preview)</button
+						<button name="operation" value="save"
+							><span class="button-text">Save</span></button
+						><button class="secondary" name="operation" value="add"
+							><span class="button-text">Add (Preview)</span></button
 						><button
 							class="secondary"
 							name="operation"
 							value="copy"
-							on:click={handleClickCopy}>Copy</button
+							on:click={handleClickCopy}><span class="button-text">Copy</span></button
 						><button
 							class="secondary"
 							name="operation"
 							value="share"
-							on:click={handleClickShare}>Share</button
+							on:click={handleClickShare}
+							><span class="button-text">Share</span></button
 						>
 					</div>
 					{#if successMessages.length}
@@ -238,7 +239,8 @@
 
 		{#each searchGroups as searchGroup}<div>
 				<button on:click|preventDefault={searchGroup.handleClickAll}
-					><span class="button-text"><span class="icon">⚡</span> {searchGroup.name}</span
+					><span class="button-text"
+						><span class="backward">🗲</span> {searchGroup.name}</span
 					></button
 				>{#each searchGroup.engines as engine}<button
 						class="secondary"
@@ -248,11 +250,7 @@
 							!engine.getUrlTemplate(query, true)}
 						data-tooltip={`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`}
 						on:click|preventDefault={engine.clickHandler}
-						><span class="button-text"
-							><span style:visibility={engine.exclude ? '' : 'hidden'}
-								><span class="icon">🚫</span>
-							</span>{engine.name}</span
-						></button
+						><span class="button-text">{engine.name}</span></button
 					>{/each}
 			</div>{/each}
 	</form>
@@ -263,6 +261,13 @@
 </main>
 
 <style>
+	.backward {
+		display: inline-block;
+		-moz-transform: scale(-1, 1);
+		-webkit-transform: scale(-1, 1);
+		transform: scale(-1, 1);
+	}
+
 	.error {
 		color: red;
 	}
@@ -329,18 +334,15 @@
 	}
 
 	div button .button-text {
-		display: inline-block;
-		width: 100%;
-
 		overflow-x: clip;
-
-		text-align: left;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
 
-	.button-text .icon {
-		filter: grayscale(100%);
+	.launcher button .button-text {
+		display: inline-block;
+		width: 100%;
+		text-align: left;
 	}
 
 	div button:first-child {
