@@ -1,15 +1,39 @@
-MultiLaunch makes it convenient to use multiple search sites from the same text box. (With a focus
-on living in Korea.)
+# MultiLaunch: <small>Bookmarks/Start Page for Power Users!</small>
 
-[Return to app](/)
+<br />
 
-## How to Use
+## Launch Buttons Quick Tour
 
-1. Enter a query into the text box.
-2. Press one of the buttons.
-3. Result will open in a new tab. (Close tab when done.)
-4. Press another button.
-5. Result will open in a new tab.
+1. Open a MultiLaunch page like [Svelte Launch Plans][2].
+2. Click the "Reddit" button.
+    - The Svelte Reddit page is opened.
+3. Enter "hackathon" into the query input. Click the "Reddit" button again.
+    - This time the Svelte Reddit search results are opened.
+4. Clear the query input (<kbd>SHIFT</kbd>-<kbd>DEL</kbd>), then click the blue 'Svelte' button (<kbd>ENTER</kbd>).
+    - Three tabs are opened (Discord, Reddit, and Stackoverflow)
+    - The blue buttons contain the name of the group, and simultaneously open all the dark gray buttons.
+    - The light gray buttons are _excluded_ from the group open, but may be opened manually by clicking.
+    - <kbd>SHIFT</kbd>-<kbd>DEL</kbd> and <kbd>ENTER</kbd> are keyboard shortcuts.
+5. Enter "auth" into the query input. Click the blue 'Svelte' button, again.
+    - This time, only two tabs are opened (Reddit and Stackoverflow). Both tabs show the results of searching for 'auth'.
+    - Notice the Discord button became light gray to indicate it is not part of the group open. Discord does not support searching via URL.
+
+## Launch Plan Editor Quick Tour
+
+1. Open a MultiLaunch page like [Svelte Launch Plans][2].
+2. Click "Edit"
+    - This opens the launch plan editor. You can edit/save/share this launch plan.
+3. Edit "Svelte Launch Plans" to "My Launch Plans". Click "Save".
+    - This saved the launch plans to your browser cookies.
+    - The launch plans stored in the cookies will be used by default if the URL does not contain a launch plan.
+4. Open another MultiLaunch page like [News: Sorted by Time][4].
+5. Click "Edit", then "Add"
+    - The "News: Sorted by Time" launch plans have been added to the end of your saved launch plans.
+    - This is only a preview!
+6. Click "Save" to save the new launch plans to your browser cookies.
+    - Create your own custom launch plans by adding and saving launch plans shared by other people!
+
+---
 
 ## Tips
 
