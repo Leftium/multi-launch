@@ -328,7 +328,7 @@
 			</div>
 		</div>
 
-		{#each searchGroups as searchGroup}<div>
+		{#each searchGroups as searchGroup}<div class="search-group">
 				<button on:click|preventDefault={searchGroup.handleClickAll}
 					><span class="button-text"
 						><span class="backward">🗲</span> {searchGroup.name}</span
@@ -363,7 +363,7 @@
 		color: red;
 	}
 
-	form > div {
+	form > div.search-group {
 		margin-bottom: var(--pico-spacing);
 	}
 
@@ -495,6 +495,7 @@
 
 	.wordcount {
 		display: none;
+		background-color: var(--pico-card-sectioning-background-color);
 	}
 
 	:global(:focus-within.fullscreen) .wordcount {
