@@ -195,7 +195,7 @@
 						<blockquote class="error">{errorMessages[0]}</blockquote>
 					{/if}
 				</header>
-				<div class="wrap-textarea fullscreen">
+				<div class="wrap-textarea">
 					<textarea
 						name="planToml"
 						rows="20"
@@ -247,6 +247,10 @@
 </main>
 
 <style>
+	.error {
+		color: red;
+	}
+
 	form > div {
 		margin-bottom: var(--pico-spacing);
 	}
@@ -406,7 +410,7 @@
 		overflow: auto;
 
 		max-height: 100vh;
-		background: var(--background-color);
+		background: var(--pico-background-color);
 	}
 
 	div[role='search'] {
