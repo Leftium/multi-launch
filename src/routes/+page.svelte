@@ -236,6 +236,7 @@
 
 		if (e.key === 'Escape') {
 			e.stopPropagation()
+			wrapTextarea?.classList.remove('fullscreen')
 			textArea.blur()
 		}
 	}
@@ -244,7 +245,6 @@
 		const text = e.clipboardData?.getData('text')
 		if (text && !isTextInputElement(document.activeElement)) {
 			e.preventDefault()
-			query = text
 		}
 	}
 
