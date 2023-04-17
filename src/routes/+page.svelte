@@ -189,6 +189,10 @@
 		textArea.select()
 	}
 
+	const handleBlur = (e: Event) => {
+		wrapTextarea.classList.remove('fullscreen')
+	}
+
 	const handleTextareaInput = async (e: Event) => {
 		successMessages = []
 		errorMessages = []
@@ -345,6 +349,7 @@
 					bind:this={textArea}
 					on:keydown={handleTextareaKeydown}
 					on:focus={handleFocus}
+					on:blur={handleBlur}
 				/>
 
 				<iconify-icon
