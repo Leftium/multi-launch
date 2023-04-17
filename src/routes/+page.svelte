@@ -327,7 +327,7 @@
 	</form>
 
 	<form method="POST" action="?/launch" class="launcher">
-		<div class="wrap-textarea">
+		<div class="wrap-textarea" bind:this={wrapTextarea}>
 			<textarea
 				placeholder="QUERY"
 				name="query"
