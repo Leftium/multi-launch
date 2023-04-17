@@ -81,16 +81,18 @@
 1. Open a MultiLaunch page like [Svelte Launch Plans][2].
 2. Click "Edit"
     - This opens the launch plan editor. You can edit/save/share this launch plan.
-3. Edit "Svelte Launch Plans" to "My Launch Plans". Click "Save".
+3. Edit "Svelte Launch Plans" to "My Personal Launch Plans".
+    - The changes appear live, in real-time!
+4. Click "Save".
     - This saved the launch plans to your browser cookies.
     - The launch plans stored in the cookies will be used by default if the URL does not contain a launch plan.
-4. Open another MultiLaunch page like [News: Sorted by Time][4].
-5. Click "Edit", then "Add"
+5. Open another MultiLaunch page like [News: Sorted by Time][4].
+6. Click "Edit", then "Add"
     - The "News: Sorted by Time" launch plans have been added to the end of your saved launch plans.
     - This is only a preview!
-6. Click "Save" to save the new launch plans to your browser cookies.
+7. Click "Save" to save the new launch plans to your browser cookies.
     - Create your own custom launch plans by adding and saving launch plans shared by other people!
-7. Click "Share" to share a link with the current launch plan.
+8. Click "Share" to share a link with the current launch plan.
     - The link is automatically pasted to your system clipboard.
 
 ---
