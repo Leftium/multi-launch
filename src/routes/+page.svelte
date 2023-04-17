@@ -249,6 +249,7 @@
 		const text = e.clipboardData?.getData('text')
 		if (text && !isTextInputElement(document.activeElement)) {
 			e.preventDefault()
+			query = text
 		}
 	}
 
