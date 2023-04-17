@@ -34,16 +34,6 @@
 		filter: grayscale(100%);
 	}
 
-	.brand .title-text {
-		display: none;
-	}
-
-	@media (min-width: 576px) {
-		.brand .title-text {
-			display: inline;
-		}
-	}
-
 	h1 {
 		margin-bottom: 0;
 	}
