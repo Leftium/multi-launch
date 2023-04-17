@@ -8,6 +8,7 @@
 
 	import TOML from '@ltd/j-toml'
 	import lzString from 'lz-string'
+	import 'iconify-icon'
 
 	import type { ActionData, PageData } from './$types'
 
@@ -225,8 +226,8 @@
 		if (e.key === 'Enter') {
 			if (e.ctrlKey && e.shiftKey && e.altKey) {
 				e.preventDefault()
-				textArea.parentElement?.classList.toggle('fullscreen')
-			} else if (!textArea.parentElement?.classList.contains('fullscreen')) {
+				wrapTextarea?.classList.toggle('fullscreen')
+			} else if (!wrapTextarea?.classList.contains('fullscreen')) {
 				// Emulate clicking first category button
 				searchGroups[0].handleClickAll(e, true)
 				e.preventDefault()
@@ -245,6 +246,11 @@
 			e.preventDefault()
 			query = text
 		}
+	}
+
+	const handleToggleFullscreen = (e: MouseEvent) => {
+		log('handleToggleFullscreen')
+		wrapTextarea.classList.toggle('fullscreen')
 	}
 
 	onMount(() => {
@@ -328,22 +334,38 @@
 
 	<form method="POST" action="?/launch" class="launcher">
 		<div class="wrap-textarea" bind:this={wrapTextarea}>
-			<textarea
-				placeholder="QUERY"
-				name="query"
-				class="query"
-				rows="1"
-				spellcheck="false"
-				bind:value={query}
-				bind:this={textArea}
-				on:keydown={handleTextareaKeydown}
-				on:focus={handleFocus}
-			/>
-			<div>
-				<span class="wordcount" hidden use:unhideIfJavascript>
+			<div class="wrap">
+				<textarea
+					placeholder="QUERY"
+					name="query"
+					class="query"
+					rows="1"
+					spellcheck="false"
+					bind:value={query}
+					bind:this={textArea}
+					on:keydown={handleTextareaKeydown}
+					on:focus={handleFocus}
+				/>
+
+				<iconify-icon
+					icon="material-symbols:fullscreen"
+					class="icon"
+					width="24"
+					on:click={handleToggleFullscreen}
+				/>
+			</div>
+
+			<div class="textarea-statusbar">
+				<span hidden use:unhideIfJavascript>
 					<span>Chars:</span><span>{query?.trim().length}</span>
 					<span>Words:</span><span>{query?.split(/\S+/).length - 1}</span>
 				</span>
+				<iconify-icon
+					icon="material-symbols:fullscreen-exit"
+					class="icon"
+					width="24"
+					on:click={handleToggleFullscreen}
+				/>
 			</div>
 		</div>
 
@@ -372,6 +394,24 @@
 </main>
 
 <style>
+	.wrap {
+		position: relative;
+	}
+
+	.wrap .icon {
+		position: absolute;
+		top: calc(50% - 12px);
+		right: 0.8rem;
+	}
+
+	.fullscreen .wrap .icon {
+		display: none;
+	}
+
+	.textarea-statusbar .icon {
+		float: right;
+	}
+
 	.button-text .icon {
 		filter: grayscale(100%);
 	}
@@ -486,7 +526,7 @@
 		white-space: pre;
 	}
 
-	main :global(.wrap-textarea:focus-within.fullscreen) {
+	main :global(.wrap-textarea.fullscreen) {
 		display: flex;
 		flex-direction: column;
 
@@ -500,8 +540,12 @@
 
 		transition: background 200ms linear 0s;
 	}
-	main textarea {
+	main .wrap {
 		flex-grow: 1;
+	}
+
+	main textarea {
+		height: 100%;
 
 		white-space: pre;
 		overflow-wrap: normal;
@@ -510,21 +554,21 @@
 		transition: none;
 	}
 
-	.wordcount {
+	.textarea-statusbar {
 		display: none;
 		background-color: var(--pico-card-sectioning-background-color);
 	}
 
-	:global(:focus-within.fullscreen) .wordcount {
+	:global(.fullscreen) .textarea-statusbar {
 		display: block;
 	}
 
-	:global(body:has(.fullscreen textarea:focus)) {
+	:global(body:has(.fullscreen textarea)) {
 		overflow-y: hidden;
 	}
 
-	:global(.fullscreen) textarea:focus,
-	:global(.wrap-textarea:focus-within.fullscreen) {
+	:global(.fullscreen) textarea,
+	:global(.wrap-textarea.fullscreen) {
 		margin: 0;
 		border: 0;
 		border-radius: 0;
@@ -536,7 +580,7 @@
 		background: var(--pico-background-color);
 	}
 
-	:global(.fullscreen) textarea:focus {
+	:global(.fullscreen) textarea {
 		padding-inline-start: 1em;
 	}
 
