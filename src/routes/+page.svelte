@@ -349,8 +349,7 @@
 
 		{#each searchGroups as searchGroup}<div class="search-group">
 				<button on:click|preventDefault={searchGroup.handleClickAll}
-					><span class="button-text"
-						><span class="backward">🗲</span> {searchGroup.name}</span
+					><span class="button-text"><span class="icon">⚡</span>{searchGroup.name}</span
 					></button
 				>{#each searchGroup.engines as engine}<button
 						class="secondary"
@@ -373,11 +372,8 @@
 </main>
 
 <style>
-	.backward {
-		display: inline-block;
-		-moz-transform: scale(-1, 1);
-		-webkit-transform: scale(-1, 1);
-		transform: scale(-1, 1);
+	.button-text .icon {
+		filter: grayscale(100%);
 	}
 
 	.error {
