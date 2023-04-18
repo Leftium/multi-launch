@@ -1,15 +1,20 @@
 title = 'Simple Launch Plan'
 
-[Translate.Google]
-iflink = ""
-lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
-default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
+[Search.Google]
+default = "https://www.google.com/search?q=QUERY"
 
-[Translate.Papago]
-iflink = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
-lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
-default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
+[Search.Kagi]
+exclude = true
+default = "https://kagi.com/search?q=QUERY"
 
+[Shopping.Google]
+default = "https://www.google.com/search?q=QUERY&tbm=shop"
+
+[Shopping.Amazon]
+default = "https://www.amazon.com/s?k=QUERY&ref=nb_sb_noss"
+
+[Shopping.Ebay]
+default = "https://www.ebay.com/sch/i.html?_nkw=QUERY"
 
 [Svelte.Discord]
 ifquery = ""
@@ -31,3 +36,13 @@ default = 'https://kit.svelte.dev/docs/introduction'
 exclude = true
 ifquery = ''
 default = 'https://svelte.dev/docs'
+
+[Translate.Google]
+iflink = ""
+lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
+default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
+
+[Translate.Papago]
+iflink = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
+lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
+default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
