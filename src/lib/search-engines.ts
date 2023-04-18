@@ -64,7 +64,7 @@ export const makeUrlTemplateSelector = (plan: SearchEnginePlan) => {
 }
 
 type EventHandler = (e: Event) => void
-type LaunchButtonClickHandler = (e: Event, isClickAll: boolean) => void
+export type LaunchButtonClickHandler = (e: Event, isClickAll: boolean) => void
 
 export const makeSearchGroup = (
 	groupName: string,

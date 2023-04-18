@@ -258,6 +258,18 @@
 		wrapTextarea.classList.toggle('fullscreen')
 	}
 
+	const makeClickAllHandler = (clickAllHandler: SE.LaunchButtonClickHandler, index: number) => {
+		return (e: MouseEvent) => {
+			if (e.altKey) {
+				// Move clicked launch group to top.
+				searchGroups.unshift(searchGroups.splice(index, 1)[0])
+				searchGroups = searchGroups
+			} else {
+				clickAllHandler(e, false)
+			}
+		}
+	}
+
 	onMount(() => {
 		let height = window.visualViewport?.height || 0
 		const viewport = window.visualViewport
@@ -375,8 +387,9 @@
 			</div>
 		</div>
 
-		{#each searchGroups as searchGroup}<div class="search-group">
-				<button on:click|preventDefault={searchGroup.handleClickAll}
+		{#each searchGroups as searchGroup, index}<div class="search-group">
+				<button
+					on:click|preventDefault={makeClickAllHandler(searchGroup.handleClickAll, index)}
 					><span class="button-text"><span class="icon">⚡</span>{searchGroup.name}</span
 					></button
 				>{#each searchGroup.engines as engine}<button
