@@ -78,7 +78,7 @@ export const actions = {
 		}))
 
 		if (urls.length) {
-			throw redirect(303, urls[0].url)
+			redirect(303, urls[0].url);
 		} else {
 			return fail(200, { query })
 		}
