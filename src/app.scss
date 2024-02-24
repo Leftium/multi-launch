@@ -1,17 +1,19 @@
-@use '@picocss/pico/scss/pico';
+@use '@picocss/pico/scss/pico' with (
+	$theme-color: 'blue'
+);
 
 html {
-    scrollbar-width: none;
+	scrollbar-width: none;
 }
 
 @supports selector(body:has(textarea:focus)) {
-    html {
-        scrollbar-width: initial;
-    }
+	html {
+		scrollbar-width: initial;
+	}
 }
 
 html,
 body,
-body>div:first-child {
-    height: 100%;
+body > div:first-child {
+	height: 100%;
 }

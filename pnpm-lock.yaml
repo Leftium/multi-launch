@@ -9,8 +9,8 @@ devDependencies:
     specifier: ^1.38.0
     version: 1.38.0
   '@picocss/pico':
-    specifier: github:picocss/pico#v2
-    version: github.com/picocss/pico/8ba5740b8a1a38435fcf3b29cce631f379259751
+    specifier: ^2.0.3
+    version: 2.0.3
   '@sveltejs/adapter-auto':
     specifier: ^2.1.1
     version: 2.1.1(@sveltejs/kit@1.29.1)
@@ -388,6 +388,11 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
+    dev: true
+
+  /@picocss/pico@2.0.3:
+    resolution: {integrity: sha512-uIWvDcZnbA+oo4mpz8LeA05huCWbDnUz8Ad2NZXTFn6SrEXBtIdKDu+/bOD4oI8hJHp6dUEEvDLim2+qqSgruQ==}
+    engines: {node: '>=18.19.0'}
     dev: true
 
   /@polka/url@1.0.0-next.24:
@@ -1865,10 +1870,4 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-    dev: true
-
-  github.com/picocss/pico/8ba5740b8a1a38435fcf3b29cce631f379259751:
-    resolution: {tarball: https://codeload.github.com/picocss/pico/tar.gz/8ba5740b8a1a38435fcf3b29cce631f379259751}
-    name: '@picocss/pico'
-    version: 2.0.0-alpha1
     dev: true

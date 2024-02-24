@@ -13,7 +13,7 @@
 	},
 	"devDependencies": {
 		"@ltd/j-toml": "^1.38.0",
-		"@picocss/pico": "github:picocss/pico#v2",
+		"@picocss/pico": "^2.0.3",
 		"@sveltejs/adapter-auto": "^2.1.1",
 		"@sveltejs/kit": "^1.29.1",
 		"@types/debug": "^4.1.12",
