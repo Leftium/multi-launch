@@ -1,0 +1,37 @@
+title = 'Default Launch Plan'
+
+[Shopping.Danawa]
+default = "https://search.danawa.com/dsearch.php?k1=QUERY"
+
+[Shopping.Kakao]
+default = "https://shoppinghow.kakao.com/search/QUERY"
+
+[Shopping.Naver]
+default = "https://search.shopping.naver.com/search/all?query=QUERY"
+
+[Shopping.Enuri]
+default = "https://www.enuri.com/search.jsp?keyword=QUERY"
+
+
+[Used."중고나라"]
+default = "https://cafe.naver.com/joonggonara.cafe?iframe_url=/ArticleSearchList.nhn%3Fsearch.clubid=10050146%26search.searchtype=1%26search.query=QUERY"
+
+[Used."joongna.com"]
+default = "https://web.joongna.com/search/QUERY"
+
+[Used.Karrot]
+default = "https://www.daangn.com/search/QUERY/"
+
+
+[Search.Naver]
+default = "https://search.naver.com/search.naver?query=QUERY"
+
+[Search.Daum]
+default = "https://search.daum.net/search?q=QUERY"
+
+
+[Maps.Kakao]
+default = "https://map.kakao.com/?q=QUERY"
+
+[Maps.Naver]
+default = "https://map.naver.com/p/search/QUERY"
