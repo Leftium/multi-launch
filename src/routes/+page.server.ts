@@ -9,6 +9,8 @@ import TOML from '@ltd/j-toml'
 import * as SE from '$lib/search-engines'
 
 import samplePlanToml from '$lib/plans/sample.toml?raw'
+import sveltePlanToml from '$lib/plans/svelte.toml?raw'
+
 import _ from 'lodash'
 
 export const config = {
@@ -49,7 +51,11 @@ const computeUrl = (engine: SE.SearchEngine, query: string) => {
 
 export const load = async ({ cookies, url }) => {
 	const planTomlLz = url.searchParams.get('p') || cookies.get('planTomlLz') || ''
-	const planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || samplePlanToml
+	let planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || samplePlanToml
+
+	if (url.pathname === '/svelte') {
+		planToml = sveltePlanToml
+	}
 
 	return { planToml }
 }
@@ -78,7 +84,7 @@ export const actions = {
 		}))
 
 		if (urls.length) {
-			redirect(303, urls[0].url);
+			redirect(303, urls[0].url)
 		} else {
 			return fail(200, { query })
 		}
