@@ -1,5 +1,16 @@
 title = 'Korea Launch Plans'
 
+[Translate.Google]
+iflink = ""
+lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
+default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
+
+[Translate.Papago]
+iflink = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
+lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
+default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
+
+
 [Shopping.Danawa]
 default = "https://search.danawa.com/dsearch.php?k1=QUERY"
 
