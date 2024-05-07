@@ -12,8 +12,9 @@ default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
 
 [Shopping.Danawa]
+ifquery = "https://search.danawa.com/dsearch.php?k1=QUERY"
 default = "https://www.danawa.com/main/wish/wishList.php"
-query = "https://search.danawa.com/dsearch.php?k1=QUERY"
+
 
 [Shopping.Kakao]
 default = "https://shoppinghow.kakao.com/search/QUERY"
