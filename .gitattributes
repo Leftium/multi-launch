@@ -10,3 +10,4 @@
 package-lock.json   text eol=lf  diff=nodiff
 yarn.lock           text eol=lf  diff=nodiff
 pnpm-lock.yaml      text eol=lf  diff=nodiff
+*.lockb             binary       diff=nodiff
