@@ -1,11 +1,16 @@
 title = 'Simple Launch Plan'
 
+[Search.Kagi]
+default = "https://kagi.com/search?q=QUERY"
+
 [Search.Google]
 default = "https://www.google.com/search?q=QUERY"
 
-[Search.Kagi]
-exclude = true
-default = "https://kagi.com/search?q=QUERY"
+[Plans.Svelte]
+default = "/svelte"
+
+[Plans.Korea]
+default = "/korea"
 
 [Shopping.Google]
 default = "https://www.google.com/search?q=QUERY&tbm=shop"
