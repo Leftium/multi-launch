@@ -13,17 +13,21 @@ default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
 [Shopping.Danawa]
 ifquery = "https://search.danawa.com/dsearch.php?k1=QUERY"
-default = "https://www.danawa.com/main/wish/wishList.php"
+default = "https://www.danawa.com/main/wish/wishList.php?fSeq=29707842&type=1"
 
 
 [Shopping.Kakao]
-default = "https://shoppinghow.kakao.com/search/QUERY"
+default = 'https://shoppinghow.kakao.com/mypage/wishProduct'
+ifquery = "https://shoppinghow.kakao.com/search/QUERY"
+
 
 [Shopping.Naver]
-default = "https://search.shopping.naver.com/search/all?query=QUERY"
+default = 'https://shopping.naver.com/my/keep-products'
+ifquery = "https://search.shopping.naver.com/search/all?query=QUERY"
 
 [Shopping.Enuri]
-default = "https://www.enuri.com/search.jsp?keyword=QUERY"
+default = 'https://www.enuri.com/my/my_enuri.jsp?name=zzim'
+ifquery = "https://www.enuri.com/search.jsp?keyword=QUERY"
 
 
 [Used."중고나라"]
