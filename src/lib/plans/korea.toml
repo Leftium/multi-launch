@@ -1,16 +1,5 @@
 title = 'Korea Launch Plans'
 
-[Translate.Google]
-iflink = ""
-lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
-default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
-
-[Translate.Papago]
-iflink = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
-lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
-default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
-
-
 [Shopping.Danawa]
 ifquery = "https://search.danawa.com/dsearch.php?k1=QUERY"
 default = "https://www.danawa.com/main/wish/wishList.php?fSeq=29707842&type=1"
@@ -38,6 +27,17 @@ default = "https://web.joongna.com/search/QUERY"
 
 [Used.Karrot]
 default = "https://www.daangn.com/search/QUERY/"
+
+
+[Translate.Google]
+iflink = ""
+lang_ko = "https://translate.google.com/?sl=ko&tl=en&text=QUERY&op=translate"
+default = "https://translate.google.com/?sl=en&tl=ko&text=QUERY&op=translate"
+
+[Translate.Papago]
+iflink = "https://papago.naver.net/website?locale=en&source=auto&target=en&url=QUERY"
+lang_ko = "https://papago.naver.com/?sk=ko&tk=en&hn=0&st=QUERY"
+default = "https://papago.naver.com/?sk=en&tk=ko&hn=0&st=QUERY"
 
 
 [Search.Naver]
