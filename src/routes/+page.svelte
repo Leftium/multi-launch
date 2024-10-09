@@ -480,7 +480,6 @@
 
 		padding-inline-start: calc(var(--pico-form-element-spacing-horizontal) + 1.75rem);
 
-		background-color: white;
 		background-image: var(--pico-icon-search);
 		background-position: center left 1.125rem;
 		background-size: 1rem auto;
