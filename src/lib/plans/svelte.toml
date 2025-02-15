@@ -2,15 +2,15 @@ title = "Svelte(Kit) Launch Plans"
 
 ['inurl:'."svelte.dev"]
 ifquery = 'https://www.google.com/search?q=inurl:https://svelte.dev+QUERY'
-default = 'svelte.dev/docs/kit'
+default = 'https://svelte.dev'
 
 ['inurl:'."/docs/kit"]
 ifquery = 'https://www.google.com/search?q=inurl:https://svelte.dev/docs/kit/+QUERY'
-default = 'svelte.dev/docs/kit'
+default = 'https://svelte.dev/docs/kit'
 
 ['inurl:'."/docs/svelte"]
 ifquery = 'https://www.google.com/search?q=inurl:https://svelte.dev/docs/svelte/+QUERY'
-default = 'svelte.dev/docs/svelte'
+default = 'https://svelte.dev/docs/svelte'
 
 
 [Doc."SvelteKit"]
