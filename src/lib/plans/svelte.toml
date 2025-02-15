@@ -1,34 +1,33 @@
 title = "Svelte(Kit) Launch Plans"
 
-[Site."kit.svelte.dev"]
-ifquery = 'https://www.google.com/search?q=site:https://kit.svelte.dev+QUERY'
-default = 'https://kit.svelte.dev/'
-
-[Site."svelte.dev"]
+['inurl:'."svelte.dev"]
 ifquery = 'https://www.google.com/search?q=inurl:https://svelte.dev+QUERY'
-default = 'https://svelte.dev/'
+default = 'svelte.dev/docs/kit'
+
+['inurl:'."/docs/kit"]
+ifquery = 'https://www.google.com/search?q=inurl:https://svelte.dev/docs/kit/+QUERY'
+default = 'svelte.dev/docs/kit'
+
+['inurl:'."/docs/svelte"]
+ifquery = 'https://www.google.com/search?q=inurl:https://svelte.dev/docs/svelte/+QUERY'
+default = 'svelte.dev/docs/svelte'
 
 
 [Doc."SvelteKit"]
-ifquery = 'https://kit.svelte.dev/search?q=QUERY'
-default = 'https://kit.svelte.dev/docs'
+ifquery = ''
+default = 'https://svelte.dev/docs/kit'
 
 [Doc."Svelte"]
 ifquery = 'https://svelte.dev/search?q=QUERY'
-default = 'https://svelte.dev/docs'
-
-[Doc."Old Tutorial"]
-ifquery = ""
-default = 'https://svelte.dev/tutorial'
-
-
-[Social.Discord]
-ifquery = ""
-default = "https://discord.com/channels/457912077277855764/"
+default = 'https://svelte.dev/docs/svelte/'
 
 [Social.Reddit]
 ifquery = "https://www.reddit.com/r/sveltejs/search/?q=QUERY"
 default = "https://www.reddit.com/r/sveltejs/new/"
 
 [Social.StackOverflow]
-default = "https://stackoverflow.com/search?q=%5Bsveltekit%5D+%5Bsvelte%5D+QUERY"
+default = "https://stackoverflow.com/questions/tagged/sveltekit+or+svelte+QUERY"
+
+[Social.Discord]
+ifquery = ""
+default = "https://discord.com/channels/457912077277855764/"
