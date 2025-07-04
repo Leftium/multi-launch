@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
+
 	import '../app.scss'
 
 	import _ from 'lodash'
@@ -16,24 +18,29 @@
 	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
 
-	// Data props:
-	export let data: PageData
-	export let form: ActionData
+	
+	interface Props {
+		// Data props:
+		data: PageData;
+		form: ActionData;
+	}
+
+	let { data, form }: Props = $props();
 
 	// Bindings
-	let query = form?.query || $page.url.searchParams.get('q') || ''
-	let textArea: HTMLTextAreaElement
+	let query = $state(form?.query || $page.url.searchParams.get('q') || '')
+	let textArea: HTMLTextAreaElement = $state()
 
-	let wrapTextarea: HTMLElement
+	let wrapTextarea: HTMLElement = $state()
 
-	let successMessages: string[] = []
-	let errorMessages: string[] = []
+	let successMessages: string[] = $state([])
+	let errorMessages: string[] = $state([])
 
-	let planToml = form?.planToml || data.planToml
-	let planJson: any
-	let planTitle = 'Untitled'
+	let planToml = $state(form?.planToml || data.planToml)
+	let planJson: any = $state()
+	let planTitle = $state('Untitled')
 
-	let searchGroups: SE.SearchGroup[] = []
+	let searchGroups: SE.SearchGroup[] = $state([])
 
 	let failedToCopy = false
 
@@ -291,12 +298,12 @@
 	})
 </script>
 
-<svelte:body on:paste={handlePaste} />
+<svelte:body onpaste={handlePaste} />
 
 <main class="container">
 	<form method="POST" action="?/edit">
 		<details class="editor" {open}>
-			<!-- svelte-ignore a11y-no-redundant-roles -->
+			<!-- svelte-ignore a11y_no_redundant_roles -->
 			<summary role="button" class="contrast">
 				<div>
 					<span>{planTitle}</span>
@@ -315,12 +322,12 @@
 							class="secondary"
 							name="operation"
 							value="copy"
-							on:click={handleClickCopy}><span class="button-text">Copy</span></button
+							onclick={handleClickCopy}><span class="button-text">Copy</span></button
 						><button
 							class="secondary"
 							name="operation"
 							value="share"
-							on:click={handleClickShare}
+							onclick={handleClickShare}
 							><span class="button-text">Share</span></button
 						>
 					</div>
@@ -342,8 +349,8 @@
 						rows="8"
 						spellcheck="false"
 						bind:value={planToml}
-						on:input={handleTextareaInput}
-					/>
+						oninput={handleTextareaInput}
+					></textarea>
 				</div>
 			</article>
 		</details>
@@ -360,17 +367,17 @@
 					spellcheck="false"
 					bind:value={query}
 					bind:this={textArea}
-					on:keydown={handleTextareaKeydown}
-					on:focus={handleFocus}
-					on:blur={handleBlur}
-				/>
+					onkeydown={handleTextareaKeydown}
+					onfocus={handleFocus}
+					onblur={handleBlur}
+				></textarea>
 
 				<iconify-icon
 					icon="material-symbols:fullscreen"
 					class="icon"
 					width="24"
-					on:click={handleToggleFullscreen}
-				/>
+					onclick={handleToggleFullscreen}
+				></iconify-icon>
 			</div>
 
 			<div class="textarea-statusbar">
@@ -382,14 +389,14 @@
 					icon="material-symbols:fullscreen-exit"
 					class="icon"
 					width="24"
-					on:click={handleToggleFullscreen}
-				/>
+					onclick={handleToggleFullscreen}
+				></iconify-icon>
 			</div>
 		</div>
 
 		{#each searchGroups as searchGroup, index}<div class="search-group">
 				<button
-					on:click|preventDefault={makeClickAllHandler(searchGroup.handleClickAll, index)}
+					onclick={preventDefault(makeClickAllHandler(searchGroup.handleClickAll, index))}
 					><span class="button-text"><span class="icon">⚡</span>{searchGroup.name}</span
 					></button
 				>{#each searchGroup.engines as engine}<button
@@ -399,7 +406,7 @@
 						class:exclude-from-all={engine.exclude ||
 							!engine.getUrlTemplate(query, true)}
 						data-tooltip={`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`}
-						on:click|preventDefault={engine.clickHandler}
+						onclick={preventDefault(engine.clickHandler)}
 						><span class="button-text">{engine.name}</span></button
 					>{/each}
 			</div>{/each}

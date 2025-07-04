@@ -2,6 +2,11 @@
 	import '../app.scss'
 
 	import debugFactory from 'debug'
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 	const log = debugFactory('log')
 </script>
 
@@ -15,7 +20,7 @@
 		</h1>
 	</nav>
 
-	<slot />
+	{@render children?.()}
 </div>
 
 <style>
