@@ -1,4 +1,5 @@
-name = "multi-launch"main = ".svelte-kit/cloudflare/_worker.js"
+name = "multi-launch"
+main = ".svelte-kit/cloudflare/_worker.js"
 compatibility_date = "2025-07-08"
 # workers_dev = true
 
