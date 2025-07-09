@@ -1,0 +1,11 @@
+main = ".svelte-kit/cloudflare/_worker.js"
+compatibility_date = "2025-07-08"
+# workers_dev = true
+
+# [build]
+# command = "CF_PAGES=1 npm run build"
+
+# Bind your static output directory (e.g. the client folder SvelteKit emitted)
+[assets]
+binding = "ASSETS"
+directory = ".svelte-kit/cloudflare"
