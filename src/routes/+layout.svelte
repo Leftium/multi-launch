@@ -1,15 +1,18 @@
 <script lang="ts">
+	import favicon from '$lib/assets/favicon.svg'
 	import '../app.scss'
 
 	import debugFactory from 'debug'
 	interface Props {
 		children?: import('svelte').Snippet
 	}
-
-	let { children }: Props = $props()
+	let { children } = $props()
 	const log = debugFactory('log')
 </script>
 
+<svelte:head>
+	<link rel="icon" href={favicon} />
+</svelte:head>
 <div>
 	<nav class="container">
 		<h1>
