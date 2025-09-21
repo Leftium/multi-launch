@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { preventDefault } from 'svelte/legacy';
+	import { preventDefault } from 'svelte/legacy'
 
 	import '../app.scss'
 
@@ -18,14 +18,13 @@
 	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
 
-	
 	interface Props {
 		// Data props:
-		data: PageData;
-		form: ActionData;
+		data: PageData
+		form: ActionData
 	}
 
-	let { data, form }: Props = $props();
+	let { data, form }: Props = $props()
 
 	// Bindings
 	let query = $state(form?.query || $page.url.searchParams.get('q') || '')
@@ -474,9 +473,10 @@
 	}
 
 	main textarea {
-		font-family: 'Menlo', 'Consolas', 'Roboto Mono', 'Ubuntu Monospace', 'Noto Mono',
-			'Oxygen Mono', 'Liberation Mono', monospace, 'Apple Color Emoji', 'Segoe UI Emoji',
-			'Segoe UI Symbol', 'Noto Color Emoji';
+		font-family:
+			'Menlo', 'Consolas', 'Roboto Mono', 'Ubuntu Monospace', 'Noto Mono', 'Oxygen Mono',
+			'Liberation Mono', monospace, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+			'Noto Color Emoji';
 	}
 
 	textarea.query {

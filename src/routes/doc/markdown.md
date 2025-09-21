@@ -8,7 +8,7 @@
 
 #### [Shopping][10]
 
--   Search multiple shopping sites at once.
+- Search multiple shopping sites at once.
 
 #### [Svelte Launch Plans][2]
 
@@ -24,26 +24,26 @@
 
 #### [Translate Korean-English][1]
 
--   The Translate buttons automatically detect Korean/English QUERY input.
--   Support for other language could be added, too.
--   Notice Papago also accepts URL's as input (to translate the whole page).
+- The Translate buttons automatically detect Korean/English QUERY input.
+- Support for other language could be added, too.
+- Notice Papago also accepts URL's as input (to translate the whole page).
 
 #### [Multi-Translate from English][8]
 
--   Useful for translating app release notes into multiple languages.
--   Tabs are reused across multiple searches. (When possible. Some sites like Google.com prevent tab re-use.)
+- Useful for translating app release notes into multiple languages.
+- Tabs are reused across multiple searches. (When possible. Some sites like Google.com prevent tab re-use.)
 
 #### [Image Search][9]
 
--   Some of the image buttons support reverse image search. Just enter the URL of an image like [this][5].
+- Some of the image buttons support reverse image search. Just enter the URL of an image like [this][5].
 
 #### [News: FOMO][3]
 
--   A collection of social news sites I check regularly because there is no reverse-chronological feed (or it is limited).
+- A collection of social news sites I check regularly because there is no reverse-chronological feed (or it is limited).
 
 #### [News: No FOMO][4]
 
--   A collection of social news sites with a reverse-chronological feed (so there is no need to check often).
+- A collection of social news sites with a reverse-chronological feed (so there is no need to check often).
 
 ---
 
@@ -109,7 +109,6 @@
 5. You can paste a query even when focus is outside the text box.
 
 6. Toggle the QUERY input fullscreen mode by clicking the fullscreen icon.
-
     - (Fullscreen mode has a word/char count!)
 
 7. Secret keyboard shortcut for fullscreen QUERY edit mode:

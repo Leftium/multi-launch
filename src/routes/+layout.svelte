@@ -3,10 +3,10 @@
 
 	import debugFactory from 'debug'
 	interface Props {
-		children?: import('svelte').Snippet;
+		children?: import('svelte').Snippet
 	}
 
-	let { children }: Props = $props();
+	let { children }: Props = $props()
 	const log = debugFactory('log')
 </script>
 
