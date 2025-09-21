@@ -16,7 +16,6 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.22.0",
-		"@leftium/leftium-logo": "^0.0.12",
 		"@leftium/logo": "^0.0.2",
 		"@ltd/j-toml": "^1.38.0",
 		"@picocss/pico": "^2.1.1",
