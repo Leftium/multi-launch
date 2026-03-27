@@ -18,8 +18,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(svelte@5.39.3)
       '@leftium/nimble.css':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@ltd/j-toml':
         specifier: ^1.38.0
         version: 1.38.0
@@ -344,8 +344,8 @@ packages:
     peerDependencies:
       svelte: ^5.0.0
 
-  '@leftium/nimble.css@0.5.0':
-    resolution: {integrity: sha512-yT/L2w69lg1/4LsK9duUlV2DKzOJrVti5nXbpbf0uklx/kFQrG5I6hmMmnE6420HsZwHDDbETDKnjC1ze3Mq0g==}
+  '@leftium/nimble.css@0.6.0':
+    resolution: {integrity: sha512-tGzFXUSsztnKdSqgPW0nwXNBcitQMBd7rHF7fSAbN6silmBe2qeTlwcEQJUmOOaF4706ASZIqujvL4ddacgBwA==}
 
   '@ltd/j-toml@1.38.0':
     resolution: {integrity: sha512-lYtBcmvHustHQtg4X7TXUu1Xa/tbLC3p2wLvgQI+fWVySguVZJF60Snxijw5EiohumxZbR10kWYFFebh1zotiw==}
@@ -1549,7 +1549,7 @@ snapshots:
     dependencies:
       svelte: 5.39.3
 
-  '@leftium/nimble.css@0.5.0': {}
+  '@leftium/nimble.css@0.6.0': {}
 
   '@ltd/j-toml@1.38.0': {}
 
