@@ -419,8 +419,10 @@
 						value={engine.lzEngines}
 						class:exclude-from-all={engine.exclude ||
 							!engine.getUrlTemplate(query, true)}
-					{@attach tooltip(`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`)}
-					onclick={preventDefault(engine.clickHandler)}
+						{@attach tooltip(
+							`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`
+						)}
+						onclick={preventDefault(engine.clickHandler)}
 						><span class="button-text">{engine.name}</span></button
 					>{/each}
 			</div>{/each}
@@ -540,6 +542,12 @@
 		background-position: left;
 	}
 
+	/* Hide divider when adjacent buttons have different bg colors */
+	.search-group button.secondary.exclude-from-all + button.secondary:not(.exclude-from-all),
+	.search-group button.secondary:not(.exclude-from-all) + button.secondary.exclude-from-all {
+		background-image: none;
+	}
+
 	.search-group button .button-text {
 		overflow-x: clip;
 		white-space: nowrap;
@@ -654,11 +662,11 @@
 		background: none;
 	}
 
-	.editor > article > header [role="group"] {
+	.editor > article > header [role='group'] {
 		margin-bottom: 0;
 	}
 
-	.editor > article > header blockquote[style*="hidden"] {
+	.editor > article > header blockquote[style*='hidden'] {
 		display: none;
 	}
 
