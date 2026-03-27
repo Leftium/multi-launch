@@ -28,13 +28,11 @@
 
 <style>
 	div {
-		padding-left: calc(100vw - 100%);
-		overflow-x: hidden;
 		height: 100%;
 	}
 
 	.brand {
-		color: var(--pico-primary);
+		color: var(--nc-primary);
 		text-decoration: none;
 	}
 

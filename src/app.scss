@@ -1,6 +1,8 @@
-@use '@picocss/pico/scss/pico' with (
-	$theme-color: 'blue'
-);
+@use '@leftium/nimble.css/scss';
+
+:root {
+	--nc-content-width: 960px;
+}
 
 html {
 	scrollbar-width: none;

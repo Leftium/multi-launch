@@ -3,6 +3,10 @@
 
 	import '../app.scss'
 
+	import tippy from 'tippy.js'
+	import 'tippy.js/dist/tippy.css'
+	import type { Attachment } from 'svelte/attachments'
+
 	import _ from 'lodash'
 
 	import debugFactory from 'debug'
@@ -13,6 +17,17 @@
 	import 'iconify-icon'
 
 	import type { ActionData, PageData } from './$types'
+
+	function tooltip(content: string): Attachment {
+		return (element) => {
+			const instance = tippy(element, {
+				content,
+				placement: 'bottom',
+				allowHTML: false,
+			})
+			return instance.destroy
+		}
+	}
 
 	import * as SE from '$lib/search-engines'
 	import { onMount } from 'svelte'
@@ -303,7 +318,7 @@
 	<form method="POST" action="?/edit">
 		<details class="editor" {open}>
 			<!-- svelte-ignore a11y_no_redundant_roles -->
-			<summary role="button" class="contrast">
+			<summary role="button" class="secondary">
 				<div>
 					<span>{planTitle}</span>
 					<span>Edit</span>
@@ -374,7 +389,7 @@
 				<iconify-icon
 					icon="material-symbols:fullscreen"
 					class="icon"
-					width="24"
+					width="16"
 					onclick={handleToggleFullscreen}
 				></iconify-icon>
 			</div>
@@ -404,8 +419,8 @@
 						value={engine.lzEngines}
 						class:exclude-from-all={engine.exclude ||
 							!engine.getUrlTemplate(query, true)}
-						data-tooltip={`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`}
-						onclick={preventDefault(engine.clickHandler)}
+					{@attach tooltip(`${engine.name}\n${decodeURI(engine.getUrlTemplate(query))}`)}
+					onclick={preventDefault(engine.clickHandler)}
 						><span class="button-text">{engine.name}</span></button
 					>{/each}
 			</div>{/each}
@@ -423,13 +438,19 @@
 		position: relative;
 	}
 
-	.wrap .icon {
-		position: absolute;
-		top: calc(50% - 12px);
-		right: 0.8rem;
+	.wrap textarea {
+		margin-bottom: 0;
 	}
 
-	.fullscreen .wrap .icon {
+	.wrap iconify-icon {
+		position: absolute;
+		/* Align to textarea content box: 1px border + 0.5em padding-top + half of 1.5 line-height */
+		top: calc(1px + 0.5em + 0.75em);
+		transform: translateY(-50%);
+		right: 1.125rem;
+	}
+
+	:global(.fullscreen) .wrap iconify-icon {
 		display: none;
 	}
 
@@ -446,7 +467,7 @@
 	}
 
 	form > div.search-group {
-		margin-bottom: var(--pico-spacing);
+		margin-bottom: var(--nc-spacing);
 	}
 
 	.exclude-from-all {
@@ -457,19 +478,19 @@
 	}
 
 	details header {
-		margin-bottom: var(--pico-spacing);
+		margin-bottom: var(--nc-spacing);
 	}
 
 	details header {
-		margin-right: calc(var(--pico-spacing) * -1);
-		margin-left: calc(var(--pico-spacing) * -1);
-		padding: var(--pico-spacing);
+		margin-right: calc(var(--nc-spacing) * -1);
+		margin-left: calc(var(--nc-spacing) * -1);
+		padding: var(--nc-spacing);
 	}
 
 	details > article {
 		margin-top: 0;
-		padding-right: var(--pico-spacing);
-		padding-left: var(--pico-spacing);
+		padding-right: var(--nc-spacing);
+		padding-left: var(--nc-spacing);
 	}
 
 	main textarea {
@@ -485,28 +506,41 @@
 
 		overflow: hidden;
 
-		padding-inline-start: calc(var(--pico-form-element-spacing-horizontal) + 1.75rem);
+		padding-inline-start: calc(0.75em + 1.75rem);
 
-		background-image: var(--pico-icon-search);
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgb(136, 145, 164)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
 		background-position: center left 1.125rem;
 		background-size: 1rem auto;
 		background-repeat: no-repeat;
 	}
 
-	div button {
+	.search-group button {
 		width: calc(100% / 2);
 
-		border-right: 1px solid var(--pico-muted-border-color);
-		border-top: 1px solid var(--pico-muted-border-color);
+		border: none;
+		border-top: 1px solid var(--nc-border);
 		border-radius: 0;
 
 		margin: 0;
 
-		/* Undo pico css button styling */
 		display: inline;
 	}
 
-	div button .button-text {
+	/* Partial dividers between same-type (secondary) buttons in the search grid */
+	.search-group button.secondary + button.secondary {
+		background-image: linear-gradient(
+			to bottom,
+			transparent 20%,
+			rgb(255 255 255 / 0.3) 20%,
+			rgb(255 255 255 / 0.3) 80%,
+			transparent 80%
+		);
+		background-size: 1px 100%;
+		background-repeat: no-repeat;
+		background-position: left;
+	}
+
+	.search-group button .button-text {
 		overflow-x: clip;
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -518,37 +552,23 @@
 		text-align: left;
 	}
 
-	div button:first-child {
+	.search-group button:first-child {
 		width: 100%;
 	}
 
-	@media (min-width: 576px) {
-		div button {
-			width: calc(100% / 3);
-		}
-	}
-	@media (min-width: 768px) {
-		div button:first-child,
-		div button {
+	/* Tablet */
+	@media (min-width: 720px) {
+		.search-group button:first-child,
+		.search-group button {
 			width: calc(100% / 4);
 		}
 	}
-	@media (min-width: 1024px) {
-		div button:first-child,
-		div button {
+	/* Desktop (content maxes at 960px) */
+	@media (min-width: 960px) {
+		.search-group button:first-child,
+		.search-group button {
 			width: calc(100% / 6);
 		}
-	}
-	@media (min-width: 1280px) {
-		div button:first-child,
-		div button {
-			width: calc(100% / 7);
-		}
-	}
-
-	[data-tooltip]::before {
-		text-align: left;
-		white-space: pre;
 	}
 
 	main :global(.wrap-textarea.fullscreen) {
@@ -581,7 +601,7 @@
 
 	.textarea-statusbar {
 		display: none;
-		background-color: var(--pico-card-sectioning-background-color);
+		background-color: var(--nc-surface-2);
 	}
 
 	:global(.fullscreen) .textarea-statusbar {
@@ -602,7 +622,7 @@
 		overflow: auto;
 
 		max-height: 100vh;
-		background: var(--pico-background-color);
+		background: var(--nc-surface-1);
 	}
 
 	:global(.fullscreen) textarea {
@@ -610,18 +630,38 @@
 	}
 
 	details header {
-		margin-bottom: var(--pico-spacing);
-		margin-right: calc(var(--pico-spacing) * -1);
-		margin-left: calc(var(--pico-spacing) * -1);
-		padding: var(--pico-spacing);
+		margin-bottom: var(--nc-spacing);
+		margin-right: calc(var(--nc-spacing) * -1);
+		margin-left: calc(var(--nc-spacing) * -1);
+		padding: var(--nc-spacing);
 	}
 
 	details > article {
-		padding-right: var(--pico-spacing);
-		padding-left: var(--pico-spacing);
+		padding-right: var(--nc-spacing);
+		padding-left: var(--nc-spacing);
 	}
 
 	/* Custom styles for the editor */
+	.editor > article {
+		border: none;
+	}
+
+	.editor > article > header {
+		margin: 0;
+		padding: 0;
+		padding-bottom: var(--nc-spacing);
+		border-bottom: none;
+		background: none;
+	}
+
+	.editor > article > header [role="group"] {
+		margin-bottom: 0;
+	}
+
+	.editor > article > header blockquote[style*="hidden"] {
+		display: none;
+	}
+
 	.editor > summary {
 		margin-bottom: 0;
 	}
@@ -644,6 +684,5 @@
 
 	.editor header button {
 		width: calc(100% / 4);
-		border-left: 1px solid var(--pico-muted-border-color);
 	}
 </style>
