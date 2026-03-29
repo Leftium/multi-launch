@@ -444,6 +444,10 @@
 		margin-bottom: 0;
 	}
 
+	:global(.wrap-textarea) {
+		margin-bottom: calc(var(--nc-spacing) / 2);
+	}
+
 	.wrap iconify-icon {
 		position: absolute;
 		/* Align to textarea content box: 1px border + 0.5em padding-top + half of 1.5 line-height */
