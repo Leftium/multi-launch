@@ -314,7 +314,7 @@
 
 <svelte:body onpaste={handlePaste} />
 
-<main class="container">
+<main>
 	<form method="POST" action="?/edit">
 		<details class="editor" {open}>
 			<!-- svelte-ignore a11y_no_redundant_roles -->
