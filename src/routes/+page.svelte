@@ -479,6 +479,10 @@
 		border-left-color: hsl(205 15% 41% / 0.5);
 	}
 
+	.exclude-from-all:hover {
+		background-color: hsl(205 15% 41% / 0.65);
+	}
+
 	details header {
 		margin-bottom: var(--nc-spacing);
 	}
