@@ -24,6 +24,7 @@
 				content,
 				placement: 'bottom',
 				allowHTML: false,
+				popperOptions: { strategy: 'fixed' },
 			})
 			return instance.destroy
 		}
