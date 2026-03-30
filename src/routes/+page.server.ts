@@ -102,7 +102,7 @@ export const actions = {
 		const planTomlLz = lzString.compressToEncodedURIComponent(planToml)
 
 		let successMessage = ''
-		let errorMessage = ''
+		let errorMessage: string
 
 		log(planToml.length, planTomlLz.length, planTomlLz.length / planToml.length)
 

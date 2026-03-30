@@ -52,7 +52,7 @@
 	let { data, form }: Props = $props()
 
 	// Bindings
-	let query = $state(form?.query || $page.url.searchParams.get('q') || '')
+	let query = $state(untrack(() => form?.query || $page.url.searchParams.get('q') || ''))
 	let textArea: HTMLTextAreaElement | undefined = $state()
 
 	let wrapTextarea: HTMLElement | undefined = $state()
@@ -60,7 +60,7 @@
 	let successMessages: string[] = $state([])
 	let errorMessages: string[] = $state([])
 
-	let planToml = $state(form?.planToml || data.planToml)
+	let planToml = $state(untrack(() => form?.planToml || data.planToml))
 	let planJson: Record<string, unknown> = $state({})
 	let planTitle = $state('Untitled')
 
@@ -68,13 +68,15 @@
 
 	let failedToCopy = false
 
-	if (form?.errorMessage) {
-		untrack(() => errorMessages.push(form.errorMessage))
-	}
+	untrack(() => {
+		if (form?.errorMessage) {
+			errorMessages.push(form.errorMessage)
+		}
 
-	if (form?.successMessage) {
-		untrack(() => successMessages.push(form.successMessage))
-	}
+		if (form?.successMessage) {
+			successMessages.push(form.successMessage)
+		}
+	})
 
 	let open = untrack(() =>
 		successMessages.length || errorMessages.length || form?.fromEditOperation ? true : false
