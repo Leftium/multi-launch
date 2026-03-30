@@ -6,7 +6,7 @@ const log = debugFactory('/+page.server')
 import lzString from 'lz-string'
 import TOML from '@ltd/j-toml'
 
-import * as SE from '$lib/search-engines'
+import { makeUrlTemplateSelector, type SearchEngine } from '$lib/search-engines'
 
 import samplePlanToml from '$lib/plans/sample.toml?raw'
 import sveltePlanToml from '$lib/plans/svelte.toml?raw'
@@ -36,10 +36,10 @@ export const config = {
 
 const SECONDS_PER_DAY = 24 * 60 * 60
 
-const computeUrl = (engine: SE.SearchEngine, query: string) => {
+const computeUrl = (engine: SearchEngine, query: string) => {
 	const planJson = engine.plan
 	const queryTrimmedEncoded = encodeURIComponent(query.trim())
-	const urlTemplateSelector = SE.makeUrlTemplateSelector(planJson)
+	const urlTemplateSelector = makeUrlTemplateSelector(planJson)
 	const urlTemplate = urlTemplateSelector(query) || planJson.default
 	let url = urlTemplate.replace('QUERY', queryTrimmedEncoded)
 

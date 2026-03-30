@@ -31,7 +31,15 @@
 		}
 	}
 
-	import * as SE from '$lib/search-engines'
+	import {
+		makeUrlTemplateSelector,
+		makeSearchGroup,
+		type SearchEnginePlan,
+		type SearchEngine,
+		type SearchGroup,
+		type SearchGroupPlans,
+		type LaunchButtonClickHandler,
+	} from '$lib/search-engines'
 	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
 
@@ -56,7 +64,7 @@
 	let planJson: Record<string, unknown> = $state({})
 	let planTitle = $state('Untitled')
 
-	let searchGroups: SE.SearchGroup[] = $state([])
+	let searchGroups: SearchGroup[] = $state([])
 
 	let failedToCopy = false
 
@@ -102,9 +110,9 @@
 	const makeSearchEngine = (
 		groupName: string,
 		name: string,
-		plan: SE.SearchEnginePlan
-	): SE.SearchEngine => {
-		const getUrlTemplate = SE.makeUrlTemplateSelector(plan)
+		plan: SearchEnginePlan
+	): SearchEngine => {
+		const getUrlTemplate = makeUrlTemplateSelector(plan)
 		const target = plan.target || `${groupName}.${name}`
 		const exclude = !!plan?.exclude
 
@@ -141,13 +149,10 @@
 	}
 
 	const makeSearchGroups = (planJson: Record<string, unknown>) => {
-		const { title: _title, ...searchGroupPlans } = planJson as Record<
-			string,
-			SE.SearchGroupPlans
-		>
+		const { title: _title, ...searchGroupPlans } = planJson as Record<string, SearchGroupPlans>
 
-		const searchGroups = _.map(searchGroupPlans, (plans: SE.SearchGroupPlans, name: string) =>
-			SE.makeSearchGroup(name, plans, makeSearchEngine)
+		const searchGroups = _.map(searchGroupPlans, (plans: SearchGroupPlans, name: string) =>
+			makeSearchGroup(name, plans, makeSearchEngine)
 		)
 
 		return searchGroups
@@ -287,7 +292,7 @@
 		wrapTextarea!.classList.toggle('fullscreen')
 	}
 
-	const makeClickAllHandler = (clickAllHandler: SE.LaunchButtonClickHandler, index: number) => {
+	const makeClickAllHandler = (clickAllHandler: LaunchButtonClickHandler, index: number) => {
 		return (e: Event) => {
 			const me = e as MouseEvent
 			if (me.altKey) {

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export type UrlTemplateSelector = (query: string) => string
+type UrlTemplateSelector = (query: string) => string
 
 export type SearchEnginePlan = {
 	target?: string
