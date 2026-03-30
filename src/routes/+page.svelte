@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy'
+	import { untrack } from 'svelte'
 
 	import '../app.scss'
 
@@ -44,9 +45,9 @@
 
 	// Bindings
 	let query = $state(form?.query || $page.url.searchParams.get('q') || '')
-	let textArea: HTMLTextAreaElement = $state()
+	let textArea: HTMLTextAreaElement | undefined = $state()
 
-	let wrapTextarea: HTMLElement = $state()
+	let wrapTextarea: HTMLElement | undefined = $state()
 
 	let successMessages: string[] = $state([])
 	let errorMessages: string[] = $state([])
@@ -60,15 +61,16 @@
 	let failedToCopy = false
 
 	if (form?.errorMessage) {
-		errorMessages.push(form.errorMessage)
+		untrack(() => errorMessages.push(form.errorMessage))
 	}
 
 	if (form?.successMessage) {
-		successMessages.push(form.successMessage)
+		untrack(() => successMessages.push(form.successMessage))
 	}
 
-	let open =
+	let open = untrack(() =>
 		successMessages.length || errorMessages.length || form?.fromEditOperation ? true : false
+	)
 
 	const isTextInputElement = (element: Element | null) => {
 		if (element === null) {
@@ -148,13 +150,15 @@
 		return searchGroups
 	}
 
-	try {
-		planJson = TOML.parse(planToml)
-		planTitle = planJson.title as string
-		searchGroups = makeSearchGroups(planJson)
-	} catch (error) {
-		errorMessages.push((error as Error).message)
-	}
+	untrack(() => {
+		try {
+			planJson = TOML.parse(planToml)
+			planTitle = planJson.title as string
+			searchGroups = makeSearchGroups(planJson)
+		} catch (error) {
+			errorMessages.push((error as Error).message)
+		}
+	})
 
 	const unhideIfJavascript = (node: HTMLElement) => {
 		node.hidden = false
@@ -208,11 +212,11 @@
 	}
 
 	const handleFocus = (e: Event) => {
-		textArea.select()
+		textArea!.select()
 	}
 
 	const handleBlur = (e: Event) => {
-		wrapTextarea.classList.remove('fullscreen')
+		wrapTextarea!.classList.remove('fullscreen')
 	}
 
 	const handleTextareaInput = async (e: Event) => {
@@ -234,8 +238,8 @@
 		if (e.shiftKey && ['Delete', 'Backspace'].includes(e.key)) {
 			e.preventDefault()
 			query = ''
-			textArea.parentElement?.classList.remove('fullscreen')
-			textArea.focus()
+			textArea!.parentElement?.classList.remove('fullscreen')
+			textArea!.focus()
 		}
 
 		if (
@@ -263,7 +267,7 @@
 		if (e.key === 'Escape') {
 			e.stopPropagation()
 			wrapTextarea?.classList.remove('fullscreen')
-			textArea.blur()
+			textArea!.blur()
 		}
 	}
 
@@ -277,12 +281,13 @@
 
 	const handleToggleFullscreen = (e: MouseEvent) => {
 		log('handleToggleFullscreen')
-		wrapTextarea.classList.toggle('fullscreen')
+		wrapTextarea!.classList.toggle('fullscreen')
 	}
 
 	const makeClickAllHandler = (clickAllHandler: SE.LaunchButtonClickHandler, index: number) => {
-		return (e: MouseEvent) => {
-			if (e.altKey) {
+		return (e: Event) => {
+			const me = e as MouseEvent
+			if (me.altKey) {
 				// Move clicked launch group to top.
 				searchGroups.unshift(searchGroups.splice(index, 1)[0])
 				searchGroups = searchGroups
@@ -300,7 +305,7 @@
 			if (!/iPhone|iPad|iPod/.test(window.navigator.userAgent)) {
 				height = viewport?.height || 0
 			}
-			wrapTextarea.style.bottom = `${height - (viewport?.height || 0)}px`
+			wrapTextarea!.style.bottom = `${height - (viewport?.height || 0)}px`
 		}
 
 		window.visualViewport?.addEventListener('resize', resizeHandler)
@@ -391,7 +396,11 @@
 					icon="material-symbols:fullscreen"
 					class="icon"
 					width="16"
+					role="button"
+					tabindex="0"
 					onclick={handleToggleFullscreen}
+					onkeydown={(e: KeyboardEvent) =>
+						e.key === 'Enter' && handleToggleFullscreen(e as unknown as MouseEvent)}
 				></iconify-icon>
 			</div>
 
@@ -404,7 +413,11 @@
 					icon="material-symbols:fullscreen-exit"
 					class="icon"
 					width="24"
+					role="button"
+					tabindex="0"
 					onclick={handleToggleFullscreen}
+					onkeydown={(e: KeyboardEvent) =>
+						e.key === 'Enter' && handleToggleFullscreen(e as unknown as MouseEvent)}
 				></iconify-icon>
 			</div>
 		</div>
@@ -428,8 +441,6 @@
 					>{/each}
 			</div>{/each}
 	</form>
-
-	<pre hidden>{JSON.stringify(form?.urls, null, 4)}</pre>
 
 	<pre hidden>{JSON.stringify(planJson, null, 4)}</pre>
 
