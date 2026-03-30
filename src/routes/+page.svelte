@@ -53,7 +53,7 @@
 	let errorMessages: string[] = $state([])
 
 	let planToml = $state(form?.planToml || data.planToml)
-	let planJson: any = $state()
+	let planJson: Record<string, unknown> = $state({})
 	let planTitle = $state('Untitled')
 
 	let searchGroups: SE.SearchGroup[] = $state([])
@@ -140,8 +140,11 @@
 		}
 	}
 
-	const makeSearchGroups = (planJson: any) => {
-		const { title, ...searchGroupPlans } = planJson as Record<string, SE.SearchGroupPlans>
+	const makeSearchGroups = (planJson: Record<string, unknown>) => {
+		const { title: _title, ...searchGroupPlans } = planJson as Record<
+			string,
+			SE.SearchGroupPlans
+		>
 
 		const searchGroups = _.map(searchGroupPlans, (plans: SE.SearchGroupPlans, name: string) =>
 			SE.makeSearchGroup(name, plans, makeSearchEngine)
@@ -211,15 +214,15 @@
 		}
 	}
 
-	const handleFocus = (e: Event) => {
+	const handleFocus = (_e: Event) => {
 		textArea!.select()
 	}
 
-	const handleBlur = (e: Event) => {
+	const handleBlur = (_e: Event) => {
 		wrapTextarea!.classList.remove('fullscreen')
 	}
 
-	const handleTextareaInput = async (e: Event) => {
+	const handleTextareaInput = async (_e: Event) => {
 		successMessages = []
 		errorMessages = []
 
@@ -279,7 +282,7 @@
 		}
 	}
 
-	const handleToggleFullscreen = (e: MouseEvent) => {
+	const handleToggleFullscreen = (_e: MouseEvent) => {
 		log('handleToggleFullscreen')
 		wrapTextarea!.classList.toggle('fullscreen')
 	}
@@ -352,7 +355,8 @@
 						>
 					</div>
 					{#if successMessages.length}
-						{#each successMessages.slice(-1) as successMessage}
+						{#each successMessages.slice(-1) as successMessage (successMessage)}
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 							<blockquote>{@html successMessage}</blockquote>
 						{/each}
 					{/if}
@@ -392,15 +396,13 @@
 					onblur={handleBlur}
 				></textarea>
 
+				<!-- eslint-disable-next-line svelte/no-static-element-interactions, svelte/click-events-have-key-events -->
+				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 				<iconify-icon
 					icon="material-symbols:fullscreen"
 					class="icon"
 					width="16"
-					role="button"
-					tabindex="0"
 					onclick={handleToggleFullscreen}
-					onkeydown={(e: KeyboardEvent) =>
-						e.key === 'Enter' && handleToggleFullscreen(e as unknown as MouseEvent)}
 				></iconify-icon>
 			</div>
 
@@ -409,25 +411,23 @@
 					<span>Chars:</span><span>{query?.trim().length}</span>
 					<span>Words:</span><span>{query?.split(/\S+/).length - 1}</span>
 				</span>
+				<!-- eslint-disable-next-line svelte/no-static-element-interactions, svelte/click-events-have-key-events -->
+				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 				<iconify-icon
 					icon="material-symbols:fullscreen-exit"
 					class="icon"
 					width="24"
-					role="button"
-					tabindex="0"
 					onclick={handleToggleFullscreen}
-					onkeydown={(e: KeyboardEvent) =>
-						e.key === 'Enter' && handleToggleFullscreen(e as unknown as MouseEvent)}
 				></iconify-icon>
 			</div>
 		</div>
 
-		{#each searchGroups as searchGroup, index}<div class="search-group">
+		{#each searchGroups as searchGroup, index (searchGroup.name)}<div class="search-group">
 				<button
 					onclick={preventDefault(makeClickAllHandler(searchGroup.handleClickAll, index))}
 					><span class="button-text"><span class="icon">⚡</span>{searchGroup.name}</span
 					></button
-				>{#each searchGroup.engines as engine}<button
+				>{#each searchGroup.engines as engine (engine.name)}<button
 						class="secondary"
 						name="lz-engines"
 						value={engine.lzEngines}

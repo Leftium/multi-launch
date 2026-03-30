@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import lzString from 'lz-string'
 
 export type UrlTemplateSelector = (query: string) => string
 
@@ -18,7 +17,7 @@ export type SearchEngine = {
 	name: string
 	target: string
 	exclude: boolean
-	plan: any
+	plan: SearchEnginePlan
 	lzEngines: string
 
 	getUrlTemplate: (query: string, avoidEmptyUrl?: boolean) => string

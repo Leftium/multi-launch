@@ -1,13 +1,9 @@
 <script lang="ts">
 	import { favicon } from '@leftium/logo'
 	import '../app.scss'
+	import { base } from '$app/paths'
 
-	import debugFactory from 'debug'
-	interface Props {
-		children?: import('svelte').Snippet
-	}
 	let { children } = $props()
-	const log = debugFactory('log')
 </script>
 
 <svelte:head>
@@ -16,10 +12,10 @@
 <div>
 	<nav class="container">
 		<h1>
-			<a class="brand" href="/" data-sveltekit-reload
+			<a class="brand" href="{base}/" data-sveltekit-reload
 				><span class="icon">🚀</span><span class="title-text">MultiLaunch</span></a
 			>
-			<small><a href="/doc">Help&Tips</a></small>
+			<small><a href="{base}/doc">Help&Tips</a></small>
 		</h1>
 	</nav>
 

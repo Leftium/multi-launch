@@ -71,7 +71,6 @@ export const actions = {
 		const query = data.get('query') as string
 
 		let enginesJson
-		let engineError: Error
 
 		const enginesText =
 			lzString.decompressFromEncodedURIComponent((data.get('lz-engines') as string) || '') ||
@@ -79,8 +78,8 @@ export const actions = {
 
 		try {
 			enginesJson = JSON.parse(enginesText)
-		} catch (error) {
-			engineError = error as Error
+		} catch {
+			// invalid JSON from lz-engines param; enginesJson stays undefined
 		}
 
 		const urls = _.map(enginesJson, (engine) => ({
