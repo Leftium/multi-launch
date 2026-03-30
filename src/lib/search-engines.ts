@@ -1,7 +1,5 @@
 import _ from 'lodash'
 
-type UrlTemplateSelector = (query: string) => string
-
 export type SearchEnginePlan = {
 	target?: string
 	exclude?: boolean
