@@ -15,8 +15,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.1.0(jiti@2.6.1))
       '@leftium/logo':
-        specifier: ^0.2.0
-        version: 0.2.0(svelte@5.55.1)
+        specifier: ^0.3.0
+        version: 0.3.0(svelte@5.55.1)
       '@leftium/nimble.css':
         specifier: ^0.13.0
         version: 0.13.0
@@ -355,8 +355,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@leftium/logo@0.2.0':
-    resolution: {integrity: sha512-hnO55twvRzqZ3Qw/yBpqgGRmaXwvnGo1HExo3Yq6jFI/+EYTTMsGbu8yXqlZsiAXHyEDfki4ivIlLlb2RV9hMg==}
+  '@leftium/logo@0.3.0':
+    resolution: {integrity: sha512-QVxFj0ai5F1VzpDaSpMz/SQABkOX921nPiLpx2aIm3ceuPtu8RRS/E3HCeZh+UavHEfpL0+r+D90FNTF32JX3w==}
     peerDependencies:
       svelte: ^5.0.0
 
@@ -2018,7 +2018,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@leftium/logo@0.2.0(svelte@5.55.1)':
+  '@leftium/logo@0.3.0(svelte@5.55.1)':
     dependencies:
       '@popperjs/core': 2.11.8
       culori: 4.0.2
