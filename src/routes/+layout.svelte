@@ -6,12 +6,6 @@
 	let { children } = $props()
 </script>
 
-<svelte:head>
-	<link rel="icon" href="{base}/favicon.ico" sizes="32x32" />
-	<link rel="icon" href="{base}/icon.svg" type="image/svg+xml" />
-	<link rel="apple-touch-icon" href="{base}/apple-touch-icon.png" />
-	<link rel="manifest" href="{base}/manifest.webmanifest" />
-</svelte:head>
 <div>
 	<nav class="container">
 		<h1>
