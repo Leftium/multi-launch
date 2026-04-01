@@ -1,4 +1,9 @@
+<div align="center"><img src="https://raw.githubusercontent.com/Leftium/multi-launch/refs/heads/main/static/logo.svg" alt="nimble.css logo" width="200" />
+
 # MultiLaunch
+</div>
+
+
 
 ## Developing
 
