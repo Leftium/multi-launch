@@ -32,15 +32,15 @@
 
 #### [Svelte Launch Plans][2]
 
-    | QUERY         | The blue Svelte button...                                                                 |
-    | ------------- | ----------------------------------------------------------------------------------------- |
-    | *Empty*       | Opens all the Svelte "news" pages (Discord, Reddit, StackOverflow).                       |
-    | `search term` | Opens all the searchable pages (Reddit and StackOverflow) with results for `search term`. |
+| QUERY         | The blue Svelte button...                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| *Empty*       | Opens all the Svelte "news" pages (Discord, Reddit, StackOverflow).                       |
+| `search term` | Opens all the searchable pages (Reddit and StackOverflow) with results for `search term`. |
 
-    The SvelteKit documentation links are neither frequently-updated "news" nor URL-searchable, so they are _excluded_.
-    -   Directly clicking still opens them, though.
-    -   The Svelte and SvelteKit documentation have search, but lack a URL interface.
-    -   (If the documentation supported URL searches, it could be included here. Imagine searching both the Svelte and SvelteKit documentation at the same time!)
+The SvelteKit documentation links are neither frequently-updated "news" nor URL-searchable, so they are _excluded_.
+-   Directly clicking still opens them, though.
+-   The Svelte and SvelteKit documentation have search, but lack a URL interface.
+-   (If the documentation supported URL searches, it could be included here. Imagine searching both the Svelte and SvelteKit documentation at the same time!)
 
 #### [Translate Korean-English][1]
 
