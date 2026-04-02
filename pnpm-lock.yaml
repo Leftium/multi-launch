@@ -15,8 +15,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.1.0(jiti@2.6.1))
       '@leftium/nimble.css':
-        specifier: ^0.15.0
-        version: 0.15.0
+        specifier: ^0.16.0
+        version: 0.16.0
       '@ltd/j-toml':
         specifier: ^1.38.0
         version: 1.38.0
@@ -352,8 +352,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@leftium/nimble.css@0.15.0':
-    resolution: {integrity: sha512-PWQJrmZ+C0r0s/tlaong7gnaK3F4yoVoJW56jPdOVHqE+olvV8ptdor5HcK1PQkww1Ki/RbREhnv2GIrJ5f5Kg==}
+  '@leftium/nimble.css@0.16.0':
+    resolution: {integrity: sha512-LoUPpUn773UNx1ti1wIY2m/lgCXmnmEtT2P6oa6m9vc9Aagm2qSqeQypz3uZpJH1v5eiuAXLVnn29ozuzj1b+g==}
 
   '@ltd/j-toml@1.38.0':
     resolution: {integrity: sha512-lYtBcmvHustHQtg4X7TXUu1Xa/tbLC3p2wLvgQI+fWVySguVZJF60Snxijw5EiohumxZbR10kWYFFebh1zotiw==}
@@ -2006,7 +2006,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@leftium/nimble.css@0.15.0': {}
+  '@leftium/nimble.css@0.16.0': {}
 
   '@ltd/j-toml@1.38.0': {}
 
