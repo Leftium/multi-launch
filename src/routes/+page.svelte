@@ -333,8 +333,7 @@
 <main>
 	<form method="POST" action="?/edit">
 		<details class="editor" {open}>
-			<!-- svelte-ignore a11y_no_redundant_roles -->
-			<summary role="button" class="secondary">
+			<summary class="nc-button secondary">
 				<div>
 					<span>{planTitle}</span>
 					<span>Edit</span>
@@ -343,7 +342,7 @@
 
 			<article>
 				<header>
-					<div role="group">
+					<div class="nc-join" role="group">
 						<button name="operation" value="save"
 							><span class="button-text">Save</span></button
 						><button class="secondary" name="operation" value="add"
