@@ -1,7 +1,6 @@
 <script lang="ts">
-	import logoSvg from '/logo.svg'
 	import '../app.scss'
-	import { base } from '$app/paths'
+	import { asset, resolve } from '$app/paths'
 
 	let { children } = $props()
 </script>
@@ -9,12 +8,12 @@
 <div>
 	<nav class="container">
 		<h1>
-			<a class="brand" href="{base}/" data-sveltekit-reload
-				><img src={logoSvg} alt="" width="24" height="24" /><span class="title-text"
-					>MultiLaunch</span
+			<a class="brand" href={resolve('/')} data-sveltekit-reload
+				><img src={asset('logo.svg')} alt="" width="24" height="24" /><span
+					class="title-text">MultiLaunch</span
 				></a
 			>
-			<small><a href="{base}/doc">Help&Tips</a></small>
+			<small><a href={resolve('/doc')}>Help&Tips</a></small>
 		</h1>
 	</nav>
 

@@ -1,4 +1,4 @@
-import type { Reroute } from '@sveltejs/kit'
+import type { Reroute } from '@sveltejs/kit/hooks'
 const translated: Record<string, string> = {
 	'/svelte': '/',
 	'/korea': '/',

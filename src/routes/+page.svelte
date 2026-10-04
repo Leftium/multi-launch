@@ -39,9 +39,9 @@
 		type SearchGroup,
 		type SearchGroupPlans,
 		type LaunchButtonClickHandler,
-	} from '$lib/search-engines'
+	} from '#lib/search-engines.js'
 	import { onMount } from 'svelte'
-	import { page } from '$app/stores'
+	import { page } from '$app/state'
 
 	interface Props {
 		// Data props:
@@ -52,7 +52,7 @@
 	let { data, form }: Props = $props()
 
 	// Bindings
-	let query = $state(untrack(() => form?.query || $page.url.searchParams.get('q') || ''))
+	let query = $state(untrack(() => form?.query || page.url.searchParams.get('q') || ''))
 	let textArea: HTMLTextAreaElement | undefined = $state()
 
 	let wrapTextarea: HTMLElement | undefined = $state()
