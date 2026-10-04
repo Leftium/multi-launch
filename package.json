@@ -19,8 +19,9 @@
 		"@eslint/js": "^10.0.1",
 		"@leftium/nimble.css": "^0.24.0",
 		"@ltd/j-toml": "^1.38.0",
-		"@sveltejs/adapter-auto": "^7.0.1",
-		"@sveltejs/kit": "^2.57.1",
+		"@sveltejs/adapter-auto": "^8.0.0",
+		"@sveltejs/kit": "^3.0.0",
+		"@sveltejs/load-config": "^0.2.2",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@types/debug": "^4.1.13",
 		"@types/lodash": "^4.17.24",
@@ -38,14 +39,18 @@
 		"prettier": "^3.8.2",
 		"prettier-plugin-svelte": "^3.5.1",
 		"sass": "^1.99.0",
-		"svelte": "^5.55.3",
-		"svelte-check": "^4.4.6",
+		"svelte": "^5.57.1",
+		"svelte-check": "^4.7.5",
 		"tippy.js": "^6.3.7",
-		"typescript": "^5.9.3",
+		"typescript": "^6.0.0",
 		"typescript-eslint": "^8.58.2",
-		"vite": "^8.0.8",
+		"vite": "^8.0.12",
 		"vite-plugin-devtools-json": "^1.0.0",
 		"web-sentinel": "^0.1.5"
 	},
-	"packageManager": "pnpm@10.12.2"
+	"packageManager": "pnpm@10.12.2",
+	"imports": {
+		"#lib": "./src/lib/index.ts",
+		"#lib/*": "./src/lib/*"
+	}
 }

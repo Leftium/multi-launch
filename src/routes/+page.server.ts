@@ -6,11 +6,11 @@ const log = debugFactory('/+page.server')
 import lzString from 'lz-string'
 import TOML from '@ltd/j-toml'
 
-import { makeUrlTemplateSelector, type SearchEngine } from '$lib/search-engines'
+import { makeUrlTemplateSelector, type SearchEngine } from '#lib/search-engines.js'
 
-import samplePlanToml from '$lib/plans/sample.toml?raw'
-import sveltePlanToml from '$lib/plans/svelte.toml?raw'
-import koreaPlanToml from '$lib/plans/korea.toml?raw'
+import samplePlanToml from '#lib/plans/sample.toml?raw'
+import sveltePlanToml from '#lib/plans/svelte.toml?raw'
+import koreaPlanToml from '#lib/plans/korea.toml?raw'
 
 import _ from 'lodash'
 

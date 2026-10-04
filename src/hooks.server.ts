@@ -1,4 +1,4 @@
-import type { Handle } from '@sveltejs/kit'
+import type { Handle } from '@sveltejs/kit/hooks'
 import { createHandler } from 'web-sentinel/hooks'
 
 const sentinel = createHandler({ log: false, preview: false, http_status: 418 })
