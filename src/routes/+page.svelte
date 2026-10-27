@@ -569,6 +569,8 @@
 	}
 
 	/* Hide divider when adjacent buttons have different bg colors */
+	.search-group button.secondary:hover + button.secondary,
+	.search-group button.secondary + button.secondary:hover,
 	.search-group button.secondary.exclude-from-all + button.secondary:not(.exclude-from-all),
 	.search-group button.secondary:not(.exclude-from-all) + button.secondary.exclude-from-all {
 		background-image: none;
