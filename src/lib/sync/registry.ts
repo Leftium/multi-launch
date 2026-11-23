@@ -8,7 +8,8 @@ export interface SyncedPlanReference {
 	key: string
 	documentId: string
 	serverUrl: string
-	label?: string
+	title?: string
+	label?: string // Legacy custom name used by earlier previews.
 }
 
 export interface PlanRegistry {
@@ -73,7 +74,8 @@ function isRegistry(value: unknown): value is PlanRegistry {
 			typeof entry.documentId !== 'string' ||
 			!entry.documentId ||
 			typeof entry.serverUrl !== 'string' ||
-			(typeof entry.label !== 'undefined' && typeof entry.label !== 'string')
+			(typeof entry.label !== 'undefined' && typeof entry.label !== 'string') ||
+			(typeof entry.title !== 'undefined' && typeof entry.title !== 'string')
 		) return false
 		let serverUrl: string
 		try {

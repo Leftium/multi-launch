@@ -40,7 +40,7 @@
 		type SearchGroupPlans,
 		type LaunchButtonClickHandler,
 	} from '#lib/search-engines.js'
-	import { onMount } from 'svelte'
+	import { onMount, tick } from 'svelte'
 	import { page } from '$app/state'
 	import { replaceState } from '$app/navigation'
 	import samplePlanToml from '#lib/plans/sample.toml?raw'
@@ -260,6 +260,7 @@
 	}
 
 	const handleKeydown = (e: KeyboardEvent) => {
+		if (dialogOpen) return
 		if (
 			textArea &&
 			e.shiftKey &&
@@ -277,7 +278,7 @@
 			e.key !== 'Tab' &&
 			!(e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) &&
 			!isTextInputElement(document.activeElement) &&
-			!document.activeElement?.closest('.plan-picker')
+			!document.activeElement?.matches('[aria-haspopup=dialog]')
 		) {
 			textArea.focus()
 		}
@@ -303,6 +304,7 @@
 	}
 
 	const handlePaste = (e: ClipboardEvent) => {
+		if (dialogOpen) return
 		const text = e.clipboardData?.getData('text')
 		if (text && !isTextInputElement(document.activeElement)) {
 			e.preventDefault()
@@ -375,10 +377,14 @@
 	let restoring = $state(false)
 	let syncError = $state('')
 	let connected = $state(false)
-	let menu = $state<'create' | 'join' | undefined>()
+	let planDialog: HTMLDialogElement | undefined = $state()
+	let planOpener: HTMLButtonElement | undefined = $state()
+	let dialogOpen = $state(false)
+	let menu = $state<'open' | 'create' | 'join'>('open')
+	let selectedKey = $state(LOCAL_PLAN)
+	let selectedPlan = $derived(registry.synced.find((plan) => plan.key === selectedKey))
 	let source = $state('sample')
 	let serverInput = $state(DEFAULT_SYNC_SERVER)
-	let label = $state('')
 	let joinInput = $state('')
 	let copiedLink = $state('')
 	let syncNotice = $state('')
@@ -388,6 +394,77 @@
 	let blocked = $derived(restoring || (!!entry && draftKey !== entry.key))
 	let remoteChanged = $derived(!!entry && planToml !== savedToml && draftBase !== savedToml)
 	untrack(initializeLauncher)
+
+	function openPlanDialog() {
+		selectedKey = preview ? LOCAL_PLAN : registry.active
+		planDialog?.showModal()
+		dialogOpen = !!planDialog?.open
+	}
+
+	async function closePlanDialog() {
+		dialogOpen = false
+		menu = 'open'
+		await tick()
+		planOpener?.focus()
+	}
+
+	async function showPlanView(view: typeof menu) {
+		menu = view
+		syncError = ''
+		syncNotice = ''
+		copiedLink = ''
+		if (view === 'create') {
+			source = 'sample'
+			serverInput = DEFAULT_SYNC_SERVER
+		}
+		await tick()
+		planDialog?.querySelector<HTMLElement>('h2')?.focus()
+	}
+
+	function syncedTitle(plan: SyncedPlanReference) {
+		const suffix = plan.documentId.slice(-8)
+		if (!plan.title) return `Untitled (${suffix})`
+		const matches = registry.synced.filter((item) => item.title === plan.title)
+		return matches.length > 1 ? `${plan.title} (${suffix})` : plan.title
+	}
+
+	function withPlanTitle(current: PlanRegistry, key: string, title?: string): PlanRegistry {
+		const nextTitle = title?.trim() || undefined
+		const plan = current.synced.find((item) => item.key === key)
+		if (!plan || (plan.title === nextTitle && plan.label === undefined)) return current
+		return {
+			...current,
+			synced: current.synced.map((item) =>
+				item.key === key ? { ...item, title: nextTitle, label: undefined } : item
+			),
+		}
+	}
+
+	function cachePlanTitle(key: string, title?: string) {
+		const next = withPlanTitle(registry, key, title)
+		if (next === registry) return
+		registry = next
+		try {
+			writeRegistry(localStorage, next)
+		} catch (error) {
+			reportSyncError(error)
+		}
+	}
+
+	function forgetPlan(plan: SyncedPlanReference) {
+		if (
+			!window.confirm(
+				'Remove this plan from the list? Keep the live link to rejoin. Your cached copy stays on this device.'
+			)
+		)
+			return
+		void syncOperation('Removing plan...', async () => {
+			const next = forgetSyncedPlan(registry, plan.key)
+			if (entry?.key === plan.key) await switchPlan(LOCAL_PLAN, next)
+			else persistRegistry(next)
+			selectedKey = preview ? LOCAL_PLAN : registry.active
+		})
+	}
 
 	function reportSyncError(error: unknown) {
 		syncError = error instanceof Error ? error.message : String(error)
@@ -446,7 +523,7 @@
 		const receive = () => {
 			try {
 				const incoming = syncClient!.readPlan(handle)
-				validateSyncedToml(incoming)
+				const title = validateSyncedToml(incoming)
 				const dirty = planToml !== savedToml
 				if (busy === 'Saving plan...') return
 				savedToml = incoming
@@ -455,6 +532,7 @@
 					draftBase = incoming
 					persistDraft()
 				}
+				cachePlanTitle(plan.key, title)
 			} catch (error) {
 				reportSyncError(error)
 			}
@@ -499,9 +577,9 @@
 		}
 		const plan = next.synced.find((item) => item.key === key)!
 		const handle = await (await client()).openPlan(plan)
-		const { saved } = readSynced(handle)
+		const { saved, title } = readSynced(handle)
 		persistDraft()
-		persistRegistry(next)
+		persistRegistry(withPlanTitle(next, key, title))
 		if (clearUrl) clearPreviewUrl()
 		displaySynced(plan, handle, saved, draft)
 	}
@@ -510,11 +588,11 @@
 		const { registry: next, key } = registerSyncedPlan(registry, {
 			...target,
 			key: JSON.stringify([target.serverUrl, target.documentId]),
-			label: title || undefined,
+			title: title?.trim() || undefined,
 		})
 		const draft = readDraft(localStorage, key)
 		persistDraft()
-		persistRegistry(selectPlan(next, key))
+		persistRegistry(withPlanTitle(selectPlan(next, key), key, title))
 		clearPreviewUrl()
 		displaySynced(
 			next.synced.find((plan) => plan.key === key)!,
@@ -522,7 +600,8 @@
 			saved,
 			draft
 		)
-		menu = undefined
+		menu = 'open'
+		planDialog?.close()
 	}
 
 	function join(url: URL) {
@@ -561,15 +640,8 @@
 							: data.localPlanToml
 			const title = validateSyncedToml(text)
 			persistDraft()
-			if (
-				!window.confirm(
-					`Upload a copy to ${serverUrl}? The community relay is experimental. Treat synced plans as non-private and keep a copy of important TOML. Server storage is not guaranteed.`
-				)
-			)
-				return
 			const handle = await (await client()).createPlan(serverUrl, text)
-			rememberPlan({ documentId: handle.url, serverUrl }, handle, text, label.trim() || title)
-			label = ''
+			rememberPlan({ documentId: handle.url, serverUrl }, handle, text, title)
 		})
 	}
 
@@ -592,9 +664,10 @@
 				)
 					return
 				await syncClient!.savePlan(plan.serverUrl, handle, text)
-				const { saved } = readSynced(handle)
+				const { saved, title } = readSynced(handle)
 				savedToml = saved
 				draftBase = saved
+				cachePlanTitle(plan.key, title)
 				persistDraft()
 				successMessages = [
 					text === saved
@@ -664,118 +737,111 @@
 
 <svelte:body onpaste={handlePaste} />
 
+{#snippet planFeedback()}
+	{#if busy}<p role="status">{busy}</p>{/if}
+	{#if syncError}<p class="error" role="alert">{syncError}</p>{/if}
+	{#if syncNotice}<p role="status">{syncNotice}</p>{/if}
+	{#if copiedLink}<label>Live link<input readonly value={copiedLink} /></label>{/if}
+{/snippet}
+
 <main>
 	{#if registryReady}
-		<section class="plan-picker" aria-label="Plans">
-			<label>
-				Plan
-				<select
-					value={preview ? 'preview' : registry.active}
-					disabled={!!busy}
-					onchange={(event) => {
-						const key = event.currentTarget.value
-						event.currentTarget.value = preview ? 'preview' : registry.active
-						void syncOperation('Opening plan...', () => switchPlan(key))
-					}}
-				>
-					{#if preview}<option value="preview" disabled>Snapshot / example</option>{/if}
-					<option value={LOCAL_PLAN}>Local</option>
-					{#each registry.synced as plan (plan.key)}
-						<option value={plan.key}
-							>{plan.label || plan.documentId.slice(-8)} (Synced)</option
-						>
-					{/each}
-				</select>
-			</label>
-			<div class="plan-buttons">
-				<button
-					class="secondary"
-					type="button"
-					disabled={!!busy}
-					onclick={() => {
-						menu = menu === 'create' ? undefined : 'create'
-					}}>New synced plan</button
-				>
-				<button
-					class="secondary"
-					type="button"
-					disabled={!!busy}
-					onclick={() => {
-						menu = menu === 'join' ? undefined : 'join'
-					}}>Join via link</button
-				>
-				{#if entry}
-					{@const plan = entry}
-					<button
-						class="secondary"
-						type="button"
-						disabled={!!busy}
-						onclick={() => copyLive(plan)}>Copy live link</button
-					>
-					<button
-						class="secondary"
-						type="button"
-						disabled={!!busy}
-						onclick={() => {
-							if (
-								window.confirm(
-									'Remove this plan from the list? Keep the live link to rejoin. Your cached copy stays on this device.'
-								)
-							) {
-								void syncOperation('Removing plan...', () =>
-									switchPlan(LOCAL_PLAN, forgetSyncedPlan(registry, plan.key))
-								)
-							}
-						}}>Remove from list</button
-					>
-				{/if}
-			</div>
-			{#if busy}
-				<small role="status">{busy}</small>
-			{:else if entry && !blocked}
-				<small
-					>{connected
-						? 'Connected'
-						: 'Offline or connecting. Cached plans can be edited.'} · {entry.serverUrl}</small
-				>
-			{/if}
+		<button
+			class="secondary"
+			type="button"
+			aria-haspopup="dialog"
+			bind:this={planOpener}
+			disabled={!!busy}
+			onclick={openPlanDialog}
+		>
+			Open Plan
+		</button>
+		<dialog
+			class="plan-dialog"
+			aria-labelledby="plan-dialog-title"
+			bind:this={planDialog}
+			onclose={closePlanDialog}
+			oncancel={(event) => {
+				if (busy) event.preventDefault()
+			}}
+		>
 			{#if menu === 'create'}
+				<h2 id="plan-dialog-title" tabindex="-1">New synced plan</h2>
 				<form
 					onsubmit={(event) => {
 						event.preventDefault()
 						void createSynced()
 					}}
 				>
-					<label
-						>Start with
-						<select bind:value={source} disabled={!!busy}>
-							<option value="sample">Sample plan</option>
-							<option value={LOCAL_PLAN}>Saved Local plan</option>
-							{#each registry.synced as plan (plan.key)}
-								<option value={plan.key}
-									>Saved {plan.label || plan.documentId.slice(-8)} (Synced)</option
-								>
-							{/each}
-							<option value="editor" disabled={blocked}>Current editor text</option>
-						</select>
-					</label>
-					<label>Plan name (optional)<input bind:value={label} disabled={!!busy} /></label
-					>
-					<label
-						>Sync server<input
-							bind:value={serverInput}
-							disabled={!!busy}
-							required
-						/></label
-					>
+					<fieldset disabled={!!busy}>
+						<legend>Start with</legend>
+						<label
+							><input
+								type="radio"
+								name="source"
+								value="sample"
+								bind:group={source}
+							/>Sample plan</label
+						>
+						<label
+							><input
+								type="radio"
+								name="source"
+								value={LOCAL_PLAN}
+								bind:group={source}
+							/>Saved Local plan</label
+						>
+						{#each registry.synced as plan (plan.key)}
+							<label
+								><input
+									type="radio"
+									name="source"
+									value={plan.key}
+									bind:group={source}
+								/>Saved {syncedTitle(plan)}</label
+							>
+						{/each}
+						<label
+							><input
+								type="radio"
+								name="source"
+								value="editor"
+								bind:group={source}
+								disabled={blocked}
+							/>
+							{preview
+								? 'Current snapshot or example text'
+								: 'Current editor text (including unsaved edits)'}
+						</label>
+					</fieldset>
+					<details>
+						<summary>Sync server</summary>
+						<label
+							>WebSocket URL<input
+								bind:value={serverInput}
+								disabled={!!busy}
+							/></label
+						>
+					</details>
 					<p>
-						The community relay is experimental, non-private, and may lose stored plans.
+						Creating a copy shares the selected TOML with <strong>{serverInput}</strong
+						>. Synced plans are non-private. The experimental community relay may lose
+						stored plans.
 					</p>
-					<button disabled={!!busy || (blocked && source === 'editor')}
-						>Create copy</button
-					>
+					<div class="plan-buttons">
+						<button disabled={!!busy || (blocked && source === 'editor')}
+							>Create synced copy</button
+						>
+						<button
+							class="secondary"
+							type="button"
+							disabled={!!busy}
+							onclick={() => showPlanView('open')}>Back</button
+						>
+					</div>
 				</form>
 			{:else if menu === 'join'}
+				<h2 id="plan-dialog-title" tabindex="-1">Join via link</h2>
 				<form
 					onsubmit={(event) => {
 						event.preventDefault()
@@ -790,14 +856,101 @@
 							required
 						/></label
 					>
-					<button disabled={!!busy}>{syncError ? 'Retry join' : 'Open live plan'}</button>
+					<div class="plan-buttons">
+						<button disabled={!!busy}>Open live plan</button>
+						<button
+							class="secondary"
+							type="button"
+							disabled={!!busy}
+							onclick={() => showPlanView('open')}>Back</button
+						>
+					</div>
+				</form>
+			{:else}
+				<h2 id="plan-dialog-title" tabindex="-1">Open Plan</h2>
+				<form
+					onsubmit={(event) => {
+						event.preventDefault()
+						void syncOperation('Opening plan...', async () => {
+							await switchPlan(selectedKey)
+							planDialog?.close()
+						})
+					}}
+				>
+					<fieldset disabled={!!busy} aria-label="Saved plans">
+						<label
+							><input
+								type="radio"
+								name="plan"
+								value={LOCAL_PLAN}
+								bind:group={selectedKey}
+							/>Local</label
+						>
+						{#each registry.synced as plan (plan.key)}
+							<label
+								><input
+									type="radio"
+									name="plan"
+									value={plan.key}
+									bind:group={selectedKey}
+								/>
+								<span>{syncedTitle(plan)} <small>Synced</small></span>
+							</label>
+						{/each}
+					</fieldset>
+					{#if selectedPlan && selectedPlan.key === entry?.key && !blocked}
+						<p>
+							<small
+								>{connected ? 'Connected' : 'Offline or connecting'} · {selectedPlan.serverUrl}</small
+							>
+						</p>
+					{/if}
+					<div class="plan-buttons">
+						<button disabled={!!busy}>Open</button>
+						<button
+							class="secondary"
+							type="button"
+							disabled={!!busy}
+							onclick={() => showPlanView('create')}>New synced plan</button
+						>
+						<button
+							class="secondary"
+							type="button"
+							disabled={!!busy}
+							onclick={() => showPlanView('join')}>Join via link</button
+						>
+					</div>
+					{#if selectedPlan}
+						{@const plan = selectedPlan}
+						<div class="plan-buttons">
+							<button
+								class="secondary"
+								type="button"
+								disabled={!!busy}
+								onclick={() => copyLive(plan)}>Copy live link</button
+							>
+							<button
+								class="secondary"
+								type="button"
+								disabled={!!busy}
+								onclick={() => forgetPlan(plan)}>Remove from list</button
+							>
+						</div>
+					{/if}
 				</form>
 			{/if}
-		</section>
+			{@render planFeedback()}
+			<button
+				class="secondary"
+				type="button"
+				disabled={!!busy}
+				onclick={() => planDialog?.close()}>Close</button
+			>
+		</dialog>
 	{/if}
-	{#if syncError}<p class="error" role="alert">{syncError}</p>{/if}
-	{#if syncNotice}<p role="status">{syncNotice}</p>{/if}
-	{#if copiedLink}<label>Live link<input readonly value={copiedLink} /></label>{/if}
+	{#if !dialogOpen}
+		{@render planFeedback()}
+	{/if}
 	{#if remoteChanged}
 		<p role="status">The saved plan changed. Your draft is still in the editor.</p>
 		<button
@@ -956,7 +1109,12 @@
 </main>
 
 <style>
-	.plan-picker {
+	.plan-dialog {
+		width: min(90vw, 34rem);
+		overflow-wrap: anywhere;
+	}
+
+	.plan-dialog fieldset {
 		margin-bottom: var(--nc-spacing);
 	}
 
@@ -966,8 +1124,8 @@
 		flex-wrap: wrap;
 	}
 
-	.plan-picker form {
-		margin-top: var(--nc-spacing);
+	.plan-buttons + .plan-buttons {
+		margin-top: 0.5rem;
 	}
 
 	.wrap {
