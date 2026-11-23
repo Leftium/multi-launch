@@ -13,6 +13,7 @@ import {
 	normalizeServerUrl,
 	liveLink,
 	parseJoinLink,
+	discardDraft,
 	readDraft,
 	writeDraft,
 } from '../src/lib/sync/registry.ts'
@@ -90,6 +91,19 @@ test('dirty drafts are per-plan; clearing a clean draft does not affect other pl
 	writeDraft(storage, 'local', { base: 'saved local', text: 'saved local' })
 	assert.equal(readDraft(storage, 'local'), undefined)
 	assert.equal(readDraft(storage, 'personal').text, 'edited remote')
+})
+
+test('explicit discard removes only the chosen plan draft', () => {
+	const storage = memoryStorage()
+	const localDraft = { base: 'saved local', text: 'edited local' }
+	const syncedKey = '["wss://example.org/","automerge:abc123"]'
+	writeDraft(storage, LOCAL_PLAN, localDraft)
+	writeDraft(storage, syncedKey, { base: 'previous saved plan', text: 'edited synced plan' })
+
+	discardDraft(storage, syncedKey)
+
+	assert.equal(readDraft(storage, syncedKey), undefined)
+	assert.deepEqual(readDraft(storage, LOCAL_PLAN), localDraft)
 })
 
 test('damaged local registry is rejected rather than overwritten', () => {

@@ -62,6 +62,7 @@
 	import type { PlanHandle } from '#lib/sync/repo.js'
 	import {
 		DEFAULT_SYNC_SERVER,
+		discardDraft,
 		LOCAL_PLAN,
 		emptyRegistry,
 		forgetSyncedPlan,
@@ -1023,13 +1024,14 @@
 			type="button"
 			disabled={!!busy}
 			onclick={() => {
-				if (window.confirm('Discard this draft and load the saved plan?')) {
+				if (!window.confirm('Discard this draft and load the saved plan?')) return
+				try {
+					discardDraft(localStorage, draftKey)
 					replaceEditor(draftKey, savedToml)
-					try {
-						persistDraft()
-					} catch (error) {
-						reportSyncError(error)
-					}
+					storageFailed = false
+					syncError = ''
+				} catch (error) {
+					reportSyncError(error)
 				}
 			}}>Load saved version</button
 		>
