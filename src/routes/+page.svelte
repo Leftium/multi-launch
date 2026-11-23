@@ -633,11 +633,9 @@
 			const text =
 				source === 'sample'
 					? samplePlanToml
-					: source === 'editor'
-						? planToml
-						: copiedPlan
-							? readSynced(await (await client()).openPlan(copiedPlan)).saved
-							: data.localPlanToml
+					: copiedPlan
+						? readSynced(await (await client()).openPlan(copiedPlan)).saved
+						: data.localPlanToml
 			const title = validateSyncedToml(text)
 			persistDraft()
 			const handle = await (await client()).createPlan(serverUrl, text)
@@ -819,18 +817,6 @@
 								/>Saved {syncedTitle(plan)}</label
 							>
 						{/each}
-						<label
-							><input
-								type="radio"
-								name="source"
-								value="editor"
-								bind:group={source}
-								disabled={blocked}
-							/>
-							{preview
-								? 'Current snapshot or example text'
-								: 'Current editor text (including unsaved edits)'}
-						</label>
 					</fieldset>
 					<details>
 						<summary>Sync server</summary>
@@ -847,9 +833,7 @@
 						stored plans.
 					</p>
 					<div class="plan-buttons">
-						<button disabled={!!busy || (blocked && source === 'editor')}
-							>Create synced copy</button
-						>
+						<button disabled={!!busy}>Create synced copy</button>
 						<button
 							class="secondary"
 							type="button"
