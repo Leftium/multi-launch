@@ -771,15 +771,20 @@
 				if (busy) event.preventDefault()
 			}}
 		>
-			<button
-				class="dialog-close"
-				type="button"
-				aria-label="Close dialog"
-				disabled={!!busy}
-				onclick={() => planDialog?.close()}><span aria-hidden="true">&times;</span></button
-			>
+			<header class="plan-dialog-header">
+				<h2 id="plan-dialog-title" tabindex="-1">
+					{menu === 'create' ? 'New synced plan' : 'Open Plan'}
+				</h2>
+				<button
+					class="dialog-close"
+					type="button"
+					aria-label="Close dialog"
+					disabled={!!busy}
+					onclick={() => planDialog?.close()}
+					><span aria-hidden="true">&times;</span></button
+				>
+			</header>
 			{#if menu === 'create'}
-				<h2 id="plan-dialog-title" tabindex="-1">New synced plan</h2>
 				<form
 					onsubmit={(event) => {
 						event.preventDefault()
@@ -854,7 +859,6 @@
 					</div>
 				</form>
 			{:else}
-				<h2 id="plan-dialog-title" tabindex="-1">Open Plan</h2>
 				<form
 					onsubmit={(event) => {
 						event.preventDefault()
@@ -1094,17 +1098,23 @@
 		overflow-wrap: anywhere;
 	}
 
-	.plan-dialog h2 {
-		padding-inline-end: 2.5rem;
+	.plan-dialog-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		margin-bottom: var(--nc-spacing);
+	}
+
+	.plan-dialog-header h2 {
+		margin: 0;
 	}
 
 	.dialog-close {
 		all: unset;
 		box-sizing: border-box;
 		cursor: pointer;
-		position: absolute;
-		inset-block-start: 0.5rem;
-		inset-inline-end: 0.5rem;
+		flex-shrink: 0;
 		display: grid;
 		place-items: center;
 		inline-size: 2rem;
