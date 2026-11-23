@@ -372,25 +372,20 @@
 	let busy = $state('')
 	let restoring = $state(false)
 	let syncError = $state('')
-	let connected = $state(false)
+	let connectedServers = $state.raw(new Set<string>())
 	let planDialog: HTMLDialogElement | undefined = $state()
 	let planOpener: HTMLButtonElement | undefined = $state()
 	let dialogOpen = $state(false)
 	let menu = $state<'open' | 'create'>('open')
-	let selectedKey = $state(LOCAL_PLAN)
-	let selectedPlan = $derived(registry.synced.find((plan) => plan.key === selectedKey))
-	let selectedServer = $derived(selectedPlan?.serverUrl)
-	let planStatus = $derived(
-		selectedServer
-			? `${connected ? 'Connected' : 'Disconnected'} · ${selectedServer}`
-			: 'Stored in this browser'
-	)
+	let actionsKey = $state<string>()
 
 	$effect(() => {
-		if (!dialogOpen || !selectedServer) return
-		const server = selectedServer
+		if (!dialogOpen || menu !== 'open' || !registry.synced.length) return
+		const servers = new Set(registry.synced.map((plan) => plan.serverUrl))
 		const refreshStatus = () => {
-			connected = syncClient?.isConnected(server) ?? false
+			connectedServers = new Set(
+				[...servers].filter((server) => syncClient?.isConnected(server))
+			)
 		}
 		refreshStatus()
 		const timer = window.setInterval(refreshStatus, 1000)
@@ -405,24 +400,45 @@
 		preview ? undefined : registry.synced.find((plan) => plan.key === registry.active)
 	)
 	let blocked = $derived(restoring || (!!entry && draftKey !== entry.key))
+	let currentPlanKey = $derived(!preview && !blocked ? registry.active : undefined)
 	let remoteChanged = $derived(!!entry && planToml !== savedToml && draftBase !== savedToml)
 	untrack(initializeLauncher)
 
 	function openPlanDialog() {
-		selectedKey = preview ? LOCAL_PLAN : registry.active
 		planDialog?.showModal()
 		dialogOpen = !!planDialog?.open
+	}
+
+	function openSavedPlan(key: string) {
+		if (key === currentPlanKey) {
+			planDialog?.close()
+			return
+		}
+		actionsKey = undefined
+		void syncOperation('Opening plan...', async () => {
+			await switchPlan(key)
+			planDialog?.close()
+		})
+	}
+
+	function closePlanActions() {
+		planDialog
+			?.querySelector<HTMLButtonElement>('.plan-action-trigger[aria-expanded="true"]')
+			?.focus()
+		actionsKey = undefined
 	}
 
 	async function closePlanDialog() {
 		dialogOpen = false
 		menu = 'open'
+		actionsKey = undefined
 		await tick()
 		planOpener?.focus()
 	}
 
 	async function showPlanView(view: typeof menu) {
 		menu = view
+		actionsKey = undefined
 		syncError = ''
 		syncNotice = ''
 		copiedLink = ''
@@ -475,7 +491,9 @@
 			const next = forgetSyncedPlan(registry, plan.key)
 			if (entry?.key === plan.key) await switchPlan(LOCAL_PLAN, next)
 			else persistRegistry(next)
-			selectedKey = preview ? LOCAL_PLAN : registry.active
+			actionsKey = undefined
+			await tick()
+			planDialog?.querySelector<HTMLElement>('h2')?.focus()
 		})
 	}
 
@@ -746,6 +764,22 @@
 
 <svelte:body onpaste={handlePaste} />
 
+{#snippet openPlanButton(key: string, title: string, status: string)}
+	<button
+		class="secondary plan-open"
+		type="button"
+		aria-current={currentPlanKey === key ? 'true' : undefined}
+		disabled={!!busy}
+		onclick={() => openSavedPlan(key)}
+	>
+		<span class="plan-row-label">
+			<span>{title}</span>
+			{#if currentPlanKey === key}<small>Current</small>{/if}
+		</span>
+		<small class="plan-status" title={status}>{status}</small>
+	</button>
+{/snippet}
+
 {#snippet planFeedback()}
 	{#if busy}<p role="status">{busy}</p>{/if}
 	{#if syncError}<p class="error" role="alert">{syncError}</p>{/if}
@@ -778,7 +812,8 @@
 			bind:this={planDialog}
 			onclose={closePlanDialog}
 			oncancel={(event) => {
-				if (busy) event.preventDefault()
+				if (busy || actionsKey) event.preventDefault()
+				if (!busy && actionsKey) closePlanActions()
 			}}
 		>
 			<header class="plan-dialog-header">
@@ -855,65 +890,53 @@
 					</div>
 				</form>
 			{:else}
-				<form
-					onsubmit={(event) => {
-						event.preventDefault()
-						void syncOperation('Opening plan...', async () => {
-							await switchPlan(selectedKey)
-							planDialog?.close()
-						})
-					}}
+				<ul class="plan-list" aria-label="Saved plans">
+					<li class="plan-row">
+						{@render openPlanButton(LOCAL_PLAN, 'Local', 'Stored in this browser')}
+					</li>
+					{#each registry.synced as plan (plan.key)}
+						{@const title = syncedTitle(plan)}
+						{@const status = `${connectedServers.has(plan.serverUrl) ? 'Connected' : 'Disconnected'} · ${plan.serverUrl}`}
+						<li class="plan-row">
+							{@render openPlanButton(plan.key, title, status)}
+							<button
+								class="secondary plan-action-trigger"
+								type="button"
+								aria-label={`Actions for ${title}`}
+								aria-expanded={actionsKey === plan.key}
+								disabled={!!busy}
+								onclick={() =>
+									(actionsKey = actionsKey === plan.key ? undefined : plan.key)}
+								><span aria-hidden="true">&hellip;</span></button
+							>
+							{#if actionsKey === plan.key}
+								<div class="plan-actions">
+									<button
+										class="secondary"
+										type="button"
+										disabled={!!busy}
+										onclick={() => {
+											closePlanActions()
+											void copyLive(plan)
+										}}>Copy live link</button
+									>
+									<button
+										class="secondary"
+										type="button"
+										disabled={!!busy}
+										onclick={() => forgetPlan(plan)}>Remove from list</button
+									>
+								</div>
+							{/if}
+						</li>
+					{/each}
+				</ul>
+				<button
+					class="secondary"
+					type="button"
+					disabled={!!busy}
+					onclick={() => showPlanView('create')}>New synced plan</button
 				>
-					<fieldset disabled={!!busy} aria-label="Saved plans">
-						<label
-							><input
-								type="radio"
-								name="plan"
-								value={LOCAL_PLAN}
-								bind:group={selectedKey}
-							/>Local</label
-						>
-						{#each registry.synced as plan (plan.key)}
-							<label
-								><input
-									type="radio"
-									name="plan"
-									value={plan.key}
-									bind:group={selectedKey}
-								/>
-								<span>{syncedTitle(plan)} <small>Synced</small></span>
-							</label>
-						{/each}
-					</fieldset>
-					<p class="plan-status" title={planStatus} aria-live="polite">
-						<small>{planStatus}</small>
-					</p>
-					<div class="plan-buttons">
-						<button disabled={!!busy}>Open</button>
-						<button
-							class="secondary"
-							type="button"
-							disabled={!!busy}
-							onclick={() => showPlanView('create')}>New synced plan</button
-						>
-					</div>
-					<div class="plan-buttons">
-						<button
-							class="secondary"
-							type="button"
-							disabled={!!busy || !selectedPlan}
-							onclick={() => selectedPlan && copyLive(selectedPlan)}
-							>Copy live link</button
-						>
-						<button
-							class="secondary"
-							type="button"
-							disabled={!!busy || !selectedPlan}
-							onclick={() => selectedPlan && forgetPlan(selectedPlan)}
-							>Remove from list</button
-						>
-					</div>
-				</form>
 			{/if}
 			{@render planFeedback()}
 		</dialog>
@@ -1129,6 +1152,64 @@
 		margin-bottom: var(--nc-spacing);
 	}
 
+	.plan-list {
+		display: grid;
+		gap: 0.375rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	.plan-row {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		margin: 0;
+	}
+
+	.plan-open {
+		display: grid;
+		flex: 1;
+		min-width: 0;
+		gap: 0.125rem;
+		text-align: start;
+	}
+
+	.plan-row-label {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.25rem 0.5rem;
+	}
+
+	.plan-row-label small,
+	.plan-status {
+		font-weight: normal;
+	}
+
+	.plan-action-trigger {
+		min-width: 2.5rem;
+		padding-inline: 0.5rem;
+	}
+
+	.plan-actions {
+		position: absolute;
+		z-index: 1;
+		inset-inline-end: 0;
+		inset-block-end: calc(100% + 0.25rem);
+		display: grid;
+		gap: 0.25rem;
+		padding: 0.375rem;
+		border: 1px solid var(--nc-border);
+		border-radius: var(--nc-radius);
+		background: var(--nc-surface-4);
+	}
+
+	.plan-actions button {
+		margin: 0;
+		text-align: start;
+	}
+
 	.plan-status {
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1139,10 +1220,6 @@
 		display: flex;
 		gap: 0.5rem;
 		flex-wrap: wrap;
-	}
-
-	.plan-buttons + .plan-buttons {
-		margin-top: 0.5rem;
 	}
 
 	.wrap {
