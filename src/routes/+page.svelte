@@ -51,6 +51,7 @@
 		LOCAL_PLAN,
 		emptyRegistry,
 		forgetSyncedPlan,
+		liveLink,
 		normalizeServerUrl,
 		parseJoinLink,
 		readDraft,
@@ -379,12 +380,14 @@
 	let planDialog: HTMLDialogElement | undefined = $state()
 	let planOpener: HTMLButtonElement | undefined = $state()
 	let dialogOpen = $state(false)
-	let menu = $state<'open' | 'create' | 'join'>('open')
+	let menu = $state<'open' | 'create'>('open')
 	let selectedKey = $state(LOCAL_PLAN)
 	let selectedPlan = $derived(registry.synced.find((plan) => plan.key === selectedKey))
 	let source = $state('sample')
 	let serverInput = $state(DEFAULT_SYNC_SERVER)
-	let joinInput = $state('')
+	let joinFailed = $state(false)
+	let copiedLink = $state('')
+	let syncNotice = $state('')
 	let entry = $derived(
 		preview ? undefined : registry.synced.find((plan) => plan.key === registry.active)
 	)
@@ -408,6 +411,8 @@
 	async function showPlanView(view: typeof menu) {
 		menu = view
 		syncError = ''
+		syncNotice = ''
+		copiedLink = ''
 		if (view === 'create') {
 			source = 'sample'
 			serverInput = DEFAULT_SYNC_SERVER
@@ -541,6 +546,8 @@
 		if (busy) return
 		busy = message
 		syncError = ''
+		syncNotice = ''
+		copiedLink = ''
 		try {
 			await operation()
 		} catch (error) {
@@ -598,6 +605,7 @@
 
 	function join(url: URL) {
 		return syncOperation('Opening live plan...', async () => {
+			joinFailed = true
 			const target = parseJoinLink(url)
 			if (!target) throw new Error('Paste a MultiLaunch live link with a document ID.')
 			const api = await client()
@@ -609,12 +617,12 @@
 				!known &&
 				!window.confirm(`Connect to ${target.serverUrl} to open this live plan?`)
 			) {
-				throw new Error('Connection canceled. You can retry from Join via link.')
+				throw new Error('Connection canceled.')
 			}
 			const handle = await api.openPlan(target)
 			const { saved, title } = readSynced(handle)
 			rememberPlan(target, handle, saved, title)
-			joinInput = ''
+			joinFailed = false
 		})
 	}
 
@@ -675,6 +683,19 @@
 		}
 	}
 
+	async function copyLive(plan: SyncedPlanReference) {
+		copiedLink = liveLink(page.url.origin, plan)
+		syncNotice = ''
+		try {
+			await navigator.clipboard.writeText(copiedLink)
+			copiedLink = ''
+			syncNotice = 'Live link copied to clipboard.'
+			syncError = ''
+		} catch {
+			syncError = 'Select and copy the live link below.'
+		}
+	}
+
 	async function restorePlans() {
 		try {
 			registry = readRegistry(localStorage)
@@ -701,8 +722,6 @@
 			restoring = false
 		}
 		if (page.url.searchParams.has('doc')) {
-			joinInput = page.url.href
-			menu = 'join'
 			await join(page.url)
 		}
 	}
@@ -720,6 +739,8 @@
 {#snippet planFeedback()}
 	{#if busy}<p role="status">{busy}</p>{/if}
 	{#if syncError}<p class="error" role="alert">{syncError}</p>{/if}
+	{#if syncNotice}<p role="status">{syncNotice}</p>{/if}
+	{#if copiedLink}<label>Live link<input readonly value={copiedLink} /></label>{/if}
 {/snippet}
 
 <BrandHeader>
@@ -751,7 +772,7 @@
 			}}
 		>
 			<button
-				class="secondary dialog-close"
+				class="dialog-close"
 				type="button"
 				aria-label="Close dialog"
 				disabled={!!busy}
@@ -832,32 +853,6 @@
 						>
 					</div>
 				</form>
-			{:else if menu === 'join'}
-				<h2 id="plan-dialog-title" tabindex="-1">Join via link</h2>
-				<form
-					onsubmit={(event) => {
-						event.preventDefault()
-						void join(new URL(joinInput, page.url))
-					}}
-				>
-					<label
-						>Live link<input
-							type="url"
-							bind:value={joinInput}
-							disabled={!!busy}
-							required
-						/></label
-					>
-					<div class="plan-buttons">
-						<button disabled={!!busy}>Open live plan</button>
-						<button
-							class="secondary"
-							type="button"
-							disabled={!!busy}
-							onclick={() => showPlanView('open')}>Back</button
-						>
-					</div>
-				</form>
 			{:else}
 				<h2 id="plan-dialog-title" tabindex="-1">Open Plan</h2>
 				<form
@@ -905,16 +900,16 @@
 							disabled={!!busy}
 							onclick={() => showPlanView('create')}>New synced plan</button
 						>
-						<button
-							class="secondary"
-							type="button"
-							disabled={!!busy}
-							onclick={() => showPlanView('join')}>Join via link</button
-						>
 					</div>
 					{#if selectedPlan}
 						{@const plan = selectedPlan}
 						<div class="plan-buttons">
+							<button
+								class="secondary"
+								type="button"
+								disabled={!!busy}
+								onclick={() => copyLive(plan)}>Copy live link</button
+							>
 							<button
 								class="secondary"
 								type="button"
@@ -930,6 +925,11 @@
 	{/if}
 	{#if !dialogOpen}
 		{@render planFeedback()}
+		{#if joinFailed && !busy && page.url.searchParams.has('doc')}
+			<button class="secondary" type="button" onclick={() => join(page.url)}
+				>Retry opening live plan</button
+			>
+		{/if}
 	{/if}
 	{#if remoteChanged}
 		<p role="status">The saved plan changed. Your draft is still in the editor.</p>
@@ -1099,6 +1099,9 @@
 	}
 
 	.dialog-close {
+		all: unset;
+		box-sizing: border-box;
+		cursor: pointer;
 		position: absolute;
 		inset-block-start: 0.5rem;
 		inset-inline-end: 0.5rem;
@@ -1109,6 +1112,16 @@
 		padding: 0;
 		font-size: 1.25rem;
 		line-height: 1;
+	}
+
+	.dialog-close:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: -2px;
+	}
+
+	.dialog-close:disabled {
+		cursor: default;
+		opacity: 0.5;
 	}
 
 	.plan-dialog fieldset {
