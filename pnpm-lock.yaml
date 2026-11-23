@@ -7,6 +7,19 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@automerge/automerge':
+        specifier: 3.5.0
+        version: 3.5.0
+      '@automerge/automerge-repo':
+        specifier: 2.5.6
+        version: 2.5.6
+      '@automerge/automerge-repo-network-websocket':
+        specifier: 2.5.6
+        version: 2.5.6
+      '@automerge/automerge-repo-storage-indexeddb':
+        specifier: 2.5.6
+        version: 2.5.6
     devDependencies:
       '@eslint/compat':
         specifier: ^2.1.1
@@ -107,11 +120,53 @@ importers:
 
 packages:
 
+  '@automerge/automerge-repo-network-websocket@2.5.6':
+    resolution: {integrity: sha512-xs/xzOCTf5ZuqhDUtBO1VQ3QOnunEobjtgEqGNu7UcoD2uYWET1ANHVfS+ZzSV8IOA1O9jFAPXxzc4FXoSL0hQ==}
+
+  '@automerge/automerge-repo-storage-indexeddb@2.5.6':
+    resolution: {integrity: sha512-3349orECq2Mj3mo9q6f9ZeXwDkP3lAm6KaivP5+znUpv6Ze+IraE36DdL5GVdzIm+cXej0yWSOCQOalnTMPcQg==}
+
+  '@automerge/automerge-repo@2.5.6':
+    resolution: {integrity: sha512-ZXM6TOAwm192g3+zIxYvlB+Z3O00NP+psErOwvbSype8fFO+dhc8tB/jPwfZJqmn1ULUz5w7gssKEynwcYFRSA==}
+
+  '@automerge/automerge@3.5.0':
+    resolution: {integrity: sha512-ejbqJWfXWM2QbTcUK/5ugYiQiyOP7LYVAp/RuSvthCc07oek0FClMxEuouuhjrLjVPDSI34RP1ftGc45PF7WRA==}
+
   '@cacheable/memory@2.2.0':
     resolution: {integrity: sha512-CTLKqLItRCEixEAewD3/j9DB3/o96gpTPD4eJ1v+DGOlxZRZncRQkGYqqnAGCscYd6RNeXfGeiuCphsPtqyIfQ==}
 
   '@cacheable/utils@2.5.0':
     resolution: {integrity: sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==}
+
+  '@cbor-extract/cbor-extract-darwin-arm64@2.2.3':
+    resolution: {integrity: sha512-qpUy9Yoisi6a7QHOVa+AlnqfN7eVstSRhpLwiLnwi6i3SNLkM5D2Z7MXl4LC5nUGA77mZEt479cPH3u8GD163Q==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@cbor-extract/cbor-extract-darwin-x64@2.2.3':
+    resolution: {integrity: sha512-6bZbK7dyKn8BUNmG3UfzSnM4L/OzJ8xGAtBHYycprl+bgvtZmZoQC7CucWXuF/oHJP5skzqkqFr6BLSSGIkoWw==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@cbor-extract/cbor-extract-linux-arm64@2.2.3':
+    resolution: {integrity: sha512-QAuFuQkOw0cm4MNc+QwxH9aiMxmrczESnVEu33B8m2Du9fBuH/1AvJfmO8YajpeWLoHqt2iUG3d1/gIWAKY8IQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@cbor-extract/cbor-extract-linux-arm@2.2.3':
+    resolution: {integrity: sha512-joCovTc7uEYCL9XxdAJJpGIH7Vvc31Fi7vh3HnlY5zgkLSU/64WxYl5iUi/puE21qT3bmxMfOZEZUbnqVKeJTQ==}
+    cpu: [arm]
+    os: [linux]
+
+  '@cbor-extract/cbor-extract-linux-x64@2.2.3':
+    resolution: {integrity: sha512-IQMPVLulOvFv9Had7J1idJyfQzsFamDVdjH37qW7suHI7mgO4w1Oo3MisL7AjnWARxo0/ZmEEQ3i81WA7y34Ug==}
+    cpu: [x64]
+    os: [linux]
+
+  '@cbor-extract/cbor-extract-win32-x64@2.2.3':
+    resolution: {integrity: sha512-fGFfq6F3l0GCoKOZeyjjm3q+NHO7jo8ILtQ93U3rYJOgG2BGLS/QmBdoFLNEsoWPjyxAS8svWhTyo73MTDawog==}
+    cpu: [x64]
+    os: [win32]
 
   '@emnapi/core@1.11.2':
     resolution: {integrity: sha512-TC8MkTuZUtcTSiFeuC0ksCh9QIJ5+F21MvZ4Wn4ORfYaFJ/0dsiudv5tVkejgwZlwQ39jL9WWDe2lz8x0WglOA==}
@@ -405,6 +460,10 @@ packages:
     peerDependencies:
       '@emnapi/core': ^1.7.1 || 2.0.0-beta.2 || 2.0.0-beta.3
       '@emnapi/runtime': ^1.7.1 || 2.0.0-beta.2 || 2.0.0-beta.3
+
+  '@noble/hashes@1.8.0':
+    resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
+    engines: {node: ^14.21.3 || >=16}
 
   '@oxc-parser/binding-android-arm-eabi@0.156.0':
     resolution: {integrity: sha512-RMq7DKNzEp1T51QKNLTn0NryNEt2IYfh7mZBlIdi2Ju52ltOEDMeIXv0XBpA6dL7j7ChjlcovtGcc1Jv4qMipg==}
@@ -996,12 +1055,28 @@ packages:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
 
+  base-x@4.0.1:
+    resolution: {integrity: sha512-uAZ8x6r6S3aUM9rbHGVOIsR15U/ZSc82b3ymnCPsT45Gk1DDvhDPdIgB5MrhirZWt+5K0EEPQH985kNqZgNPFw==}
+
   brace-expansion@5.0.13:
     resolution: {integrity: sha512-Vh3dmFbc4wZeox7M9I/0L9GfFd83Su4+yCck/OF9Gi/P/dAHn0RT7X4K9R7gMNMhDck3DvhR6QXsnQdjjgwNvQ==}
     engines: {node: 20 || >=22}
 
+  bs58@5.0.0:
+    resolution: {integrity: sha512-r+ihvQJvahgYT50JD05dyJNKlmmSlMoOGwn1lCcEzanPglg7TxYjioQUYehQ9mAR/+hOSd2jRc/Z2y5UxBymvQ==}
+
+  bs58check@3.0.1:
+    resolution: {integrity: sha512-hjuuJvoWEybo7Hn/0xOrczQKKEKD63WguEjlhLExYs2wUBcebDC1jDNK17eEAD2lYfw82d5ASC1d7K3SWszjaQ==}
+
   cacheable@2.5.0:
     resolution: {integrity: sha512-60cyAOytib/OzBw1JNSoSV/boK1AtHryDIjvVBk7XbN4ugfkM3+Sry7fEjNgPMGgOjuaZPAp8ruZ0Cxafwyq9g==}
+
+  cbor-extract@2.2.3:
+    resolution: {integrity: sha512-zTOCEYwiQDChj5DV/sUqccv3jhdZqbhymztwcrW2LncIG2fPPkb1ceK5rmr0bdtxzJCXoWzZ95shA+uaSH8cKw==}
+    hasBin: true
+
+  cbor-x@1.6.9:
+    resolution: {integrity: sha512-TCT9XHLb4iPGQ99fpQjcTRncbus6cXHvSD/RY+bPrDACBCJKiQLmAM6r7/BgQcI5i+8h4gwp4vjfb6S6T8bPGw==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -1155,6 +1230,9 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
+  eventemitter3@5.0.4:
+    resolution: {integrity: sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw==}
+
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -1163,6 +1241,9 @@ packages:
 
   fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
+
+  fast-sha256@1.3.0:
+    resolution: {integrity: sha512-n11RGP/lrWEFI/bWdygLxhI+pVeo1ZYIVwvvPkW7azl/rOy+F3HYRZ2K5zeE9mmkhQppyv9sQFx0JM9UabnpPQ==}
 
   fd-package-json@2.0.0:
     resolution: {integrity: sha512-jKmm9YtsNXN789RS/0mSzOC1NUq9mkVd65vbSSVsKdjGvYXBuE4oWe2QOEoFeRmJg+lPuZxpmrfFclNhoRMneQ==}
@@ -1264,6 +1345,11 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  isomorphic-ws@5.0.0:
+    resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
+    peerDependencies:
+      ws: '*'
 
   jiti@2.7.0:
     resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
@@ -1432,6 +1518,10 @@ packages:
 
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
+
+  node-gyp-build-optional-packages@5.1.1:
+    resolution: {integrity: sha512-+P72GAjVAbTxjjwUmwjVrqrdZROD4nf8KgpBoDxqXXTiYZZt/ud60dE5yvCSr9lRO8e8yv6kgJIC0K0PfZFVQw==}
+    hasBin: true
 
   obug@2.2.1:
     resolution: {integrity: sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q==}
@@ -1722,6 +1812,11 @@ packages:
     resolution: {integrity: sha512-Sc5u1VVln93y1Xnz4R+CunOZc7R9LUcTmhj7Rc7Eg3HVcf7rVn2FOoa812fe0W8p3jD7xeoGSYbfqCGGH2B6xw==}
     hasBin: true
 
+  uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+    hasBin: true
+
   vfile-message@2.0.4:
     resolution: {integrity: sha512-DjssxRGkMvifUOJre00juHoP9DPWuzjxKuMDrhNbk2TdaYYBNMStsNhEOt3idrtI12VQYM/1+iM0KOzXi4pxwQ==}
 
@@ -1803,6 +1898,21 @@ packages:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
 
+  ws@8.23.0:
+    resolution: {integrity: sha512-wCkmX8QMOrKjgO8HW2WyDbTSGeqkocxgDzS9iR79rEAexty6/2qzilx3Ag8Tqf9ykop3irLKle0MtVn5qjVnoQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  xstate@5.33.4:
+    resolution: {integrity: sha512-eGNMu3BNqU0Z85P+ouYG5OCZqIABU+QsW6vUieFt9p9gOGs3C+BL10Exg7XdRPSXPQKlP6XoYpYf93r9VmW8mQ==}
+
   yaml@1.10.3:
     resolution: {integrity: sha512-vIYeF1u3CjlhAFekPPAk2h/Kv4T3mAkMox5OymRiJQB0spDP10LHvt+K7G9Ny6NuuMAb25/6n1qyUjAcGNf/AA==}
     engines: {node: '>= 6'}
@@ -1824,6 +1934,40 @@ packages:
 
 snapshots:
 
+  '@automerge/automerge-repo-network-websocket@2.5.6':
+    dependencies:
+      '@automerge/automerge-repo': 2.5.6
+      cbor-x: 1.6.9
+      debug: 4.4.3
+      eventemitter3: 5.0.4
+      isomorphic-ws: 5.0.0(ws@8.23.0)
+      ws: 8.23.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@automerge/automerge-repo-storage-indexeddb@2.5.6':
+    dependencies:
+      '@automerge/automerge-repo': 2.5.6
+    transitivePeerDependencies:
+      - supports-color
+
+  '@automerge/automerge-repo@2.5.6':
+    dependencies:
+      '@automerge/automerge': 3.5.0
+      bs58check: 3.0.1
+      cbor-x: 1.6.9
+      debug: 4.4.3
+      eventemitter3: 5.0.4
+      fast-sha256: 1.3.0
+      uuid: 9.0.1
+      xstate: 5.33.4
+    transitivePeerDependencies:
+      - supports-color
+
+  '@automerge/automerge@3.5.0': {}
+
   '@cacheable/memory@2.2.0':
     dependencies:
       '@cacheable/utils': 2.5.0
@@ -1835,6 +1979,24 @@ snapshots:
     dependencies:
       hashery: 1.5.1
       keyv: 5.6.0
+
+  '@cbor-extract/cbor-extract-darwin-arm64@2.2.3':
+    optional: true
+
+  '@cbor-extract/cbor-extract-darwin-x64@2.2.3':
+    optional: true
+
+  '@cbor-extract/cbor-extract-linux-arm64@2.2.3':
+    optional: true
+
+  '@cbor-extract/cbor-extract-linux-arm@2.2.3':
+    optional: true
+
+  '@cbor-extract/cbor-extract-linux-x64@2.2.3':
+    optional: true
+
+  '@cbor-extract/cbor-extract-win32-x64@2.2.3':
+    optional: true
 
   '@emnapi/core@1.11.2':
     dependencies:
@@ -2050,6 +2212,8 @@ snapshots:
       '@emnapi/runtime': 1.11.2
       '@tybys/wasm-util': 0.10.5
     optional: true
+
+  '@noble/hashes@1.8.0': {}
 
   '@oxc-parser/binding-android-arm-eabi@0.156.0':
     optional: true
@@ -2515,9 +2679,20 @@ snapshots:
 
   balanced-match@4.0.4: {}
 
+  base-x@4.0.1: {}
+
   brace-expansion@5.0.13:
     dependencies:
       balanced-match: 4.0.4
+
+  bs58@5.0.0:
+    dependencies:
+      base-x: 4.0.1
+
+  bs58check@3.0.1:
+    dependencies:
+      '@noble/hashes': 1.8.0
+      bs58: 5.0.0
 
   cacheable@2.5.0:
     dependencies:
@@ -2526,6 +2701,22 @@ snapshots:
       hookified: 1.15.1
       keyv: 5.6.0
       qified: 0.10.1
+
+  cbor-extract@2.2.3:
+    dependencies:
+      node-gyp-build-optional-packages: 5.1.1
+    optionalDependencies:
+      '@cbor-extract/cbor-extract-darwin-arm64': 2.2.3
+      '@cbor-extract/cbor-extract-darwin-x64': 2.2.3
+      '@cbor-extract/cbor-extract-linux-arm': 2.2.3
+      '@cbor-extract/cbor-extract-linux-arm64': 2.2.3
+      '@cbor-extract/cbor-extract-linux-x64': 2.2.3
+      '@cbor-extract/cbor-extract-win32-x64': 2.2.3
+    optional: true
+
+  cbor-x@1.6.9:
+    optionalDependencies:
+      cbor-extract: 2.2.3
 
   ccount@2.0.1: {}
 
@@ -2712,11 +2903,15 @@ snapshots:
 
   esutils@2.0.3: {}
 
+  eventemitter3@5.0.4: {}
+
   fast-deep-equal@3.1.3: {}
 
   fast-json-stable-stringify@2.1.0: {}
 
   fast-levenshtein@2.0.6: {}
+
+  fast-sha256@1.3.0: {}
 
   fd-package-json@2.0.0:
     dependencies:
@@ -2814,6 +3009,10 @@ snapshots:
       '@types/estree': 1.0.10
 
   isexe@2.0.0: {}
+
+  isomorphic-ws@5.0.0(ws@8.23.0):
+    dependencies:
+      ws: 8.23.0
 
   jiti@2.7.0: {}
 
@@ -2970,6 +3169,11 @@ snapshots:
   natural-compare@1.4.0: {}
 
   node-addon-api@7.1.1:
+    optional: true
+
+  node-gyp-build-optional-packages@5.1.1:
+    dependencies:
+      detect-libc: 2.1.2
     optional: true
 
   obug@2.2.1: {}
@@ -3324,6 +3528,8 @@ snapshots:
 
   uuid@14.0.3: {}
 
+  uuid@9.0.1: {}
+
   vfile-message@2.0.4:
     dependencies:
       '@types/unist': 2.0.11
@@ -3374,6 +3580,10 @@ snapshots:
       isexe: 2.0.0
 
   word-wrap@1.2.5: {}
+
+  ws@8.23.0: {}
+
+  xstate@5.33.4: {}
 
   yaml@1.10.3: {}
 

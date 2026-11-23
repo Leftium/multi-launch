@@ -35,6 +35,8 @@ export const config = {
 }
 
 const SECONDS_PER_DAY = 24 * 60 * 60
+const LOCAL_COOKIE = 'planTomlLz'
+const MAX_COOKIE_SIZE = 4096
 
 const computeUrl = (engine: SearchEngine, query: string) => {
 	const planJson = engine.plan
@@ -51,8 +53,14 @@ const computeUrl = (engine: SearchEngine, query: string) => {
 }
 
 export const load = async ({ cookies, url }) => {
-	const planTomlLz = url.searchParams.get('p') || cookies.get('planTomlLz') || ''
-	let planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || samplePlanToml
+	const cookie = cookies.get(LOCAL_COOKIE)
+	const snapshot = url.searchParams.get('p')
+	const localPlanToml = cookie
+		? (lzString.decompressFromEncodedURIComponent(cookie) ?? samplePlanToml)
+		: samplePlanToml
+	let planToml = snapshot
+		? (lzString.decompressFromEncodedURIComponent(snapshot) ?? localPlanToml)
+		: localPlanToml
 
 	if (url.pathname === '/svelte') {
 		planToml = sveltePlanToml
@@ -62,7 +70,7 @@ export const load = async ({ cookies, url }) => {
 		planToml = koreaPlanToml
 	}
 
-	return { planToml }
+	return { planToml, localPlanToml }
 }
 
 export const actions = {
@@ -119,12 +127,22 @@ export const actions = {
 			if (operation === 'save') {
 				log('do save')
 
-				cookies.set('planTomlLz', planTomlLz, {
-					path: '/',
-					httpOnly: false,
-					maxAge: 400 * SECONDS_PER_DAY,
-				})
-				successMessage = 'Plan successfully saved to browser cookie.'
+				const options = { path: '/', httpOnly: false, maxAge: 400 * SECONDS_PER_DAY }
+				if (cookies.serialize(LOCAL_COOKIE, planTomlLz, options).length > MAX_COOKIE_SIZE) {
+					return fail(400, {
+						errorMessage: 'This plan is too large for the Local cookie.',
+						planToml,
+					})
+				}
+				cookies.set(LOCAL_COOKIE, planTomlLz, options)
+				return {
+					successMessage: 'Plan successfully saved to browser cookie.',
+					fromEditOperation: true,
+					savedLocal: true,
+				}
+			}
+			if (operation === 'copy') {
+				return { successMessage: 'Select and copy the TOML from the editor.', planToml }
 			}
 			if (operation === 'share') {
 				const shareLink = `${url.origin}?p=${planTomlLz}`
@@ -133,7 +151,7 @@ export const actions = {
 				return fail(200, { successMessage, planToml })
 			}
 			if (operation === 'add') {
-				const cookiePlanTomlLz = cookies.get('planTomlLz') as string
+				const cookiePlanTomlLz = cookies.get(LOCAL_COOKIE) as string
 				const cookiePlanToml =
 					lzString.decompressFromEncodedURIComponent(cookiePlanTomlLz) || ''
 
