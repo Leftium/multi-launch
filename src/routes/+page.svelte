@@ -21,10 +21,12 @@
 
 	function tooltip(content: string): Attachment {
 		return (element) => {
+			const dialog = element.closest('dialog')
 			const instance = tippy(element, {
 				content,
-				placement: 'bottom',
+				placement: dialog ? 'bottom-end' : 'bottom',
 				allowHTML: false,
+				appendTo: () => dialog ?? document.body,
 				popperOptions: { strategy: 'fixed' },
 			})
 			return instance.destroy
@@ -377,7 +379,6 @@
 	let planOpener: HTMLButtonElement | undefined = $state()
 	let dialogOpen = $state(false)
 	let menu = $state<'open' | 'create'>('open')
-	let actionsKey = $state<string>()
 
 	$effect(() => {
 		if (!dialogOpen || menu !== 'open' || !registry.synced.length) return
@@ -414,31 +415,21 @@
 			planDialog?.close()
 			return
 		}
-		actionsKey = undefined
 		void syncOperation('Opening plan...', async () => {
 			await switchPlan(key)
 			planDialog?.close()
 		})
 	}
 
-	function closePlanActions() {
-		planDialog
-			?.querySelector<HTMLButtonElement>('.plan-action-trigger[aria-expanded="true"]')
-			?.focus()
-		actionsKey = undefined
-	}
-
 	async function closePlanDialog() {
 		dialogOpen = false
 		menu = 'open'
-		actionsKey = undefined
 		await tick()
 		planOpener?.focus()
 	}
 
 	async function showPlanView(view: typeof menu) {
 		menu = view
-		actionsKey = undefined
 		syncError = ''
 		syncNotice = ''
 		copiedLink = ''
@@ -491,7 +482,6 @@
 			const next = forgetSyncedPlan(registry, plan.key)
 			if (entry?.key === plan.key) await switchPlan(LOCAL_PLAN, next)
 			else persistRegistry(next)
-			actionsKey = undefined
 			await tick()
 			planDialog?.querySelector<HTMLElement>('h2')?.focus()
 		})
@@ -766,14 +756,14 @@
 
 {#snippet openPlanButton(key: string, title: string, status: string)}
 	<button
-		class="secondary plan-open"
+		class="plan-open"
 		type="button"
 		aria-current={currentPlanKey === key ? 'true' : undefined}
 		disabled={!!busy}
 		onclick={() => openSavedPlan(key)}
 	>
 		<span class="plan-row-label">
-			<span>{title}</span>
+			<strong>{title}</strong>
 			{#if currentPlanKey === key}<small>Current</small>{/if}
 		</span>
 		<small class="plan-status" title={status}>{status}</small>
@@ -812,8 +802,7 @@
 			bind:this={planDialog}
 			onclose={closePlanDialog}
 			oncancel={(event) => {
-				if (busy || actionsKey) event.preventDefault()
-				if (!busy && actionsKey) closePlanActions()
+				if (busy) event.preventDefault()
 			}}
 		>
 			<header class="plan-dialog-header">
@@ -899,35 +888,53 @@
 						{@const status = `${connectedServers.has(plan.serverUrl) ? 'Connected' : 'Disconnected'} · ${plan.serverUrl}`}
 						<li class="plan-row">
 							{@render openPlanButton(plan.key, title, status)}
-							<button
-								class="secondary plan-action-trigger"
-								type="button"
-								aria-label={`Actions for ${title}`}
-								aria-expanded={actionsKey === plan.key}
-								disabled={!!busy}
-								onclick={() =>
-									(actionsKey = actionsKey === plan.key ? undefined : plan.key)}
-								><span aria-hidden="true">&hellip;</span></button
-							>
-							{#if actionsKey === plan.key}
-								<div class="plan-actions">
-									<button
-										class="secondary"
-										type="button"
-										disabled={!!busy}
-										onclick={() => {
-											closePlanActions()
-											void copyLive(plan)
-										}}>Copy live link</button
+							<div class="plan-row-actions">
+								<button
+									class="plan-action"
+									type="button"
+									aria-label={`Copy live link for ${title}`}
+									{@attach tooltip('Copy live link')}
+									disabled={!!busy}
+									onclick={() => copyLive(plan)}
+								>
+									<svg
+										width="18"
+										height="18"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										aria-hidden="true"
 									>
-									<button
-										class="secondary"
-										type="button"
-										disabled={!!busy}
-										onclick={() => forgetPlan(plan)}>Remove from list</button
+										<path
+											d="M10 13a4 4 0 0 0 6 0l4-4a4 4 0 0 0-6-6l-2 2M14 11a4 4 0 0 0-6 0l-4 4a4 4 0 0 0 6 6l2-2"
+										/>
+									</svg>
+								</button>
+								<button
+									class="plan-action"
+									type="button"
+									aria-label={`Remove ${title} from list`}
+									{@attach tooltip('Remove from list')}
+									disabled={!!busy}
+									onclick={() => forgetPlan(plan)}
+								>
+									<svg
+										width="18"
+										height="18"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										aria-hidden="true"
 									>
-								</div>
-							{/if}
+										<circle cx="12" cy="12" r="8" />
+										<path d="M8.5 12h7" />
+									</svg>
+								</button>
+							</div>
 						</li>
 					{/each}
 				</ul>
@@ -1160,18 +1167,38 @@
 	}
 
 	.plan-row {
-		position: relative;
 		display: flex;
 		align-items: center;
-		gap: 0.375rem;
 		margin: 0;
+		border: 1px solid var(--nc-border);
+		border-radius: var(--nc-radius);
+	}
+
+	.plan-row:has([aria-current='true']) {
+		border-color: var(--nc-primary);
+	}
+
+	.plan-open,
+	.plan-action {
+		border: 0;
+		background: transparent;
+		color: var(--nc-text);
+	}
+
+	.plan-open:hover,
+	.plan-action:hover {
+		background: var(--nc-surface-2);
 	}
 
 	.plan-open {
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		justify-content: stretch;
 		flex: 1;
 		min-width: 0;
 		gap: 0.125rem;
+		padding: 0.5rem 0.75rem;
+		line-height: 1.35;
 		text-align: start;
 	}
 
@@ -1179,35 +1206,26 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: baseline;
-		gap: 0.25rem 0.5rem;
+		gap: 0.125rem 0.5rem;
 	}
 
 	.plan-row-label small,
-	.plan-status {
+	.plan-status,
+	.plan-action {
+		color: color-mix(in oklch, var(--nc-text), transparent 30%);
 		font-weight: normal;
 	}
 
-	.plan-action-trigger {
-		min-width: 2.5rem;
-		padding-inline: 0.5rem;
+	.plan-row-actions {
+		display: flex;
+		flex-shrink: 0;
+		padding-inline-end: 0.25rem;
 	}
 
-	.plan-actions {
-		position: absolute;
-		z-index: 1;
-		inset-inline-end: 0;
-		inset-block-end: calc(100% + 0.25rem);
-		display: grid;
-		gap: 0.25rem;
-		padding: 0.375rem;
-		border: 1px solid var(--nc-border);
-		border-radius: var(--nc-radius);
-		background: var(--nc-surface-4);
-	}
-
-	.plan-actions button {
-		margin: 0;
-		text-align: start;
+	.plan-action {
+		inline-size: 2.5rem;
+		min-block-size: 2.5rem;
+		padding: 0;
 	}
 
 	.plan-status {
