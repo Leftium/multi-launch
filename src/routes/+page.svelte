@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { preventDefault } from 'svelte/legacy'
 	import { untrack } from 'svelte'
+	import { SvelteURL } from 'svelte/reactivity'
 
 	import BrandHeader from '#lib/BrandHeader.svelte'
 
@@ -24,10 +25,21 @@
 			const dialog = element.closest('dialog')
 			const instance = tippy(element, {
 				content,
-				placement: dialog ? 'bottom-end' : 'bottom',
+				placement: 'bottom',
 				allowHTML: false,
 				appendTo: () => dialog ?? document.body,
-				popperOptions: { strategy: 'fixed' },
+				popperOptions: {
+					strategy: 'fixed',
+					modifiers: dialog
+						? [
+								{
+									name: 'preventOverflow',
+									options: { boundary: dialog, padding: 4 },
+								},
+								{ name: 'flip', options: { boundary: dialog, padding: 4 } },
+							]
+						: [],
+				},
 			})
 			return instance.destroy
 		}
@@ -44,7 +56,7 @@
 	} from '#lib/search-engines.js'
 	import { onMount, tick } from 'svelte'
 	import { page } from '$app/state'
-	import { replaceState } from '$app/navigation'
+	import { goto } from '$app/navigation'
 	import samplePlanToml from '#lib/plans/sample.toml?raw'
 	import { isWebUrl, validateSyncedToml } from '#lib/sync/plan-toml.js'
 	import type { PlanHandle } from '#lib/sync/repo.js'
@@ -88,7 +100,6 @@
 	let planToml = $state(
 		untrack(() => form?.planToml ?? (form?.savedLocal ? data.localPlanToml : data.planToml))
 	)
-	let planJson: Record<string, unknown> = $state({})
 	let planTitle = $state('Untitled')
 
 	let searchGroups: SearchGroup[] = $state([])
@@ -190,7 +201,7 @@
 		errorMessages = []
 		try {
 			if (draftKey !== LOCAL_PLAN && !preview) validateSyncedToml(planToml)
-			planJson = TOML.parse(planToml)
+			const planJson = TOML.parse(planToml)
 			planTitle = typeof planJson.title === 'string' ? planJson.title : 'Untitled'
 			searchGroups = makeSearchGroups(planJson)
 		} catch (error) {
@@ -325,7 +336,6 @@
 			if (me.altKey) {
 				// Move clicked launch group to top.
 				searchGroups.unshift(searchGroups.splice(index, 1)[0])
-				searchGroups = searchGroups
 			} else {
 				clickAllHandler(e, false)
 			}
@@ -360,15 +370,18 @@
 	let registry = $state.raw(emptyRegistry())
 	let registryReady = $state(false)
 	let preview = $state(untrack(() => page.url.pathname !== '/' || page.url.searchParams.has('p')))
-	let draftKey = untrack(() =>
-		preview
-			? `preview:${page.url.pathname}:${page.url.searchParams.get('p') ?? ''}`
-			: LOCAL_PLAN
+	let draftKey = $state(
+		untrack(() =>
+			preview
+				? `preview:${page.url.pathname}:${page.url.searchParams.get('p') ?? ''}`
+				: LOCAL_PLAN
+		)
 	)
 	let savedToml = $state(untrack(() => (preview ? data.planToml : data.localPlanToml)))
 	let draftBase = $state(untrack(() => savedToml))
 	let activeHandle: PlanHandle | undefined
 	let stopWatching: (() => void) | undefined
+	let persistedDraft: PlanDraft | undefined
 	let storageFailed = false
 	let syncClient: typeof import('#lib/sync/repo.js') | undefined
 	let busy = $state('')
@@ -465,7 +478,9 @@
 		if (next === registry) return
 		registry = next
 		try {
-			writeRegistry(localStorage, next)
+			const stored = readRegistry(localStorage)
+			const updated = withPlanTitle(stored, key, title)
+			if (updated !== stored) writeRegistry(localStorage, updated)
 		} catch (error) {
 			reportSyncError(error)
 		}
@@ -479,9 +494,14 @@
 		)
 			return
 		void syncOperation('Removing plan...', async () => {
-			const next = forgetSyncedPlan(registry, plan.key)
-			if (entry?.key === plan.key) await switchPlan(LOCAL_PLAN, next)
-			else persistRegistry(next)
+			if (entry?.key === plan.key) {
+				await switchPlan(LOCAL_PLAN, { removeKey: plan.key })
+			} else {
+				persistRegistry(
+					forgetSyncedPlan(readRegistry(localStorage), plan.key),
+					forgetSyncedPlan(registry, plan.key)
+				)
+			}
 			await tick()
 			planDialog?.querySelector<HTMLElement>('h2')?.focus()
 		})
@@ -498,7 +518,22 @@
 
 	function persistDraft() {
 		try {
-			writeDraft(localStorage, draftKey, { base: draftBase, text: planToml }, savedToml)
+			const draft = { base: draftBase, text: planToml }
+			if (planToml !== savedToml) {
+				writeDraft(localStorage, draftKey, draft, savedToml)
+				persistedDraft = draft
+			} else {
+				const stored = readDraft(localStorage, draftKey)
+				if (
+					stored?.text === savedToml ||
+					(stored &&
+						stored.text === persistedDraft?.text &&
+						stored.base === persistedDraft.base)
+				) {
+					writeDraft(localStorage, draftKey, draft, savedToml)
+				}
+				persistedDraft = undefined
+			}
 			storageFailed = false
 		} catch (error) {
 			storageFailed = planToml !== savedToml
@@ -510,24 +545,26 @@
 		draftKey = key
 		savedToml = saved
 		draftBase = draft?.base ?? saved
+		persistedDraft = draft
 		planToml = draft?.text ?? saved
 		refreshLauncher()
 	}
 
-	function persistRegistry(next: PlanRegistry) {
+	function persistRegistry(next: PlanRegistry, view = next) {
 		writeRegistry(localStorage, next)
-		registry = next
+		registry = view
 		syncClient?.updateSharing(next.synced)
 	}
 
-	function clearPreviewUrl() {
-		const url = new URL(page.url)
+	async function clearPreviewUrl() {
+		const url = new SvelteURL(page.url.href)
 		url.pathname = '/'
 		url.searchParams.delete('p')
 		url.searchParams.delete('doc')
 		url.searchParams.delete('server')
-		replaceState(url, page.state)
-		preview = false
+		if (url.href !== location.href) {
+			await goto(url, { state: page.state, shallow: true, replace: true })
+		}
 	}
 
 	function displaySynced(
@@ -583,50 +620,73 @@
 		return { saved, title }
 	}
 
-	async function switchPlan(key: string, next = selectPlan(registry, key), clearUrl = true) {
-		const draft = readDraft(localStorage, key)
+	async function switchPlan(
+		key: string,
+		{ removeKey, restore = false }: { removeKey?: string; restore?: boolean } = {}
+	) {
+		if (storageFailed) persistDraft()
 		if (key === LOCAL_PLAN) {
-			persistDraft()
-			persistRegistry(next)
-			clearPreviewUrl()
+			const stored = readRegistry(localStorage)
+			const next = removeKey ? forgetSyncedPlan(stored, removeKey) : stored
+			const draft = readDraft(localStorage, key)
+			persistRegistry(selectPlan(next, key))
+			preview = false
 			stopWatching?.()
+			stopWatching = undefined
 			activeHandle = undefined
 			replaceEditor(key, data.localPlanToml, draft)
+			await clearPreviewUrl()
 			return
 		}
-		const plan = next.synced.find((item) => item.key === key)!
+		const plan = registry.synced.find((item) => item.key === key)
+		if (!plan) throw new Error('This plan is no longer in the list.')
 		const handle = await (await client()).openPlan(plan)
 		const { saved, title } = readSynced(handle)
-		persistDraft()
-		persistRegistry(withPlanTitle(next, key, title))
-		if (clearUrl) clearPreviewUrl()
+		const draft = readDraft(localStorage, key)
+		const stored = readRegistry(localStorage)
+		if (restore) {
+			cachePlanTitle(key, title)
+			syncClient?.updateSharing(stored.synced)
+		} else {
+			persistRegistry(withPlanTitle(selectPlan(stored, key), key, title))
+			preview = false
+		}
 		displaySynced(plan, handle, saved, draft)
+		if (!restore) await clearPreviewUrl()
 	}
 
-	function rememberPlan(target: JoinTarget, handle: PlanHandle, saved: string, title?: string) {
-		const { registry: next, key } = registerSyncedPlan(registry, {
+	async function rememberPlan(
+		target: JoinTarget,
+		handle: PlanHandle,
+		saved: string,
+		title?: string
+	) {
+		if (storageFailed) persistDraft()
+		const stored = readRegistry(localStorage)
+		const { registry: next, key } = registerSyncedPlan(stored, {
 			...target,
 			key: JSON.stringify([target.serverUrl, target.documentId]),
 			title: title?.trim() || undefined,
 		})
 		const draft = readDraft(localStorage, key)
-		persistDraft()
-		persistRegistry(withPlanTitle(selectPlan(next, key), key, title))
-		clearPreviewUrl()
+		const selected = withPlanTitle(selectPlan(next, key), key, title)
+		persistRegistry(selected)
+		preview = false
 		displaySynced(
-			next.synced.find((plan) => plan.key === key)!,
+			selected.synced.find((plan) => plan.key === key)!,
 			handle,
 			saved,
 			draft
 		)
+		await clearPreviewUrl()
 		menu = 'open'
 		planDialog?.close()
 	}
 
-	function join(url: URL) {
+	function join(href: string) {
 		return syncOperation('Opening live plan...', async () => {
 			joinFailed = true
-			const target = parseJoinLink(url)
+			const target = parseJoinLink(new SvelteURL(href))
 			if (!target) throw new Error('Paste a MultiLaunch live link with a document ID.')
 			const api = await client()
 			target.documentId = api.documentUrl(target.documentId)
@@ -641,7 +701,7 @@
 			}
 			const handle = await api.openPlan(target)
 			const { saved, title } = readSynced(handle)
-			rememberPlan(target, handle, saved, title)
+			await rememberPlan(target, handle, saved, title)
 			joinFailed = false
 		})
 	}
@@ -657,9 +717,9 @@
 						? readSynced(await (await client()).openPlan(copiedPlan)).saved
 						: data.localPlanToml
 			const title = validateSyncedToml(text)
-			persistDraft()
+			if (storageFailed) persistDraft()
 			const handle = await (await client()).createPlan(serverUrl, text)
-			rememberPlan({ documentId: handle.url, serverUrl }, handle, text, title)
+			await rememberPlan({ documentId: handle.url, serverUrl }, handle, text, title)
 		})
 	}
 
@@ -735,12 +795,12 @@
 		if (registry.active !== LOCAL_PLAN) {
 			restoring = true
 			await syncOperation('Loading saved plan...', () =>
-				switchPlan(registry.active, registry, false)
+				switchPlan(registry.active, { restore: true })
 			)
 			restoring = false
 		}
 		if (page.url.searchParams.has('doc')) {
-			await join(page.url)
+			await join(page.url.href)
 		}
 	}
 
@@ -951,7 +1011,7 @@
 	{#if !dialogOpen}
 		{@render planFeedback()}
 		{#if joinFailed && !busy && page.url.searchParams.has('doc')}
-			<button class="secondary" type="button" onclick={() => join(page.url)}
+			<button class="secondary" type="button" onclick={() => join(page.url.href)}
 				>Retry opening live plan</button
 			>
 		{/if}
@@ -1106,10 +1166,6 @@
 						>{/each}
 				</div>{/each}
 		</form>
-
-		<pre hidden>{JSON.stringify(planJson, null, 4)}</pre>
-
-		<pre hidden>{JSON.stringify(makeSearchGroups(planJson), null, 4)}</pre>
 	{/if}
 </main>
 

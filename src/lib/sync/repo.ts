@@ -93,7 +93,9 @@ export async function openPlan(target: JoinTarget) {
 		return handle
 	} catch (error) {
 		if (error instanceof Error && error.name === 'AbortError') {
-			throw new Error('The live plan did not load. Check the server and try again.')
+			throw new Error('The live plan did not load. Check the server and try again.', {
+				cause: error,
+			})
 		}
 		throw error
 	} finally {

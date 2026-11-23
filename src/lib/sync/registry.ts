@@ -76,16 +76,18 @@ function isRegistry(value: unknown): value is PlanRegistry {
 			typeof entry.serverUrl !== 'string' ||
 			(typeof entry.label !== 'undefined' && typeof entry.label !== 'string') ||
 			(typeof entry.title !== 'undefined' && typeof entry.title !== 'string')
-		) return false
+		)
+			return false
 		let serverUrl: string
 		try {
 			serverUrl = normalizeServerUrl(entry.serverUrl)
 		} catch {
 			return false
 		}
-		if (keys.has(entry.key) || targets.has(`${serverUrl}\\u0000${entry.documentId}`)) return false
+		const target = JSON.stringify([serverUrl, entry.documentId])
+		if (keys.has(entry.key) || targets.has(target)) return false
 		keys.add(entry.key)
-		targets.add(`${serverUrl}\\u0000${entry.documentId}`)
+		targets.add(target)
 	}
 	return value.active === LOCAL_PLAN || keys.has(value.active)
 }
@@ -125,7 +127,8 @@ export function registerSyncedPlan(
 		throw new Error('A synced plan needs a document ID and a non-local registry key.')
 	}
 	const existing = registry.synced.find(
-		(item) => item.documentId === entry.documentId && normalizeServerUrl(item.serverUrl) === serverUrl
+		(item) =>
+			item.documentId === entry.documentId && normalizeServerUrl(item.serverUrl) === serverUrl
 	)
 	if (existing) return { registry, key: existing.key }
 	if (registry.synced.some((item) => item.key === entry.key)) {
@@ -173,7 +176,10 @@ function draftStorageKey(planKey: string): string {
 	return `${DRAFT_STORAGE_PREFIX}${encodeURIComponent(planKey)}`
 }
 
-export function readDraft(storage: Pick<Storage, 'getItem'>, planKey: string): PlanDraft | undefined {
+export function readDraft(
+	storage: Pick<Storage, 'getItem'>,
+	planKey: string
+): PlanDraft | undefined {
 	const raw = storage.getItem(draftStorageKey(planKey))
 	if (raw === null) return undefined
 	let value: unknown
