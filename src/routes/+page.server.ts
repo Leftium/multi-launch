@@ -51,8 +51,14 @@ const computeUrl = (engine: SearchEngine, query: string) => {
 }
 
 export const load = async ({ cookies, url }) => {
-	const planTomlLz = url.searchParams.get('p') || cookies.get('planTomlLz') || ''
-	let planToml = lzString.decompressFromEncodedURIComponent(planTomlLz) || samplePlanToml
+	const cookie = cookies.get('planTomlLz')
+	const snapshot = url.searchParams.get('p')
+	const localPlanToml = cookie
+		? (lzString.decompressFromEncodedURIComponent(cookie) ?? samplePlanToml)
+		: samplePlanToml
+	let planToml = snapshot
+		? (lzString.decompressFromEncodedURIComponent(snapshot) ?? localPlanToml)
+		: localPlanToml
 
 	if (url.pathname === '/svelte') {
 		planToml = sveltePlanToml
@@ -62,7 +68,7 @@ export const load = async ({ cookies, url }) => {
 		planToml = koreaPlanToml
 	}
 
-	return { planToml }
+	return { planToml, localPlanToml }
 }
 
 export const actions = {
@@ -124,7 +130,14 @@ export const actions = {
 					httpOnly: false,
 					maxAge: 400 * SECONDS_PER_DAY,
 				})
-				successMessage = 'Plan successfully saved to browser cookie.'
+				return {
+					successMessage: 'Plan successfully saved to browser cookie.',
+					fromEditOperation: true,
+					savedLocal: true,
+				}
+			}
+			if (operation === 'copy') {
+				return { successMessage: 'Select and copy the TOML from the editor.', planToml }
 			}
 			if (operation === 'share') {
 				const shareLink = `${url.origin}?p=${planTomlLz}`

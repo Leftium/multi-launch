@@ -189,9 +189,10 @@ export function readDraft(storage: Pick<Storage, 'getItem'>, planKey: string): P
 export function writeDraft(
 	storage: Pick<Storage, 'setItem' | 'removeItem'>,
 	planKey: string,
-	draft: PlanDraft
+	draft: PlanDraft,
+	saved = draft.base
 ): void {
-	if (draft.text === draft.base) {
+	if (draft.text === saved) {
 		storage.removeItem(draftStorageKey(planKey))
 	} else {
 		storage.setItem(draftStorageKey(planKey), JSON.stringify(draft))
