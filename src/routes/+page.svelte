@@ -2,7 +2,7 @@
 	import { preventDefault } from 'svelte/legacy'
 	import { untrack } from 'svelte'
 
-	import '../app.scss'
+	import BrandHeader from '#lib/BrandHeader.svelte'
 
 	import tippy from 'tippy.js'
 	import 'tippy.js/dist/tippy.css'
@@ -51,7 +51,6 @@
 		LOCAL_PLAN,
 		emptyRegistry,
 		forgetSyncedPlan,
-		liveLink,
 		normalizeServerUrl,
 		parseJoinLink,
 		readDraft,
@@ -386,8 +385,6 @@
 	let source = $state('sample')
 	let serverInput = $state(DEFAULT_SYNC_SERVER)
 	let joinInput = $state('')
-	let copiedLink = $state('')
-	let syncNotice = $state('')
 	let entry = $derived(
 		preview ? undefined : registry.synced.find((plan) => plan.key === registry.active)
 	)
@@ -411,8 +408,6 @@
 	async function showPlanView(view: typeof menu) {
 		menu = view
 		syncError = ''
-		syncNotice = ''
-		copiedLink = ''
 		if (view === 'create') {
 			source = 'sample'
 			serverInput = DEFAULT_SYNC_SERVER
@@ -505,7 +500,6 @@
 		url.searchParams.delete('p')
 		url.searchParams.delete('doc')
 		url.searchParams.delete('server')
-		copiedLink = ''
 		replaceState(url, page.state)
 		preview = false
 	}
@@ -546,9 +540,7 @@
 	async function syncOperation(message: string, operation: () => Promise<void>) {
 		if (busy) return
 		busy = message
-		syncNotice = ''
 		syncError = ''
-		copiedLink = ''
 		try {
 			await operation()
 		} catch (error) {
@@ -683,18 +675,6 @@
 		}
 	}
 
-	async function copyLive(plan: SyncedPlanReference) {
-		copiedLink = liveLink(page.url.origin, plan)
-		try {
-			await navigator.clipboard.writeText(copiedLink)
-			copiedLink = ''
-			syncNotice = 'Live link copied to clipboard.'
-			syncError = ''
-		} catch {
-			syncError = 'Select and copy the live link below.'
-		}
-	}
-
 	async function restorePlans() {
 		try {
 			registry = readRegistry(localStorage)
@@ -740,22 +720,27 @@
 {#snippet planFeedback()}
 	{#if busy}<p role="status">{busy}</p>{/if}
 	{#if syncError}<p class="error" role="alert">{syncError}</p>{/if}
-	{#if syncNotice}<p role="status">{syncNotice}</p>{/if}
-	{#if copiedLink}<label>Live link<input readonly value={copiedLink} /></label>{/if}
 {/snippet}
+
+<BrandHeader>
+	{#snippet actions()}
+		{#if registryReady}
+			<button
+				class="secondary"
+				type="button"
+				aria-haspopup="dialog"
+				bind:this={planOpener}
+				disabled={!!busy}
+				onclick={openPlanDialog}
+			>
+				Open Plan
+			</button>
+		{/if}
+	{/snippet}
+</BrandHeader>
 
 <main>
 	{#if registryReady}
-		<button
-			class="secondary"
-			type="button"
-			aria-haspopup="dialog"
-			bind:this={planOpener}
-			disabled={!!busy}
-			onclick={openPlanDialog}
-		>
-			Open Plan
-		</button>
 		<dialog
 			class="plan-dialog"
 			aria-labelledby="plan-dialog-title"
@@ -765,6 +750,13 @@
 				if (busy) event.preventDefault()
 			}}
 		>
+			<button
+				class="secondary dialog-close"
+				type="button"
+				aria-label="Close dialog"
+				disabled={!!busy}
+				onclick={() => planDialog?.close()}><span aria-hidden="true">&times;</span></button
+			>
 			{#if menu === 'create'}
 				<h2 id="plan-dialog-title" tabindex="-1">New synced plan</h2>
 				<form
@@ -927,12 +919,6 @@
 								class="secondary"
 								type="button"
 								disabled={!!busy}
-								onclick={() => copyLive(plan)}>Copy live link</button
-							>
-							<button
-								class="secondary"
-								type="button"
-								disabled={!!busy}
 								onclick={() => forgetPlan(plan)}>Remove from list</button
 							>
 						</div>
@@ -940,12 +926,6 @@
 				</form>
 			{/if}
 			{@render planFeedback()}
-			<button
-				class="secondary"
-				type="button"
-				disabled={!!busy}
-				onclick={() => planDialog?.close()}>Close</button
-			>
 		</dialog>
 	{/if}
 	{#if !dialogOpen}
@@ -1112,6 +1092,23 @@
 	.plan-dialog {
 		width: min(90vw, 34rem);
 		overflow-wrap: anywhere;
+	}
+
+	.plan-dialog h2 {
+		padding-inline-end: 2.5rem;
+	}
+
+	.dialog-close {
+		position: absolute;
+		inset-block-start: 0.5rem;
+		inset-inline-end: 0.5rem;
+		display: grid;
+		place-items: center;
+		inline-size: 2rem;
+		block-size: 2rem;
+		padding: 0;
+		font-size: 1.25rem;
+		line-height: 1;
 	}
 
 	.plan-dialog fieldset {
