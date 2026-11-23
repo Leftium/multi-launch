@@ -347,15 +347,11 @@
 		window.addEventListener('keydown', handleKeydown)
 		window.addEventListener('beforeunload', preventLostDraft)
 		void restorePlans()
-		const statusTimer = window.setInterval(() => {
-			if (entry) connected = syncClient?.isConnected(entry.serverUrl) ?? false
-		}, 1000)
 
 		return () => {
 			window.removeEventListener('keydown', handleKeydown)
 			window.removeEventListener('beforeunload', preventLostDraft)
 			viewport?.removeEventListener('resize', resizeHandler)
-			window.clearInterval(statusTimer)
 			stopWatching?.()
 		}
 	})
@@ -383,6 +379,23 @@
 	let menu = $state<'open' | 'create'>('open')
 	let selectedKey = $state(LOCAL_PLAN)
 	let selectedPlan = $derived(registry.synced.find((plan) => plan.key === selectedKey))
+	let selectedServer = $derived(selectedPlan?.serverUrl)
+	let planStatus = $derived(
+		selectedServer
+			? `${connected ? 'Connected' : 'Disconnected'} · ${selectedServer}`
+			: 'Stored in this browser'
+	)
+
+	$effect(() => {
+		if (!dialogOpen || !selectedServer) return
+		const server = selectedServer
+		const refreshStatus = () => {
+			connected = syncClient?.isConnected(server) ?? false
+		}
+		refreshStatus()
+		const timer = window.setInterval(refreshStatus, 1000)
+		return () => window.clearInterval(timer)
+	})
 	let source = $state('sample')
 	let serverInput = $state(DEFAULT_SYNC_SERVER)
 	let joinFailed = $state(false)
@@ -518,7 +531,6 @@
 		stopWatching?.()
 		activeHandle = handle
 		replaceEditor(plan.key, saved, draft)
-		connected = syncClient!.isConnected(plan.serverUrl)
 		const receive = () => {
 			try {
 				const incoming = syncClient!.readPlan(handle)
@@ -873,13 +885,9 @@
 							</label>
 						{/each}
 					</fieldset>
-					{#if selectedPlan && selectedPlan.key === entry?.key && !blocked}
-						<p>
-							<small
-								>{connected ? 'Connected' : 'Offline or connecting'} · {selectedPlan.serverUrl}</small
-							>
-						</p>
-					{/if}
+					<p class="plan-status" title={planStatus} aria-live="polite">
+						<small>{planStatus}</small>
+					</p>
 					<div class="plan-buttons">
 						<button disabled={!!busy}>Open</button>
 						<button
@@ -889,23 +897,22 @@
 							onclick={() => showPlanView('create')}>New synced plan</button
 						>
 					</div>
-					{#if selectedPlan}
-						{@const plan = selectedPlan}
-						<div class="plan-buttons">
-							<button
-								class="secondary"
-								type="button"
-								disabled={!!busy}
-								onclick={() => copyLive(plan)}>Copy live link</button
-							>
-							<button
-								class="secondary"
-								type="button"
-								disabled={!!busy}
-								onclick={() => forgetPlan(plan)}>Remove from list</button
-							>
-						</div>
-					{/if}
+					<div class="plan-buttons">
+						<button
+							class="secondary"
+							type="button"
+							disabled={!!busy || !selectedPlan}
+							onclick={() => selectedPlan && copyLive(selectedPlan)}
+							>Copy live link</button
+						>
+						<button
+							class="secondary"
+							type="button"
+							disabled={!!busy || !selectedPlan}
+							onclick={() => selectedPlan && forgetPlan(selectedPlan)}
+							>Remove from list</button
+						>
+					</div>
 				</form>
 			{/if}
 			{@render planFeedback()}
@@ -1120,6 +1127,12 @@
 
 	.plan-dialog fieldset {
 		margin-bottom: var(--nc-spacing);
+	}
+
+	.plan-status {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.plan-buttons {
