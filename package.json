@@ -17,7 +17,7 @@
 	"devDependencies": {
 		"@eslint/compat": "^2.1.1",
 		"@eslint/js": "^10.0.1",
-		"@leftium/nimble.css": "^0.24.1",
+		"@leftium/nimble.css": "^0.25.0",
 		"@ltd/j-toml": "^1.38.0",
 		"@sveltejs/adapter-auto": "^8.0.1",
 		"@sveltejs/kit": "^3.4.0",

@@ -28,8 +28,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.15.0(jiti@2.7.0))
       '@leftium/nimble.css':
-        specifier: ^0.24.1
-        version: 0.24.1
+        specifier: ^0.25.0
+        version: 0.25.0
       '@ltd/j-toml':
         specifier: ^1.38.0
         version: 1.38.0
@@ -441,8 +441,8 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@leftium/nimble.css@0.24.1':
-    resolution: {integrity: sha512-/GN09Rujr/Rc/elWYXUURvJJe0ebrusQAg+cNxqragXtjzwl+0UJEzi3+WggVUeL0VJDeAIhesqZMxrogfd9uQ==}
+  '@leftium/nimble.css@0.25.0':
+    resolution: {integrity: sha512-MmWffPBJFPYy0sZCObAmMvZsh9oXcdkBLYdP1w5NimTR2RrepjwnK1aIacmufBjPSGI5aW5VPPsISgoXPlslTw==}
 
   '@ltd/j-toml@1.38.0':
     resolution: {integrity: sha512-lYtBcmvHustHQtg4X7TXUu1Xa/tbLC3p2wLvgQI+fWVySguVZJF60Snxijw5EiohumxZbR10kWYFFebh1zotiw==}
@@ -2195,7 +2195,7 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@leftium/nimble.css@0.24.1': {}
+  '@leftium/nimble.css@0.25.0': {}
 
   '@ltd/j-toml@1.38.0': {}
 
