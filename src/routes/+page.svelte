@@ -1565,4 +1565,9 @@
 	.editor header button {
 		width: calc(100% / 4);
 	}
+
+	.editor .nc-join > button:hover + button::before,
+	.editor .nc-join > button + button:hover::before {
+		content: none;
+	}
 </style>
